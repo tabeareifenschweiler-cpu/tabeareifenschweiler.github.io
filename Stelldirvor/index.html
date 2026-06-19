@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Stell dir vor, die Stadt funktioniert.</title>
+  <meta name="description" content="Begleit-Microsite zur Ausstellung über geschlechtsspezifische Raumungleichheit in der Stadt.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Storyboard: Ansicht 1–6. Rote Linie wächst als Overlay, hält an jeder
+       Station, Ansicht wechselt erst beim Erreichen des Punkts, Marker
+       erscheint beim Erreichen. Ansicht 6 schließt den Loop. -->
+  <section class="story" id="story">
+    <div class="stage">
+      <img class="frame is-on" src="6_Anwendungsbeispiel/Ansicht1_base.svg" alt="Kommst du zu Wort?">
+      <img class="frame"       src="6_Anwendungsbeispiel/Ansicht2_base.svg" alt="Fühlst du dich beobachtet?">
+      <img class="frame"       src="6_Anwendungsbeispiel/Ansicht3_base.svg" alt="Hast du genug Platz?">
+      <img class="frame"       src="6_Anwendungsbeispiel/Ansicht4_base.svg" alt="Hast du Zeit zu warten?">
+      <img class="frame"       src="6_Anwendungsbeispiel/Ansicht5_base.svg" alt="Gehst du den kurzen oder den sicheren Weg?">
+      <img class="frame"       src="6_Anwendungsbeispiel/Ansicht6_base.svg" alt="Was hier Alltag heißt.">
+
+      <svg class="route-ov" viewBox="0 0 1170 2532" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <polyline class="route" points="818.66 1593.86 815.4 1481.92 570.65 1479.72 339.37 1550.95 295.02 1338.4 249.21 1220.15 244.86 1208.91 127.16 637.26 157.97 786.94 837.72 670.03 870.51 770.1 972.81 938.95 977.47 1019.57 1025.29 1112.17 1024.07 1211.02 893.67 1267.73 812.12 1369.01 818.66 1593.86"/>
+        <g class="markers">
+          <rect data-m="1" x="846.89" y="1550.99" width="28.58" height="28.58"/>
+          <rect data-m="2" x="333.36" y="1367.64" width="28.58" height="28.58"/>
+          <rect data-m="3" x="151.3"  y="1026.91" width="28.58" height="28.58"/>
+          <rect data-m="4" x="68.5"   y="653.13"  width="28.58" height="28.58"/>
+          <rect data-m="5" x="894.8"  y="903.64"  width="28.58" height="28.58"/>
+        </g>
+      </svg>
+
+      <!-- „Infos zu …"-Link: Position + Ziel werden je Ansicht per JS gesetzt -->
+      <a class="hot" id="infoHot" href="#page7" aria-label="Mehr Infos zu dieser Station"></a>
+    </div>
+  </section>
+
+  <!-- Nach dem Loop: normales Scrollen, Ansicht 7–12 untereinander.
+       Glossar-Links + Footer als Klickflächen über den SVGs. -->
+  <section class="pages">
+    <div class="page-wrap" id="page7" style="aspect-ratio:1170/2420.56">
+      <object class="page" type="image/svg+xml" data="6_Anwendungsbeispiel/Ansicht7.svg"></object>
+      <a class="hot" style="left:11.1%;top:91.5%;width:42%;height:2.7%" target="_blank" rel="noopener"
+         href="https://www.aok.de/pk/magazin/koerper-psyche/psychologie/mansplaining-definition-und-tipps-fuer-den-umgang-damit/" aria-label="mansplaining"></a>
+    </div>
+    <div class="page-wrap" id="page8" style="aspect-ratio:1170/2527.02">
+      <object class="page" type="image/svg+xml" data="6_Anwendungsbeispiel/Ansicht8.svg"></object>
+      <a class="hot" style="left:11.1%;top:92%;width:42%;height:2.6%" target="_blank" rel="noopener"
+         href="https://www.marburg.de/portal/seiten/catcalling-ist-keinkompliment-900003459-23001.html" aria-label="catcalling"></a>
+    </div>
+    <div class="page-wrap" id="page9" style="aspect-ratio:1170/2590.36">
+      <object class="page" type="image/svg+xml" data="6_Anwendungsbeispiel/Ansicht9.svg"></object>
+      <a class="hot" style="left:11.1%;top:92.4%;width:42%;height:2.5%" target="_blank" rel="noopener"
+         href="https://taz.de/Phaenomen-Manspreading/!5269797/" aria-label="manspreading"></a>
+    </div>
+    <div class="page-wrap" id="page10" style="aspect-ratio:1170/2418.77">
+      <object class="page" type="image/svg+xml" data="6_Anwendungsbeispiel/Ansicht10.svg"></object>
+      <a class="hot" style="left:11.1%;top:91.8%;width:42%;height:2.7%" target="_blank" rel="noopener"
+         href="https://www.dabonline.de/baukultur/wc-diskriminierung-weniger-damentoiletten-herrentoiletten-vorschriften-unisex" aria-label="baukultur"></a>
+    </div>
+    <div class="page-wrap" id="page11" style="aspect-ratio:1170/2532">
+      <object class="page" type="image/svg+xml" data="6_Anwendungsbeispiel/Ansicht11.svg"></object>
+      <a class="hot" style="left:11.1%;top:92.2%;width:42%;height:2.6%" target="_blank" rel="noopener"
+         href="https://taz.de/Sexuelle-Belaestigung-auf-der-Strasse/!5552191/" aria-label="sexuelle Belästigung"></a>
+    </div>
+    <div class="page-wrap" id="page12" style="aspect-ratio:1170/3004.82">
+      <object class="page" type="image/svg+xml" data="6_Anwendungsbeispiel/Ansicht12.svg"></object>
+      <a class="hot" style="left:12%;top:79.4%;width:30%;height:2.3%" href="kontakt.html" aria-label="Kontakt"></a>
+      <!-- Footer -->
+      <a class="hot" style="left:3%;top:95.4%;width:25%;height:3%" href="datenschutz.html" aria-label="Datenschutz"></a>
+      <a class="hot" style="left:25%;top:93.3%;width:40%;height:4.7%" href="#story" aria-label="Zurück zum Anfang"></a>
+      <a class="hot" style="left:71%;top:95.4%;width:26%;height:3%" href="impressum.html" aria-label="Impressum"></a>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
