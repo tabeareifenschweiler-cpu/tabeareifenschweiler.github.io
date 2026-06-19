@@ -1,0 +1,93 @@
+/* =============================================================
+   Stell dir vor, die Stadt funktioniert.
+   Storyboard (Ansicht 1–6) mit animierter roter Linie als Overlay,
+   danach normales Scrollen durch Ansicht 7–12.
+   ============================================================= */
+
+:root {
+  --red: #ff0000;
+  --bg: #edecec;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --col: min(100vw, calc(100svh * 1170 / 2532));   /* Spaltenbreite = Frame-Breite */
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
+
+/* -------- Storyboard (sticky) -------- */
+.story {
+  position: relative;
+  height: 600vh;            /* 6 Frames × 100vh */
+}
+.stage {
+  position: sticky;
+  top: 0;
+  margin-inline: auto;
+  width: var(--col);
+  aspect-ratio: 1170 / 2532;
+  max-height: 100svh;
+  overflow: hidden;
+  background: #fff;
+}
+.frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+.frame:first-of-type { opacity: 1; }   /* Startframe sichtbar */
+
+.route-ov {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;            /* immer über den Frames */
+  pointer-events: none;
+}
+.route {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 21.64;
+  stroke-linejoin: miter;
+  stroke-linecap: butt;
+  stroke-miterlimit: 10;
+}
+/* Marker erscheinen, sobald die Linie sie erreicht (JS togglet .is-on) */
+.markers rect {
+  fill: var(--red);
+  opacity: 0;
+  transform: scale(0.4);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+.markers rect.is-on { opacity: 1; transform: scale(1); }
+
+/* -------- Detailseiten (Ansicht 7–12), normales Scrollen -------- */
+.pages { background: #fff; }
+.page-wrap {
+  position: relative;
+  width: var(--col);
+  margin-inline: auto;     /* Höhe folgt aus aspect-ratio (inline gesetzt) */
+}
+.page { display: block; width: 100%; height: 100%; border: 0; }
+
+/* Klickflächen über den (Vektor-)Texten der SVGs */
+.hot {
+  position: absolute;
+  display: block;
+  z-index: 5;
+  cursor: pointer;
+  /* zum Justieren sichtbar machen: background: rgba(255,0,0,.25); */
+}
+#infoHot { z-index: 11; }   /* über der Route-Overlay (z-index 10) */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .frame, .markers rect { transition: none; }
+}
