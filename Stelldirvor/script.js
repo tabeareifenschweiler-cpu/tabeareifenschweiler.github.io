@@ -16,19 +16,22 @@
   var story = document.getElementById('story');
   if (!story) return;
   var route = story.querySelector('.route');
-  var frames = Array.prototype.slice.call(story.querySelectorAll('.frame'));
+  var frames = Array.prototype.slice.call(story.querySelectorAll('.cap'));
   var markers = Array.prototype.slice.call(story.querySelectorAll('.markers rect'));
   if (!route || !frames.length) return;
 
-  // „Infos zu …"-Link je Ansicht: liegt als <rect> im Route-SVG (skaliert
-  // mit der Karte). Nur die y-Position (SVG-Einheiten) + Sprungziel ändern.
+  // „Infos zu …"-Link je Ansicht: HTML-<a> über der Caption-Schicht (.s-cap).
+  // Caption-SVG zeigt y-Band 1643–2532 (Höhe 889). Pfeil-y → Prozent im .s-cap.
+  var CAP_Y0 = 1643, CAP_H = 889;
   var infoHot = document.getElementById('infoHot');
-  var infoHotRect = document.getElementById('infoHotRect');
   var INFO_Y = [1996, 2050, 2053, 2165, 2049, 2227];
   function placeInfo(i) {
-    if (!infoHot || !infoHotRect) return;
+    if (!infoHot) return;
     var y = INFO_Y[i] || INFO_Y[0];
-    infoHotRect.setAttribute('y', y - 36);
+    infoHot.style.left = '6.3%';
+    infoHot.style.width = '60%';
+    infoHot.style.top = ((y - 30 - CAP_Y0) / CAP_H * 100) + '%';
+    infoHot.style.height = (80 / CAP_H * 100) + '%';
     infoHot.setAttribute('href', '#page' + (7 + i));
   }
 
@@ -36,23 +39,16 @@
   route.style.strokeDasharray = len;
   route.style.strokeDashoffset = len;
 
-  // Flicker-frei: der neue Frame blendet ÜBER dem vorigen (deckend
-  // bleibenden) ein. Da Karte/Logo/Hintergrund in allen Frames identisch
-  // sind, dimmt dort nichts — nur Text/Icon lösen sich weich auf.
-  var curFrame = -1, prevFrame = -1;
+  // Caption-Schicht hat einen deckenden Hintergrund (.s-cap) → einfache
+  // Überblendung: aktuelle Ansicht opak, alle anderen transparent.
+  var curFrame = -1;
   function showFrame(i) {
     if (i === curFrame) return;
-    prevFrame = curFrame;
     curFrame = i;
     frames.forEach(function (f, k) {
-      if (k === prevFrame) { f.style.zIndex = '2'; f.style.opacity = '1'; }   // Backdrop bleibt deckend
-      else if (k !== i)    { f.style.zIndex = '1'; f.style.opacity = '0'; }
+      f.style.zIndex = (k === i) ? '2' : '1';
+      f.style.opacity = (k === i) ? '1' : '0';
     });
-    var inc = frames[i];
-    inc.style.zIndex = '3';
-    inc.style.opacity = '0';
-    void inc.getBoundingClientRect();   // Reflow erzwingen
-    inc.style.opacity = '1';            // sanft einblenden
     placeInfo(i);                       // Infos-Link an diese Ansicht anpassen
   }
 

@@ -20,47 +20,70 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
   position: relative;
   height: 600vh;            /* 6 Frames × 100vh */
 }
+/* 3-Schicht-Bühne: Logo · Karte (flexibel) · Text+Icon — passt auf jedem
+   Handy komplett in einen Screen; nur die Karte/Linie bewegt sich. */
 .stage {
   position: sticky;
   top: 0;
   width: 100vw;
-  height: 100svh;          /* Handy: füllt den ganzen Screen → kein grauer Rand */
+  height: 100svh;
   overflow: hidden;
   background: #fff;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Desktop (ab 700px): Frame zentriert in Originalproportion statt Vollbild-
-   Beschnitt (Hochformat würde im Querformat zu stark beschnitten). */
-@media (min-width: 700px) {
-  body { --col: min(100vw, calc(100svh * 1170 / 2532)); }
-  .stage {
-    width: var(--col);
-    height: auto;
-    aspect-ratio: 1170 / 2532;
-    max-height: 100svh;
-    margin-inline: auto;
-  }
-  /* cover bleibt: die Bühne ist hier proportionsgleich → füllt ohne Beschnitt */
-}
-.frame {
-  position: absolute;
-  inset: 0;
+/* Logo oben — volle Breite, Höhe aus dem Seitenverhältnis (logo.svg) */
+.s-logo {
+  flex: 0 0 auto;
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;        /* füllt die Breite, beschneidet symmetrisch nur den Leerraum */
-  object-position: center;  /* muss zum slice-Mittelpunkt der Linie passen */
+  height: auto;
+  aspect-ratio: 1170 / 380;
+}
+
+/* Karte — füllt den verbleibenden Platz; Linie liegt deckungsgleich darüber */
+.s-map {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.s-map-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;        /* füllt die Breite, beschneidet nur Randstraßen */
+  object-position: center;
+}
+.route-ov {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 2;
+  pointer-events: none;     /* slice = deckungsgleich zur Karte (cover) */
+}
+
+/* Text + Icon unten — feste Höhe (Seitenverhältnis caption.svg), stets ganz sichtbar */
+.s-cap {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  aspect-ratio: 1170 / 889;
+  background: #ededed;   /* deckend: kein Durchscheinen beim Überblenden */
+}
+.cap {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
   opacity: 0;
   transition: opacity 0.4s var(--ease);
 }
-.frame:first-of-type { opacity: 1; }   /* Startframe sichtbar */
+.cap:first-of-type { opacity: 1; }
 
-.route-ov {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;            /* immer über den Frames */
-  pointer-events: none;
+/* Desktop (ab 700px): Bühne als zentrierte Handy-Spalte statt Vollbreite */
+@media (min-width: 700px) {
+  body { --col: min(100vw, calc(100svh * 1170 / 2532)); }
+  .stage { width: var(--col); margin-inline: auto; }
 }
 .route {
   fill: none;
@@ -98,10 +121,10 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
   cursor: pointer;
   /* zum Justieren sichtbar machen: background: rgba(255,0,0,.25); */
 }
-/* Infos-Link liegt jetzt im SVG (skaliert mit der Karte) → klickbar machen */
+/* Infos-Link liegt über der Caption-Schicht (per JS in % positioniert) */
 #infoHot { pointer-events: all; cursor: pointer; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .frame, .markers rect { transition: none; }
+  .cap, .markers rect { transition: none; }
 }
