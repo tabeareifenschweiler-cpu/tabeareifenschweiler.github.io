@@ -20,16 +20,15 @@
   var markers = Array.prototype.slice.call(story.querySelectorAll('.markers rect'));
   if (!route || !frames.length) return;
 
-  // „Infos zu …"-Link je Ansicht: vertikale Position (SVG-y) + Sprungziel
+  // „Infos zu …"-Link je Ansicht: liegt als <rect> im Route-SVG (skaliert
+  // mit der Karte). Nur die y-Position (SVG-Einheiten) + Sprungziel ändern.
   var infoHot = document.getElementById('infoHot');
+  var infoHotRect = document.getElementById('infoHotRect');
   var INFO_Y = [1996, 2050, 2053, 2165, 2049, 2227];
   function placeInfo(i) {
-    if (!infoHot) return;
+    if (!infoHot || !infoHotRect) return;
     var y = INFO_Y[i] || INFO_Y[0];
-    infoHot.style.left = '6%';
-    infoHot.style.width = '50%';
-    infoHot.style.top = (100 * (y - 30) / 2532) + '%';
-    infoHot.style.height = (100 * 58 / 2532) + '%';
+    infoHotRect.setAttribute('y', y - 36);
     infoHot.setAttribute('href', '#page' + (7 + i));
   }
 

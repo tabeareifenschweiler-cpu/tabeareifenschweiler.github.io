@@ -8,7 +8,7 @@
   --red: #ff0000;
   --bg: #edecec;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --col: min(100vw, calc(100svh * 1170 / 2532));   /* Spaltenbreite = Frame-Breite */
+  --col: 100vw;   /* volle Bildschirmbreite (mobile: kein grauer Rand) */
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -23,19 +23,32 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
 .stage {
   position: sticky;
   top: 0;
-  margin-inline: auto;
-  width: var(--col);
-  aspect-ratio: 1170 / 2532;
-  max-height: 100svh;
+  width: 100vw;
+  height: 100svh;          /* Handy: füllt den ganzen Screen → kein grauer Rand */
   overflow: hidden;
   background: #fff;
+}
+
+/* Desktop (ab 700px): Frame zentriert in Originalproportion statt Vollbild-
+   Beschnitt (Hochformat würde im Querformat zu stark beschnitten). */
+@media (min-width: 700px) {
+  body { --col: min(100vw, calc(100svh * 1170 / 2532)); }
+  .stage {
+    width: var(--col);
+    height: auto;
+    aspect-ratio: 1170 / 2532;
+    max-height: 100svh;
+    margin-inline: auto;
+  }
+  /* cover bleibt: die Bühne ist hier proportionsgleich → füllt ohne Beschnitt */
 }
 .frame {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;        /* füllt die Breite, beschneidet symmetrisch nur den Leerraum */
+  object-position: center;  /* muss zum slice-Mittelpunkt der Linie passen */
   opacity: 0;
   transition: opacity 0.4s var(--ease);
 }
@@ -85,7 +98,8 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
   cursor: pointer;
   /* zum Justieren sichtbar machen: background: rgba(255,0,0,.25); */
 }
-#infoHot { z-index: 11; }   /* über der Route-Overlay (z-index 10) */
+/* Infos-Link liegt jetzt im SVG (skaliert mit der Karte) → klickbar machen */
+#infoHot { pointer-events: all; cursor: pointer; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

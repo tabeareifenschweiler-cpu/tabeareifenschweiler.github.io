@@ -21,7 +21,7 @@
       <img class="frame"       src="6_Anwendungsbeispiel/Ansicht5_base.svg" alt="Gehst du den kurzen oder den sicheren Weg?">
       <img class="frame"       src="6_Anwendungsbeispiel/Ansicht6_base.svg" alt="Was hier Alltag heißt.">
 
-      <svg class="route-ov" viewBox="0 0 1170 2532" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <svg class="route-ov" viewBox="0 0 1170 2532" preserveAspectRatio="xMidYMid slice" aria-hidden="false">
         <polyline class="route" points="818.66 1593.86 815.4 1481.92 570.65 1479.72 339.37 1550.95 295.02 1338.4 249.21 1220.15 244.86 1208.91 127.16 637.26 157.97 786.94 837.72 670.03 870.51 770.1 972.81 938.95 977.47 1019.57 1025.29 1112.17 1024.07 1211.02 893.67 1267.73 812.12 1369.01 818.66 1593.86"/>
         <g class="markers">
           <rect data-m="1" x="846.89" y="1550.99" width="28.58" height="28.58"/>
@@ -30,9 +30,11 @@
           <rect data-m="4" x="68.5"   y="653.13"  width="28.58" height="28.58"/>
           <rect data-m="5" x="894.8"  y="903.64"  width="28.58" height="28.58"/>
         </g>
+        <!-- „Infos zu …"-Link: skaliert/clippt mit der Karte. Position + Ziel je Ansicht via JS. -->
+        <a id="infoHot" href="#page7" aria-label="Mehr Infos zu dieser Station">
+          <rect id="infoHotRect" x="74" y="1966" width="710" height="74" fill="#000" fill-opacity="0"/>
+        </a>
       </svg>
-
-      <a class="hot" id="infoHot" href="#page7" aria-label="Mehr Infos zu dieser Station"></a>
     </div>
   </section>
 
