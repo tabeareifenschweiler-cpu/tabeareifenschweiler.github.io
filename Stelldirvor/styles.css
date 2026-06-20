@@ -53,14 +53,14 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
 .s-map-bg {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: cover;        /* füllt die Breite, beschneidet nur Randstraßen */
+  object-fit: contain;      /* ganze Karte sichtbar — nichts abgeschnitten */
   object-position: center;
 }
 .route-ov {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   z-index: 2;
-  pointer-events: none;     /* slice = deckungsgleich zur Karte (cover) */
+  pointer-events: none;     /* meet = deckungsgleich zur Karte (contain) */
 }
 
 /* Text + Icon unten — feste Höhe (Seitenverhältnis caption.svg), stets ganz sichtbar */
