@@ -20,8 +20,10 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
   position: relative;
   height: 600vh;            /* 6 Frames × 100vh */
 }
-/* 3-Schicht-Bühne: Logo · Karte (flexibel) · Text+Icon — passt auf jedem
-   Handy komplett in einen Screen; nur die Karte/Linie bewegt sich. */
+/* 3-Schicht-Bühne: Logo · Karte · Text+Icon — passt auf jedem Handy komplett
+   in einen Screen; nur die Karte/Linie bewegt sich. Die Karte hat ihr exaktes
+   Seitenverhältnis (randlos, unverzerrt, vollständig); das Logo darf bei wenig
+   Höhe schrumpfen, damit die Karte immer voll sichtbar bleibt. */
 .stage {
   position: sticky;
   top: 0;
@@ -31,36 +33,41 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
   background: #fff;
   display: flex;
   flex-direction: column;
+  justify-content: center;   /* überschüssige Höhe als gleichmäßiger Rand */
 }
 
-/* Logo oben — volle Breite, Höhe aus dem Seitenverhältnis (logo.svg) */
+/* Logo oben — volle Breite, proportional; schrumpft proportional (contain),
+   wenn der Platz knapp wird, ohne sich zu verzerren. */
 .s-logo {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  min-height: 0;
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 1170 / 380;
+  object-fit: contain;
+  object-position: center bottom;
 }
 
-/* Karte — füllt den verbleibenden Platz; Linie liegt deckungsgleich darüber */
+/* Karte — exaktes Seitenverhältnis der SVG: volle Breite, randlos bis zum
+   Rand, nichts verzerrt oder abgeschnitten. Linie liegt deckungsgleich. */
 .s-map {
   position: relative;
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 0 auto;
   width: 100%;
-  overflow: hidden;
+  aspect-ratio: 1170 / 1092;
 }
 .s-map-bg {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: contain;      /* ganze Karte sichtbar — nichts abgeschnitten */
+  object-fit: cover;        /* Seitenverhältnis stimmt → füllt exakt, kein Beschnitt */
   object-position: center;
 }
 .route-ov {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   z-index: 2;
-  pointer-events: none;     /* meet = deckungsgleich zur Karte (contain) */
+  pointer-events: none;     /* slice = deckungsgleich zur Karte (cover) */
 }
 
 /* Text + Icon unten — feste Höhe (Seitenverhältnis caption.svg), stets ganz sichtbar */
