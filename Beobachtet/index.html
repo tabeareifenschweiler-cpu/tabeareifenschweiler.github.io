@@ -271,15 +271,19 @@
     setupPupil(pupilL);
     setupPupil(pupilR);
 
+    // Augen sofort zeigen + ruhige Pupillen-Animation starten – kein weißer
+    // Wartebildschirm, während die Kamera im Hintergrund hochfährt.
+    document.getElementById('stage').style.display = 'flex';
+    requestAnimationFrame(renderLoop);
+
+    setupAudio();
+
     try {
       await unlockAudio();
       await setupCamera();
-      setupAudio();
 
-      document.getElementById('stage').style.display = 'flex';
-
+      // Erst wenn die Kamera läuft: Bewegungserkennung + Pfiffe.
       requestAnimationFrame(motionLoop);
-      requestAnimationFrame(renderLoop);
       startAudioLoop();
     } catch (err) {
       alert('Fehler: ' + err.message);
