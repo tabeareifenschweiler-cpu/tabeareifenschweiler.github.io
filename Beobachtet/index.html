@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Beobachtet</title>
+  <style>
+    :root {
+      --rot:  #E20E17;
+      --dark: #05141D;
+      --bg:   #FFFFFF;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: 'Neue Haas Grotesk Display Pro', -apple-system, sans-serif;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    #start {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: var(--bg); color: var(--dark);
+      z-index: 100; text-align: center; padding: 40px;
+    }
+    #start h1 {
+      font-size: 2.6rem; font-weight: 700;
+      margin-bottom: 24px; letter-spacing: 0.02em;
+      color: var(--rot);
+    }
+    #start p {
+      font-size: 1.1rem; opacity: 0.85;
+      margin-bottom: 48px; max-width: 600px; line-height: 1.5;
+    }
+    #start button {
+      padding: 20px 56px; font-size: 1.1rem;
+      background: var(--rot); color: #fff; border: none;
+      border-radius: 4px; cursor: pointer;
+      letter-spacing: 0.05em; font-weight: 700;
+      font-family: inherit;
+    }
+
+    #stage {
+      position: fixed; inset: 0;
+      display: none;
+      background: var(--bg);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #eyes-container {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      gap: 6vw;
+      padding: 4vw;
+    }
+
+    .eye-svg {
+      flex: 1 1 0;
+      max-width: 46vw;
+      max-height: 90vh;
+      width: auto;
+      height: auto;
+    }
+
+    #video, #motion-canvas {
+      position: absolute;
+      width: 1px; height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #debug {
+      position: fixed; bottom: 10px; left: 10px;
+      color: #888; font-size: 11px;
+      font-family: monospace;
+      pointer-events: none;
+      background: rgba(255,255,255,0.8);
+      padding: 4px 8px;
+      border-radius: 3px;
+      z-index: 200;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="start">
+    <h1>Beobachtet</h1>
+    <p>Diese Station benötigt Kamerazugriff. Bitte tippe zum Start – danach nicht mehr berühren.</p>
+    <button id="startBtn">Station starten</button>
+  </div>
+
+  <div id="stage">
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="motion-canvas"></canvas>
+
+    <div id="eyes-container">
+      <svg class="eye-svg" viewBox="0 0 100 47.4" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="eyeMaskL" clipPathUnits="userSpaceOnUse">
+            <path d="M0.05,22.97 L15.12,21.28 L18.15,19.19 L21.2,17.33 L24.22,15.74 L27.25,14.35 L30.29,13.15 L33.32,12.19 L36.34,11.37 L39.39,10.73 L42.42,10.26 L45.44,9.94 L48.49,9.79 L51.51,9.79 L54.56,9.94 L57.58,10.26 L60.61,10.73 L63.66,11.37 L66.68,12.19 L69.71,13.18 L72.75,14.35 L75.78,15.76 L78.8,17.36 L81.85,19.19 L84.88,21.3 L99.93,23.02 L99.93,23.07 L84.88,26.07 L81.85,28.19 L78.8,30.02 L75.78,31.64 L72.75,33.02 L69.71,34.2 L66.68,35.19 L63.66,35.98 L60.61,36.64 L57.58,37.11 L54.56,37.44 L51.51,37.58 L48.49,37.58 L45.44,37.44 L42.42,37.11 L39.39,36.64 L36.34,35.98 L33.32,35.19 L30.29,34.2 L27.25,33.02 L24.22,31.64 L21.2,30.04 L18.15,28.19 L15.12,26.07 L0.05,23.07 Z"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#eyeMaskL)">
+          <image id="pupilL" href="img/pupille.png"
+                 x="35" y="8.7" width="30" height="30"
+                 preserveAspectRatio="xMidYMid meet"/>
+        </g>
+        <image href="img/auge.png" x="0" y="0" width="100" height="47.4"
+               preserveAspectRatio="xMidYMid meet"/>
+      </svg>
+
+      <svg class="eye-svg" viewBox="0 0 100 47.4" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="eyeMaskR" clipPathUnits="userSpaceOnUse">
+            <path d="M0.05,22.97 L15.12,21.28 L18.15,19.19 L21.2,17.33 L24.22,15.74 L27.25,14.35 L30.29,13.15 L33.32,12.19 L36.34,11.37 L39.39,10.73 L42.42,10.26 L45.44,9.94 L48.49,9.79 L51.51,9.79 L54.56,9.94 L57.58,10.26 L60.61,10.73 L63.66,11.37 L66.68,12.19 L69.71,13.18 L72.75,14.35 L75.78,15.76 L78.8,17.36 L81.85,19.19 L84.88,21.3 L99.93,23.02 L99.93,23.07 L84.88,26.07 L81.85,28.19 L78.8,30.02 L75.78,31.64 L72.75,33.02 L69.71,34.2 L66.68,35.19 L63.66,35.98 L60.61,36.64 L57.58,37.11 L54.56,37.44 L51.51,37.58 L48.49,37.58 L45.44,37.44 L42.42,37.11 L39.39,36.64 L36.34,35.98 L33.32,35.19 L30.29,34.2 L27.25,33.02 L24.22,31.64 L21.2,30.04 L18.15,28.19 L15.12,26.07 L0.05,23.07 Z"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#eyeMaskR)">
+          <image id="pupilR" href="img/pupille.png"
+                 x="35" y="8.7" width="30" height="30"
+                 preserveAspectRatio="xMidYMid meet"/>
+        </g>
+        <image href="img/auge.png" x="0" y="0" width="100" height="47.4"
+               preserveAspectRatio="xMidYMid meet"/>
+      </svg>
+    </div>
+  </div>
+
+  <div id="debug"></div>
+
+  <script>
+  // ============================================================
+  // KONFIGURATION
+  // ============================================================
+  const CONFIG = {
+    motionWidth:    96,
+    motionHeight:   72,
+    motionThreshold: 25,
+    motionMinArea:   0.012,
+    motionLostTimeout: 1500,
+
+    pauseBetweenSounds: 4000,
+
+    pupilSize: 30,            // kleiner, wie gewünscht
+    maxOffsetX: 20,           // angepasst an neue Pupillengröße
+    maxOffsetY: 6,
+    smoothing: 0.22
+  };
+
+  const AUDIO_POOL = [
+    'audio/001_Pfiff.mp3',
+    'audio/002_Pfiff.mp3',
+    'audio/003_Pfiff.mp3',
+  ];
+
+  // ============================================================
+  // STATE
+  // ============================================================
+  let videoEl, canvas, ctx, pupilL, pupilR, debugEl;
+  let videoReady = false;
+  let lastMotionAt = 0;
+  let prevFrame = null;
+  let targetX = 0, targetY = 0;
+  let currentX = 0, currentY = 0;
+
+  const PUPIL_CENTER_X = 50;
+  const PUPIL_CENTER_Y = 23.7;
+
+  // ============================================================
+  // AUDIO – ein einziger Player, harter Lock gegen Überschneidungen
+  // ============================================================
+  // Statt 8 Audio-Elemente nutzen wir EINEN Player und tauschen die Quelle.
+  // Damit ist technisch unmöglich, dass mehrere Sounds gleichzeitig laufen.
+  let audioPlayer = null;
+  let lastAudioIndex = -1;
+  let isPlaying = false;       // Hard Lock
+  let nextSoundTimeout = null; // Timeout-Handle, falls onended versagt
+
+  function setupAudio() {
+    audioPlayer = new Audio();
+    audioPlayer.preload = 'auto';
+
+    // Wenn Sound fertig: nach Pause nächsten starten
+    audioPlayer.addEventListener('ended', onAudioEnded);
+    // Falls onended nicht feuert: nach maximaler Dauer trotzdem weitermachen
+    // (Sicherheitsnetz für iOS Safari Bugs)
+  }
+
+  function onAudioEnded() {
+    if (!isPlaying) return; // schon abgehakt
+    isPlaying = false;
+    // Pause, dann nächster
+    clearTimeout(nextSoundTimeout);
+    nextSoundTimeout = setTimeout(playNextSound, CONFIG.pauseBetweenSounds);
+  }
+
+  function startAudioLoop() {
+    playNextSound();
+  }
+
+  function playNextSound() {
+    // Wenn noch was läuft → nicht starten (Lock)
+    if (isPlaying) return;
+    clearTimeout(nextSoundTimeout);
+
+    // Zufälligen Sound wählen, nicht zwei mal hintereinander den selben
+    let idx;
+    do {
+      idx = Math.floor(Math.random() * AUDIO_POOL.length);
+    } while (AUDIO_POOL.length > 1 && idx === lastAudioIndex);
+    lastAudioIndex = idx;
+
+    isPlaying = true;
+    audioPlayer.src = AUDIO_POOL[idx];
+    audioPlayer.currentTime = 0;
+
+    // Sicherheitsnetz: falls onended nach Audiolänge nicht feuert
+    audioPlayer.onloadedmetadata = () => {
+      const duration = (audioPlayer.duration || 5) * 1000 + 1000; // Audio-Dauer + 1 Sek Puffer
+      clearTimeout(nextSoundTimeout);
+      nextSoundTimeout = setTimeout(() => {
+        if (isPlaying) {
+          isPlaying = false;
+          nextSoundTimeout = setTimeout(playNextSound, CONFIG.pauseBetweenSounds);
+        }
+      }, duration);
+    };
+
+    audioPlayer.play().catch(err => {
+      console.warn('Audio fehlgeschlagen:', err);
+      isPlaying = false;
+      nextSoundTimeout = setTimeout(playNextSound, CONFIG.pauseBetweenSounds);
+    });
+  }
+
+  async function unlockAudio() {
+    const silent = new Audio();
+    silent.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==';
+    try { await silent.play(); } catch (e) {}
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  document.getElementById('startBtn').addEventListener('click', async () => {
+    document.getElementById('start').style.display = 'none';
+
+    videoEl = document.getElementById('video');
+    canvas  = document.getElementById('motion-canvas');
+    canvas.width  = CONFIG.motionWidth;
+    canvas.height = CONFIG.motionHeight;
+    ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+    pupilL = document.getElementById('pupilL');
+    pupilR = document.getElementById('pupilR');
+    debugEl = document.getElementById('debug');
+
+    setupPupil(pupilL);
+    setupPupil(pupilR);
+
+    try {
+      await unlockAudio();
+      await setupCamera();
+      setupAudio();
+
+      document.getElementById('stage').style.display = 'flex';
+
+      requestAnimationFrame(motionLoop);
+      requestAnimationFrame(renderLoop);
+      startAudioLoop();
+    } catch (err) {
+      alert('Fehler: ' + err.message);
+      console.error(err);
+    }
+  });
+
+  function setupPupil(p) {
+    const half = CONFIG.pupilSize / 2;
+    p.setAttribute('width',  CONFIG.pupilSize);
+    p.setAttribute('height', CONFIG.pupilSize);
+    p.setAttribute('x', PUPIL_CENTER_X - half);
+    p.setAttribute('y', PUPIL_CENTER_Y - half);
+  }
+
+  // ============================================================
+  // KAMERA
+  // ============================================================
+  async function setupCamera() {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+      audio: false
+    });
+    videoEl.srcObject = stream;
+    return new Promise(resolve => {
+      videoEl.onloadedmetadata = () => {
+        videoEl.play();
+        videoReady = true;
+        resolve();
+      };
+    });
+  }
+
+  // ============================================================
+  // MOTION DETECTION
+  // ============================================================
+  function motionLoop() {
+    if (videoReady) {
+      ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+      const curr = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+      if (prevFrame) {
+        const motion = analyzeMotion(prevFrame.data, curr.data, canvas.width, canvas.height);
+        if (motion.ratio > CONFIG.motionMinArea) {
+          lastMotionAt = Date.now();
+          targetX = Math.max(-1, Math.min(1, 1 - motion.cx * 2));
+          targetY = Math.max(-1, Math.min(1, motion.cy * 2 - 1));
+          if (debugEl) debugEl.innerText = `motion ${(motion.ratio*100).toFixed(1)}%`;
+        } else {
+          if (Date.now() - lastMotionAt > CONFIG.motionLostTimeout) {
+            targetX = 0; targetY = 0;
+            if (debugEl) debugEl.innerText = 'ruhig';
+          }
+        }
+      }
+      prevFrame = curr;
+    }
+    requestAnimationFrame(motionLoop);
+  }
+
+  function analyzeMotion(prev, curr, w, h) {
+    let changed = 0, sumX = 0, sumY = 0;
+    const total = w * h;
+    const thresh = CONFIG.motionThreshold * 3;
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        const p = prev[i] + prev[i+1] + prev[i+2];
+        const c = curr[i] + curr[i+1] + curr[i+2];
+        if (Math.abs(c - p) > thresh) {
+          changed++; sumX += x; sumY += y;
+        }
+      }
+    }
+    if (changed === 0) return { ratio: 0, cx: 0.5, cy: 0.5 };
+    return {
+      ratio: changed / total,
+      cx: (sumX / changed) / w,
+      cy: (sumY / changed) / h
+    };
+  }
+
+  // ============================================================
+  // RENDER LOOP
+  // ============================================================
+  function renderLoop() {
+    currentX += (targetX - currentX) * CONFIG.smoothing;
+    currentY += (targetY - currentY) * CONFIG.smoothing;
+    const tx = currentX * CONFIG.maxOffsetX;
+    const ty = currentY * CONFIG.maxOffsetY;
+    const transform = `translate(${tx}, ${ty})`;
+    pupilL.setAttribute('transform', transform);
+    pupilR.setAttribute('transform', transform);
+    requestAnimationFrame(renderLoop);
+  }
+
+  if ('wakeLock' in navigator) {
+    document.addEventListener('click', async () => {
+      try { await navigator.wakeLock.request('screen'); } catch(e) {}
+    }, { once: true });
+  }
+  </script>
+</body>
+</html>
