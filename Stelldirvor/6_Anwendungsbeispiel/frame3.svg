@@ -74,6 +74,12 @@
       .cls-16 {
         clip-path: url(#clippath);
       }
+    
+      .cls-15{display:none!important}
+    
+      .cls-4{display:none!important}
+    
+      .cls-3{display:none!important}
     </style>
     <clipPath id="clippath">
       <rect class="cls-1" x="107.1" y="125.82" width="918.12" height="246.85"/>
