@@ -1,55 +1,58 @@
 /* =============================================================
    Stell dir vor, die Stadt funktioniert.
-   Beim Scrollen wächst die rote Linie und hält an jeder Station.
-   - Die Ansicht wechselt ERST, wenn die Linie den nächsten Punkt
-     erreicht hat (arrival-gated).
-   - Der Marker des Punkts erscheint genau dann, wenn die Linie ihn
-     erreicht.
-   - Ansicht 6 schließt den Loop.
+   Storyboard: 6 vollständige Frames (Ansicht 1–6) mit fest auf der
+   Karte eingebackener Route. Beim Scrollen blendet ein Frame in den
+   nächsten über – die Route „wächst" dadurch von Station zu Station.
    ============================================================= */
 (function () {
-  // Pfad-Längen-Anteile der Stationen (Marker 1–5) + Loop-Schluss (1.0)
-  var FR = [0, 0.017, 0.2309, 0.3371, 0.444, 0.7746, 1.0];
-  var N = 6;                 // 6 Frames / Etappen
-  var DWELL = 0.45;          // Halte-Anteil je Etappe (Linie ruht an der Station)
+  var N = 6;                 // 6 Frames / Stationen
 
   var story = document.getElementById('story');
   if (!story) return;
-  var route = story.querySelector('.route');
-  var frames = Array.prototype.slice.call(story.querySelectorAll('.cap'));
-  var markers = Array.prototype.slice.call(story.querySelectorAll('.markers rect'));
-  if (!route || !frames.length) return;
+  var stage = story.querySelector('.stage');
+  var frames = Array.prototype.slice.call(story.querySelectorAll('.frame'));
+  if (!frames.length) return;
 
-  // „Infos zu …"-Link je Ansicht: HTML-<a> über der Caption-Schicht (.s-cap).
-  // Caption-SVG zeigt y-Band 1643–2532 (Höhe 889). Pfeil-y → Prozent im .s-cap.
-  var CAP_Y0 = 1643, CAP_H = 889;
+  // „Infos zu …"-Link je Ansicht: klickbare Fläche über dem roten Linktext.
+  // Boxen in SVG-Koordinaten (Frame ist 1170 breit, oben verankert) → px,
+  // skaliert mit der tatsächlichen Bühnenbreite.
   var infoHot = document.getElementById('infoHot');
-  var INFO_Y = [1996, 2050, 2053, 2165, 2049, 2227];
+  var INFO = [
+    [74, 1892, 646, 1942],   // 1: Infos zum Gesprächsraum
+    [75, 1945, 672, 1998],   // 2: Infos zu Straßenbelästigung
+    [74, 1948, 688, 1999],   // 3: Infos zur expansiven Haltung
+    [74, 2061, 698, 2112],   // 4
+    [74, 1944, 562, 1998],   // 5
+    [74, 2122, 693, 2173]    // 6
+  ];
   function placeInfo(i) {
     if (!infoHot) return;
-    var y = INFO_Y[i] || INFO_Y[0];
-    infoHot.style.left = '6.3%';
-    infoHot.style.width = '60%';
-    infoHot.style.top = ((y - 30 - CAP_Y0) / CAP_H * 100) + '%';
-    infoHot.style.height = (80 / CAP_H * 100) + '%';
+    var b = INFO[i] || INFO[0];
+    var k = (stage.clientWidth || window.innerWidth) / 1170;  // SVG-Einheit → px
+    infoHot.style.left = (b[0] * k) + 'px';
+    infoHot.style.top = (b[1] * k) + 'px';
+    infoHot.style.width = ((b[2] - b[0]) * k) + 'px';
+    infoHot.style.height = ((b[3] - b[1]) * k) + 'px';
     infoHot.setAttribute('href', '#page' + (7 + i));
   }
 
-  var len = route.getTotalLength();
-  route.style.strokeDasharray = len;
-  route.style.strokeDashoffset = len;
-
-  // Caption-Schicht hat einen deckenden Hintergrund (.s-cap) → einfache
-  // Überblendung: aktuelle Ansicht opak, alle anderen transparent.
-  var curFrame = -1;
-  function showFrame(i) {
-    if (i === curFrame) return;
-    curFrame = i;
+  // Flicker-frei überblenden: neuer Frame blendet ÜBER dem vorigen (deckend
+  // bleibenden) ein. Frames sind vollflächig deckend → kein Durchscheinen.
+  var cur = -1, prev = -1;
+  function show(i) {
+    if (i === cur) return;
+    prev = cur;
+    cur = i;
     frames.forEach(function (f, k) {
-      f.style.zIndex = (k === i) ? '2' : '1';
-      f.style.opacity = (k === i) ? '1' : '0';
+      if (k === prev) { f.style.zIndex = '2'; f.style.opacity = '1'; }
+      else if (k !== i) { f.style.zIndex = '1'; f.style.opacity = '0'; }
     });
-    placeInfo(i);                       // Infos-Link an diese Ansicht anpassen
+    var inc = frames[i];
+    inc.style.zIndex = '3';
+    inc.style.opacity = '0';
+    void inc.getBoundingClientRect();   // Reflow erzwingen
+    inc.style.opacity = '1';            // sanft einblenden
+    placeInfo(i);
   }
 
   var ticking = false;
@@ -61,31 +64,13 @@
       var vh = window.innerHeight;
       var scrollable = story.offsetHeight - vh;
       var p = scrollable > 0 ? Math.min(Math.max(-r.top, 0), scrollable) / scrollable : 0;
-
-      var sl = Math.min(N - 1, Math.floor(p * N));   // aktuelle Etappe 0..5
-      var loc = p * N - sl;                          // 0..1 in der Etappe
-      var grow = loc < 1 - DWELL ? loc / (1 - DWELL) : 1;
-      var pf = FR[sl] + grow * (FR[sl + 1] - FR[sl]);
-
-      route.style.strokeDashoffset = len * (1 - pf);
-
-      // Ansicht wechselt erst beim Erreichen des Punkts: während die Linie
-      // zur nächsten Station wächst, bleibt die vorige Ansicht stehen; beim
-      // Erreichen (Beginn des Haltens) wird umgeschaltet.
-      var view = loc < 1 - DWELL ? sl - 1 : sl;
-      view = Math.max(0, Math.min(N - 1, view));
-      showFrame(view);
-
-      // Marker erscheinen, sobald die Linie sie erreicht hat
-      markers.forEach(function (m, k) {
-        m.classList.toggle('is-on', pf >= FR[k + 1] - 0.0005);
-      });
-
+      var view = Math.min(N - 1, Math.floor(p * N));
+      show(view);
       ticking = false;
     });
   }
 
-  showFrame(0);
+  show(0);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);

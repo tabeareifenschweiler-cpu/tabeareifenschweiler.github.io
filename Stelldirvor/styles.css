@@ -20,10 +20,9 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
   position: relative;
   height: 600vh;            /* 6 Frames × 100vh */
 }
-/* 3-Schicht-Bühne: Logo · Karte · Text+Icon — passt auf jedem Handy komplett
-   in einen Screen; nur die Karte/Linie bewegt sich. Die Karte hat ihr exaktes
-   Seitenverhältnis (randlos, unverzerrt, vollständig); das Logo darf bei wenig
-   Höhe schrumpfen, damit die Karte immer voll sichtbar bleibt. */
+/* Bühne: volle Breite, oben verankert. Frames werden in Originalproportion
+   (nicht skaliert) bei voller Breite gezeigt; was nicht in die Höhe passt,
+   wird unten beschnitten (overflow:hidden). */
 .stage {
   position: sticky;
   top: 0;
@@ -32,84 +31,27 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
   height: 100dvh;          /* füllt die volle Höhe, sobald die Adressleiste einklappt */
   overflow: hidden;
   background: #fff;
-  display: flex;
-  flex-direction: column;
 }
 
-/* Logo oben — füllt den freien Platz über der Karte und schiebt Karte + Text
-   nach unten; das Logo selbst sitzt unten in diesem Bereich (direkt über der
-   Karte) in voller, proportionaler Größe. Bei wenig Höhe skaliert es kleiner. */
-.s-logo {
-  flex: 1 1 0;
-  min-height: 0;
+/* Vollständiger Frame (Logo + Karte + Route + Text + Icon in einem SVG).
+   Volle Breite, oben verankert; die Route ist fest auf der Karte. */
+.frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;            /* Originalproportion, KEINE Skalierung in die Höhe */
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
-}
-
-/* Karte — exaktes Seitenverhältnis der vollständigen Straßen-SVG: volle Breite,
-   randlos bis zum Rand, nichts verzerrt oder abgeschnitten. */
-.s-map {
-  position: relative;
-  flex: 0 0 auto;
-  width: 100%;
-  aspect-ratio: 1170 / 1208;
-}
-.s-map-bg {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;        /* Seitenverhältnis stimmt → füllt exakt, kein Beschnitt */
-  object-position: center;
-}
-.route-ov {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  z-index: 2;
-  pointer-events: none;     /* slice = deckungsgleich zur Karte (cover) */
-}
-
-/* Text + Icon unten — feste Höhe (Seitenverhältnis caption.svg), stets ganz sichtbar */
-.s-cap {
-  position: relative;
-  flex: 0 0 auto;
-  width: 100%;
-  aspect-ratio: 1170 / 889;
-  background: #ededed;   /* deckend: kein Durchscheinen beim Überblenden */
-}
-.cap {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
   opacity: 0;
   transition: opacity 0.4s var(--ease);
 }
-.cap:first-of-type { opacity: 1; }
+.frame:first-of-type { opacity: 1; }
 
 /* Desktop (ab 700px): Bühne als zentrierte Handy-Spalte statt Vollbreite */
 @media (min-width: 700px) {
   body { --col: min(100vw, calc(100svh * 1170 / 2532)); }
   .stage { width: var(--col); margin-inline: auto; }
 }
-.route {
-  fill: none;
-  stroke: var(--red);
-  stroke-width: 21.64;
-  stroke-linejoin: miter;
-  stroke-linecap: butt;
-  stroke-miterlimit: 10;
-}
-/* Marker erscheinen, sobald die Linie sie erreicht (JS togglet .is-on) */
-.markers rect {
-  fill: var(--red);
-  opacity: 0;
-  transform: scale(0.4);
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
-}
-.markers rect.is-on { opacity: 1; transform: scale(1); }
 
 /* -------- Detailseiten (Ansicht 7–12), normales Scrollen -------- */
 .pages { background: #fff; }
@@ -128,10 +70,10 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
   cursor: pointer;
   /* zum Justieren sichtbar machen: background: rgba(255,0,0,.25); */
 }
-/* Infos-Link liegt über der Caption-Schicht (per JS in % positioniert) */
+/* Infos-Link liegt über dem Frame (per JS in px positioniert) */
 #infoHot { pointer-events: all; cursor: pointer; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .cap, .markers rect { transition: none; }
+  .frame { transition: none; }
 }

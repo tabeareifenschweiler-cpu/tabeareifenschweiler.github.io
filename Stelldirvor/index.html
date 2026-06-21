@@ -5,43 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Stell dir vor, die Stadt funktioniert.</title>
   <meta name="description" content="Begleit-Microsite zur Ausstellung über geschlechtsspezifische Raumungleichheit in der Stadt.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
 
-  <!-- Storyboard: Ansicht 1–6. Rote Linie wächst als Overlay, hält an jeder
-       Station, Ansicht wechselt erst beim Erreichen des Punkts, Marker
-       erscheint beim Erreichen. Ansicht 6 schließt den Loop. -->
+  <!-- Storyboard: Ansicht 1–6 als vollständige Frames (Route fest auf der Karte).
+       Volle Breite, oben verankert, beim Scrollen blenden die Frames über. Bei
+       kleineren Displays wird unten beschnitten – es wird NICHT skaliert. -->
   <section class="story" id="story">
     <div class="stage">
-      <!-- 3 Schichten, damit auf jedem Handy alles in einen Screen passt:
-           Logo (oben) · Karte (skaliert in der Höhe, Linie animiert) ·
-           Text+Icon (unten). Nur die Karte/Linie bewegt sich beim Scrollen. -->
-      <img class="s-logo" src="6_Anwendungsbeispiel/logo.svg" alt="Stell dir vor, die Stadt funktioniert. Reibungslos für dich? Für andere nicht.">
-
-      <div class="s-map">
-        <img class="s-map-bg" src="6_Anwendungsbeispiel/map_bg.svg" alt="">
-        <svg class="route-ov" viewBox="0 436 1170 1208" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <polyline class="route" points="818.66 1593.86 815.4 1481.92 570.65 1479.72 339.37 1550.95 295.02 1338.4 249.21 1220.15 244.86 1208.91 127.16 637.26 157.97 786.94 837.72 670.03 870.51 770.1 972.81 938.95 977.47 1019.57 1025.29 1112.17 1024.07 1211.02 893.67 1267.73 812.12 1369.01 818.66 1593.86"/>
-          <g class="markers">
-            <rect data-m="1" x="846.89" y="1550.99" width="28.58" height="28.58"/>
-            <rect data-m="2" x="333.36" y="1367.64" width="28.58" height="28.58"/>
-            <rect data-m="3" x="151.3"  y="1026.91" width="28.58" height="28.58"/>
-            <rect data-m="4" x="68.5"   y="653.13"  width="28.58" height="28.58"/>
-            <rect data-m="5" x="894.8"  y="903.64"  width="28.58" height="28.58"/>
-          </g>
-        </svg>
-      </div>
-
-      <div class="s-cap">
-        <img class="cap is-on" src="6_Anwendungsbeispiel/caption1.svg" alt="Kommst du zu Wort?">
-        <img class="cap"       src="6_Anwendungsbeispiel/caption2.svg" alt="Fühlst du dich beobachtet?">
-        <img class="cap"       src="6_Anwendungsbeispiel/caption3.svg" alt="Hast du genug Platz?">
-        <img class="cap"       src="6_Anwendungsbeispiel/caption4.svg" alt="Hast du Zeit zu warten?">
-        <img class="cap"       src="6_Anwendungsbeispiel/caption5.svg" alt="Gehst du den kurzen oder den sicheren Weg?">
-        <img class="cap"       src="6_Anwendungsbeispiel/caption6.svg" alt="Was hier Alltag heißt.">
-        <a class="hot" id="infoHot" href="#page7" aria-label="Mehr Infos zu dieser Station"></a>
-      </div>
+      <img class="frame" src="6_Anwendungsbeispiel/frame1.svg" alt="Kommst du zu Wort?">
+      <img class="frame" src="6_Anwendungsbeispiel/frame2.svg" alt="Fühlst du dich beobachtet?">
+      <img class="frame" src="6_Anwendungsbeispiel/frame3.svg" alt="Hast du genug Platz?">
+      <img class="frame" src="6_Anwendungsbeispiel/frame4.svg" alt="Hast du Zeit zu warten?">
+      <img class="frame" src="6_Anwendungsbeispiel/frame5.svg" alt="Gehst du den kurzen oder den sicheren Weg?">
+      <img class="frame" src="6_Anwendungsbeispiel/frame6.svg" alt="Was hier Alltag heißt.">
+      <a class="hot" id="infoHot" href="#page7" aria-label="Mehr Infos zu dieser Station"></a>
     </div>
   </section>
 
@@ -96,6 +75,6 @@
     </div>
   </section>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
