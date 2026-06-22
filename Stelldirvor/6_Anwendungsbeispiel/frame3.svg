@@ -80,6 +80,8 @@
       .cls-4{display:none!important}
     
       .cls-3{display:none!important}
+    
+      .cls-5{display:none!important}  /* baked route entfernt – animiertes Overlay übernimmt */
     </style>
     <clipPath id="clippath">
       <rect class="cls-1" x="107.1" y="125.82" width="918.12" height="246.85"/>

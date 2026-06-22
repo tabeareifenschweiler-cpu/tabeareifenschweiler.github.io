@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Stell dir vor, die Stadt funktioniert.</title>
   <meta name="description" content="Begleit-Microsite zur Ausstellung über geschlechtsspezifische Raumungleichheit in der Stadt.">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
 
@@ -14,12 +14,20 @@
        kleineren Displays wird unten beschnitten – es wird NICHT skaliert. -->
   <section class="story" id="story">
     <div class="stage">
-      <img class="frame" src="6_Anwendungsbeispiel/frame1.svg?v=2" alt="Kommst du zu Wort?">
-      <img class="frame" src="6_Anwendungsbeispiel/frame2.svg?v=2" alt="Fühlst du dich beobachtet?">
-      <img class="frame" src="6_Anwendungsbeispiel/frame3.svg?v=2" alt="Hast du genug Platz?">
-      <img class="frame" src="6_Anwendungsbeispiel/frame4.svg?v=2" alt="Hast du Zeit zu warten?">
-      <img class="frame" src="6_Anwendungsbeispiel/frame5.svg?v=2" alt="Gehst du den kurzen oder den sicheren Weg?">
-      <img class="frame" src="6_Anwendungsbeispiel/frame6.svg?v=2" alt="Was hier Alltag heißt.">
+      <img class="frame" src="6_Anwendungsbeispiel/frame1.svg?v=3" alt="Kommst du zu Wort?">
+      <img class="frame" src="6_Anwendungsbeispiel/frame2.svg?v=3" alt="Fühlst du dich beobachtet?">
+      <img class="frame" src="6_Anwendungsbeispiel/frame3.svg?v=3" alt="Hast du genug Platz?">
+      <img class="frame" src="6_Anwendungsbeispiel/frame4.svg?v=3" alt="Hast du Zeit zu warten?">
+      <img class="frame" src="6_Anwendungsbeispiel/frame5.svg?v=3" alt="Gehst du den kurzen oder den sicheren Weg?">
+      <img class="frame" src="6_Anwendungsbeispiel/frame6.svg?v=3" alt="Was hier Alltag heißt.">
+
+      <!-- Animierte Route über den Frames (gleiches Koordinatensystem 0–2532,
+           daher deckungsgleich mit der Karte). Wächst beim Scrollen, hält an
+           jedem Punkt. Wachstumsrichtung = Stationen 1→2→3→4→5→zurück. -->
+      <svg class="route-ov" viewBox="0 0 1170 2532" preserveAspectRatio="xMinYMin meet" aria-hidden="true">
+        <polyline class="route" points="818.66 1514.99 815.4 1403.05 570.65 1400.85 339.37 1472.08 295.02 1259.53 249.21 1141.28 244.86 1130.04 127.16 558.39 157.97 708.07 837.72 591.16 870.51 691.23 972.81 860.08 977.47 940.7 1025.29 1033.3 1024.07 1132.15 893.67 1188.86 812.12 1290.14 818.66 1514.99"/>
+      </svg>
+
       <a class="hot" id="infoHot" href="#page7" aria-label="Mehr Infos zu dieser Station"></a>
     </div>
   </section>
@@ -75,6 +83,6 @@
     </div>
   </section>
 
-  <script src="script.js?v=2"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>

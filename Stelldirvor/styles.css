@@ -47,6 +47,25 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
 }
 .frame:first-of-type { opacity: 1; }
 
+/* Animierte Route: liegt im selben Koordinatensystem (0–2532) wie die Karte
+   in den Frames → deckungsgleich. Wächst per stroke-dashoffset (JS). */
+.route-ov {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1170 / 2532;
+  z-index: 4;            /* über den Frames */
+  pointer-events: none;
+}
+.route {
+  fill: none;
+  stroke: red;
+  stroke-width: 21.64;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
 /* Desktop (ab 700px): Bühne als zentrierte Handy-Spalte statt Vollbreite */
 @media (min-width: 700px) {
   body { --col: min(100vw, calc(100svh * 1170 / 2532)); }
