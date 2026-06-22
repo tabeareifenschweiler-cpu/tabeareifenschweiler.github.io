@@ -62,8 +62,9 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
   fill: none;
   stroke: red;
   stroke-width: 21.64;
-  stroke-linejoin: round;
-  stroke-linecap: round;
+  stroke-linejoin: miter;   /* spitze Ecken wie im Original-SVG, keine Rundung */
+  stroke-linecap: butt;
+  stroke-miterlimit: 10;
 }
 
 /* Desktop (ab 700px): Bühne als zentrierte Handy-Spalte statt Vollbreite */
