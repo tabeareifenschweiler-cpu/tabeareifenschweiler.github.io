@@ -22,11 +22,11 @@
     }
     @font-face {
       font-family: 'Argent CF';
-      src: url('../3_Schriften/Argent%20CF/ArgentCF-Bold.ttf') format('truetype');
-      font-weight: 700; font-display: swap;
+      src: url('../3_Schriften/Argent%20CF/ArgentCF-Light.ttf') format('truetype');
+      font-weight: 300; font-display: swap;
     }
 
-    :root { --red: #ff0000; --field: #ededed; --ink: #000; }
+    :root { --red: #ff0000; --field: #ededed; --ink: #05141D; }
     * { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; }
     body {
@@ -36,19 +36,14 @@
       font-family: 'Neue Haas Grotesk', -apple-system, Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-    .wrap {
-      max-width: 620px;
-      margin-inline: auto;
-      padding: 32px 24px 64px;
-    }
+    .wrap { max-width: 620px; margin-inline: auto; padding: 32px 24px 64px; }
 
-    /* Logo (oben, wie im Original) */
     .logo { display: block; width: 100%; height: auto; margin-bottom: 40px; }
 
     h1 {
       font-family: 'Argent CF', Georgia, serif;
-      font-weight: 700;
-      font-size: 2rem;
+      font-weight: 300;
+      font-size: 2.1rem;
       line-height: 1.1;
       margin: 0 0 28px;
       color: var(--ink);
@@ -56,7 +51,7 @@
 
     form { display: flex; flex-direction: column; gap: 22px; }
     .field { display: flex; flex-direction: column; gap: 8px; }
-    label { font-weight: 500; font-size: 1rem; }
+    label { font-weight: 500; font-size: 1rem; color: var(--ink); }
     .req { color: var(--red); }
 
     input, select, textarea {
@@ -72,57 +67,51 @@
     textarea { resize: vertical; min-height: 150px; line-height: 1.4; }
     select {
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2305141D' stroke-width='1.5'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 16px center;
       background-size: 12px;
       padding-right: 40px;
     }
-    input:focus, select:focus, textarea:focus {
-      outline: 2px solid var(--ink);
-      outline-offset: 1px;
-    }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
     ::placeholder { color: #8a8a8a; }
 
-    /* Pflichtfeld-Hinweis bei leerem Absenden */
-    input:invalid, textarea:invalid { box-shadow: none; }
-
-    /* Rechtlicher Hinweis (Checkbox) */
+    /* Rechtlicher Hinweis – eckige Checkbox ohne Radius */
     .consent {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-weight: 400;
-      font-size: 0.95rem;
-      line-height: 1.45;
+      display: flex; align-items: flex-start; gap: 12px;
+      font-weight: 400; font-size: 0.95rem; line-height: 1.45; color: var(--ink);
     }
-    .consent input { width: 20px; height: 20px; flex: 0 0 auto; margin-top: 2px; accent-color: var(--red); background: var(--field); }
+    .consent input {
+      appearance: none; -webkit-appearance: none;
+      width: 22px; height: 22px; flex: 0 0 auto; margin: 1px 0 0;
+      background: var(--field);
+      border: 2px solid var(--ink);
+      border-radius: 0;                 /* eckig, keine Rundung */
+      cursor: pointer;
+    }
+    .consent input:checked {
+      background-color: var(--red);
+      border-color: var(--red);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='square'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: center; background-size: 14px;
+    }
     .consent a { color: var(--red); text-decoration: underline; }
 
     button {
-      font-family: inherit;
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: 0.02em;
-      color: #fff;
-      background: var(--red);
-      border: none;
-      border-radius: 2px;
-      padding: 16px 24px;
-      cursor: pointer;
-      align-self: flex-start;
+      font-family: inherit; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em;
+      color: #fff; background: var(--red); border: none; border-radius: 2px;
+      padding: 16px 24px; cursor: pointer; align-self: flex-start;
     }
     button:hover { opacity: 0.9; }
+    button:disabled { opacity: 0.55; cursor: default; }
 
-    .back {
-      display: inline-flex; align-items: center; gap: 12px;
-      margin-top: 48px;
-      color: var(--red);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 1.05rem;
-    }
-    .back span { text-decoration: underline; }
+    .form-msg { display: none; font-size: 1.05rem; line-height: 1.5; }
+    #successMsg { color: var(--ink); }
+    #successMsg strong { font-weight: 700; }
+    #errorMsg { color: var(--red); margin-top: 8px; }
+
+    .back { display: inline-block; margin-top: 48px; }
+    .back img { display: block; height: 30px; width: auto; }
   </style>
 </head>
 <body>
@@ -165,35 +154,66 @@
           <a href="../datenschutz/">Datenschutzerklärung</a> zu.</span>
       </label>
 
+      <!-- Spam-Schutz (von Bots ausgefüllt, von Menschen nicht) -->
+      <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"
+             style="position:absolute;left:-9999px" aria-hidden="true">
+
       <button type="submit">Absenden</button>
     </form>
 
+    <p class="form-msg" id="successMsg"><strong>Danke!</strong> Deine Nachricht wurde gesendet.</p>
+    <p class="form-msg" id="errorMsg">Beim Senden ist etwas schiefgelaufen. Bitte versuche es später erneut.</p>
+
     <a class="back" href="../" onclick="if(history.length>1){history.back();return false;}" aria-label="zurück">
-      &rarr; <span>zurück</span>
+      <img src="../6_Anwendungsbeispiel/zurueck.svg" alt="zurück">
     </a>
   </div>
 
   <script>
-    // Statischer Versand per E-Mail-Programm (kein Server nötig).
     (function () {
-      var EMPFAENGER = 'tabea.reifenschweiler03@gmail.com';
+      // Web3Forms: sendet das Formular automatisch per E-Mail an die im Access-Key
+      // hinterlegte Adresse (tabea@reifenschweiler.de) – ohne dass sich die Mail-App öffnet.
+      // Kostenlosen Access-Key erstellen auf https://web3forms.com (E-Mail eintragen) und hier einsetzen:
+      var ACCESS_KEY = 'b303490a-4983-44b9-be86-da4ff250b837';
+
       var form = document.getElementById('contactForm');
-      form.addEventListener('submit', function (e) {
+      var successMsg = document.getElementById('successMsg');
+      var errorMsg = document.getElementById('errorMsg');
+
+      form.addEventListener('submit', async function (e) {
         e.preventDefault();
+        errorMsg.style.display = 'none';
         if (!form.checkValidity()) { form.reportValidity(); return; }
-        var name = document.getElementById('name').value.trim();
-        var email = document.getElementById('email').value.trim();
+
+        var btn = form.querySelector('button');
+        btn.disabled = true;
+        btn.textContent = 'Wird gesendet …';
+
+        var data = new FormData(form);
+        data.append('access_key', ACCESS_KEY);
         var betreff = document.getElementById('betreff').value;
-        var nachricht = document.getElementById('nachricht').value.trim();
-        var subject = betreff ? betreff : 'Kontaktanfrage über die Website';
-        var body =
-          'Name: ' + name + '\n' +
-          'E-Mail: ' + email + '\n' +
-          (betreff ? 'Betreff: ' + betreff + '\n' : '') +
-          '\n' + nachricht + '\n';
-        window.location.href = 'mailto:' + EMPFAENGER +
-          '?subject=' + encodeURIComponent(subject) +
-          '&body=' + encodeURIComponent(body);
+        data.append('subject', betreff || 'Kontaktanfrage über die Website');
+        data.append('from_name', document.getElementById('name').value || 'Website-Kontakt');
+
+        try {
+          var res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: data
+          });
+          var json = await res.json();
+          if (json.success) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+          } else {
+            throw new Error(json.message || 'Senden fehlgeschlagen');
+          }
+        } catch (err) {
+          btn.disabled = false;
+          btn.textContent = 'Absenden';
+          errorMsg.style.display = 'block';
+          console.error(err);
+        }
       });
     })();
   </script>
