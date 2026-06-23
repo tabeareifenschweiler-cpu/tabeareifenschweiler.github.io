@@ -91,9 +91,66 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
   /* zum Justieren sichtbar machen: background: rgba(255,0,0,.25); */
 }
 /* Infos-Link liegt über dem Frame (per JS in px positioniert) */
-#infoHot { pointer-events: all; cursor: pointer; }
+#infoHot, #infoHotLap { pointer-events: all; cursor: pointer; }
+
+/* =======================================================================
+   Laptop-/Desktop-Ansicht (ab 1024px): Querformat-SVGs (1920×1080).
+   Mobil-Layout wird ausgeblendet, Laptop-Layout eingeblendet.
+   ======================================================================= */
+.story-lap, .pages-lap { display: none; }
+
+@media (min-width: 1024px) {
+  .story, .pages { display: none; }     /* Mobil-Layout aus */
+  .story-lap { display: block; position: relative; height: 600vh; }
+  .pages-lap { display: block; background: #fff; }
+}
+
+.stage-lap {
+  position: sticky;
+  top: 0;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* 16:9-Box, die komplett in den Viewport passt (Breite ODER Höhe begrenzt) */
+.lap-fit {
+  position: relative;
+  width: min(100vw, calc(100dvh * 1920 / 1080));
+  aspect-ratio: 1920 / 1080;
+}
+/* Frame füllt die 16:9-Box exakt (Box hat schon das richtige Verhältnis) */
+.frame-lap {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+.frame-lap:first-of-type { opacity: 1; }
+.route-ov-lap {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 4;
+  pointer-events: none;
+}
+.route-lap {
+  fill: none;
+  stroke: red;
+  stroke-width: 18.83;       /* wie die eingebackene Laptop-Route */
+  stroke-linejoin: miter;
+  stroke-linecap: butt;
+  stroke-miterlimit: 10;
+}
+
+/* Detailseiten (Ansicht 7–12) im Laptop-Format: volle Breite, normaler Scroll */
+.page-wrap-lap { position: relative; width: 100%; }
+.page-lap { display: block; width: 100%; height: auto; border: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .frame { transition: none; }
+  .frame, .frame-lap { transition: none; }
 }
