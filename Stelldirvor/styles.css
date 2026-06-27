@@ -73,6 +73,10 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
   .stage { width: var(--col); margin-inline: auto; }
 }
 
+/* Rechts-/Textseiten (Datenschutz, Impressum, Quellen): mobil volle Breite,
+   auf großen Screens eine angenehm lesbare Spalte statt Handy-Schmalspalte. */
+body.doc { --col: min(100vw, 520px); }
+
 /* -------- Detailseiten (Ansicht 7–12), normales Scrollen -------- */
 .pages { background: #fff; }
 .page-wrap {

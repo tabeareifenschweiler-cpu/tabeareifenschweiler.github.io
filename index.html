@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tabea Reifenschweiler · Graphic Design</title>
+  <link rel="stylesheet" href="portfolio.css?v=5">
+</head>
+<body data-page="graphic">
+  <div class="page">
+    <img class="chrome" src="graphic.svg" alt="Tabea Reifenschweiler – Graphic Design">
+
+    <!-- Karussells (über den Bild-Slots der jeweiligen Projekte) -->
+    <div class="carousel" data-project="essperten"   style="--l:8.48;--t:8.0;--w:83.04;--h:11.33"></div>
+    <div class="carousel" data-project="smears"       style="--l:8.48;--t:28.0;--w:83.04;--h:11.33"></div>
+    <div class="carousel" data-project="designschau"  style="--l:8.48;--t:48.0;--w:83.04;--h:11.33"></div>
+    <div class="carousel" data-project="garden"       style="--l:8.48;--t:67.93;--w:83.04;--h:11.43"></div>
+
+    <!-- Pfeil-Klickflächen je Projekt -->
+    <button class="arrow prev" data-for="essperten"  style="--t:8.0;--h:11.33"  aria-label="zurück"></button>
+    <button class="arrow next" data-for="essperten"  style="--t:8.0;--h:11.33"  aria-label="weiter"></button>
+    <button class="arrow prev" data-for="smears"      style="--t:28.0;--h:11.33" aria-label="zurück"></button>
+    <button class="arrow next" data-for="smears"      style="--t:28.0;--h:11.33" aria-label="weiter"></button>
+    <button class="arrow prev" data-for="designschau" style="--t:48.0;--h:11.33" aria-label="zurück"></button>
+    <button class="arrow next" data-for="designschau" style="--t:48.0;--h:11.33" aria-label="weiter"></button>
+    <button class="arrow prev" data-for="garden"      style="--t:67.93;--h:11.43" aria-label="zurück"></button>
+    <button class="arrow next" data-for="garden"      style="--t:67.93;--h:11.43" aria-label="weiter"></button>
+
+    <!-- Menü-Navigation (über dem Vektortext im SVG) -->
+    <a class="hot dbg" href="who/"     style="left:56.8%;top:3.1%;width:6.8%;height:1.3%"  aria-label="Who I am"></a>
+    <a class="hot dbg" href="product/" style="left:71.4%;top:3.1%;width:11.6%;height:1.3%" aria-label="Product Design"></a>
+  </div>
+
+  <!-- Mobil-Layout (wird per JS aus den Projektdaten befüllt) -->
+  <div id="mobile">
+    <header class="m-head">
+      <a class="brand" href="./">Tabea Reifenschweiler</a>
+      <a href="who/">Who I am</a>
+      <a href="./" aria-current="page">Graphic Design</a>
+      <a href="product/">Product Design</a>
+    </header>
+  </div>
+
+  <script src="portfolio.js?v=3"></script>
+</body>
+</html>

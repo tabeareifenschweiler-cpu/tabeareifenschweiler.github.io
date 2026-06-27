@@ -1,0 +1,98 @@
+/* =============================================================
+   Tabea Reifenschweiler – Portfolio
+   Desktop: schlankes SVG-Layout + Karussell-Overlays.
+   Mobil (<768px): gestapeltes, lesbares Layout aus Projektdaten.
+   ============================================================= */
+@font-face { font-family: 'IBM Plex Mono'; src: url('fonts/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'IBM Plex Mono'; src: url('fonts/IBMPlexMono-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Neue Haas Grotesk'; src: url('fonts/NeueHaasDisplayRoman.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Neue Haas Grotesk'; src: url('fonts/NeueHaasDisplayMediu.ttf') format('truetype'); font-weight: 500; font-display: swap; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #fff; }
+body { -webkit-font-smoothing: antialiased; }
+
+/* ---------- Desktop-Layout (SVG-Gerüst + Overlays) ---------- */
+.page { position: relative; width: 100%; margin: 0 auto; background: #fff; }
+.chrome { display: block; width: 100%; height: auto; }
+
+.carousel {
+  position: absolute;
+  left: calc(var(--l) * 1%); top: calc(var(--t) * 1%);
+  width: calc(var(--w) * 1%); height: calc(var(--h) * 1%);
+  overflow: hidden;
+}
+.carousel .track {
+  display: flex; height: 100%; gap: 1.2%;
+  overflow-x: auto; scroll-behavior: smooth;
+  scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.carousel .track::-webkit-scrollbar { display: none; }
+.carousel img {
+  height: 100%; width: auto; flex: 0 0 auto; display: block;
+  object-fit: contain; scroll-snap-align: start; -webkit-user-drag: none;
+}
+.arrow {
+  position: absolute; top: calc(var(--t) * 1%); height: calc(var(--h) * 1%);
+  width: 6%; background: transparent; border: 0; cursor: pointer; z-index: 5;
+}
+.arrow.prev { left: 0; } .arrow.next { right: 0; }
+
+.hot { position: absolute; display: block; z-index: 6; cursor: pointer; }
+
+/* Mobil-Container im Desktop verstecken */
+#mobile { display: none; }
+
+/* ===================== MOBIL (<768px) ===================== */
+@media (max-width: 767px) {
+  body[data-page] .page { display: none; } /* SVG-Layout nur auf Graphic/Product aus */
+  #mobile { display: block; }
+
+  .m-head {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px;
+    padding: 22px 20px 8px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; letter-spacing: 0.02em;
+  }
+  .m-head .brand { flex: 1 1 100%; font-size: 1.05rem; text-transform: uppercase; margin-bottom: 10px; }
+  .m-head a { color: #000; text-decoration: none; text-transform: uppercase; }
+  .m-head a[aria-current="page"] { text-decoration: underline; }
+
+  .m-proj { padding: 28px 20px 8px; }
+  .m-car {
+    position: relative; width: 100%; height: 42vw; min-height: 200px; max-height: 280px;
+    overflow: hidden; margin-bottom: 16px;
+  }
+  .m-car .carousel {                       /* Overlay-Positionierung im Mobil aufheben */
+    position: static; left: auto; top: auto; width: 100%; height: 100%;
+  }
+  .m-car .arrow {
+    position: absolute; top: 0; height: 100%; width: 16%;
+    display: flex; align-items: center; justify-content: center; z-index: 5;
+    background: transparent; border: 0; cursor: pointer; color: #000; font-size: 1.4rem;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .m-car .arrow::before {
+    display: grid; place-content: center;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(255,255,255,0.82);
+  }
+  .m-car .arrow.prev { left: 0; }
+  .m-car .arrow.prev::before { content: "\2190"; }
+  .m-car .arrow.next { right: 0; }
+  .m-car .arrow.next::before { content: "\2192"; }
+
+  .m-proj h2 {
+    font-family: 'IBM Plex Mono', monospace; font-weight: 400; text-transform: uppercase;
+    font-size: 1.35rem; letter-spacing: 0.02em; margin: 0 0 12px;
+  }
+  .m-desc {
+    font-family: 'Neue Haas Grotesk', -apple-system, sans-serif; font-weight: 400;
+    font-size: 1rem; line-height: 1.45; margin: 0 0 18px; color: #000;
+  }
+  .m-meta {
+    display: grid; grid-template-columns: max-content 1fr; gap: 4px 18px; margin: 0 0 8px;
+    font-family: 'Neue Haas Grotesk', -apple-system, sans-serif; font-size: 0.92rem; line-height: 1.35;
+  }
+  .m-meta dt { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: #000; padding-top: 2px; }
+  .m-meta dd { margin: 0; color: #000; }
+}
