@@ -138,3 +138,21 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onResize);
 })();
+
+/* Laptop A12: Play-Button -> Video-Lightbox */
+(function () {
+  var lb = document.getElementById('lap-lightbox');
+  if (!lb) return;
+  var frame = lb.querySelector('.lb-frame');
+  function open(id) {
+    frame.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id +
+      '?autoplay=1&rel=0" title="Video" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>';
+    document.body.classList.add('lb-open');
+  }
+  function close() { document.body.classList.remove('lb-open'); frame.innerHTML = ''; }
+  document.querySelectorAll('.lap-play').forEach(function (b) {
+    b.addEventListener('click', function () { open(b.getAttribute('data-yt')); });
+  });
+  lb.addEventListener('click', function (e) { if (e.target === lb || e.target.className === 'lb-close') close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();

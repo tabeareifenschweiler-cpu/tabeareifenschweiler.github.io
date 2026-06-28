@@ -1,7 +1,5 @@
 /* =============================================================
    Tabea Reifenschweiler – Portfolio
-   Desktop: schlankes SVG-Layout + Karussell-Overlays.
-   Mobil (<768px): gestapeltes, lesbares Layout aus Projektdaten.
    ============================================================= */
 @font-face { font-family: 'IBM Plex Mono'; src: url('fonts/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'IBM Plex Mono'; src: url('fonts/IBMPlexMono-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
@@ -12,82 +10,108 @@
 html, body { margin: 0; background: #fff; }
 body { -webkit-font-smoothing: antialiased; }
 
-/* ---------- Desktop-Layout (SVG-Gerüst + Overlays) ---------- */
+/* ---------- Desktop: SVG-Gerüst + Karussell-Overlays ---------- */
 .page { position: relative; width: 100%; margin: 0 auto; background: #fff; }
 .chrome { display: block; width: 100%; height: auto; }
 
-.carousel {
+.carousel-wrap {
   position: absolute;
   left: calc(var(--l) * 1%); top: calc(var(--t) * 1%);
   width: calc(var(--w) * 1%); height: calc(var(--h) * 1%);
-  overflow: hidden;
 }
-.carousel .track {
+.carousel { position: absolute; inset: 0; overflow: hidden; }
+.track {
   display: flex; height: 100%; gap: 1.2%;
   overflow-x: auto; scroll-behavior: smooth;
   scroll-snap-type: x mandatory; scrollbar-width: none;
 }
-.carousel .track::-webkit-scrollbar { display: none; }
-.carousel img {
-  height: 100%; width: auto; flex: 0 0 auto; display: block;
-  object-fit: contain; scroll-snap-align: start; -webkit-user-drag: none;
+.track::-webkit-scrollbar { display: none; }
+.slide { position: relative; height: 100%; flex: 0 0 auto; scroll-snap-align: start; }
+.slide img { height: 100%; width: auto; display: block; -webkit-user-drag: none; user-select: none; }
+
+/* Play-Icon (Video-Slide): weißes Dreieck */
+.slide.video .play {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 22px 0 22px 38px;
+  border-color: transparent transparent transparent #fff;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.45));
+  pointer-events: none;
 }
+
+/* Kreis-Pfeile: weißer Kreis, halb über dem Bildrand, Pfeil mittig, ganzer Kreis klickbar */
 .arrow {
-  position: absolute; top: calc(var(--t) * 1%); height: calc(var(--h) * 1%);
-  width: 6%; background: transparent; border: 0; cursor: pointer; z-index: 5;
+  position: absolute; top: 50%; z-index: 5;
+  width: clamp(40px, 3.6vw, 60px); aspect-ratio: 1;
+  display: grid; place-content: center;
+  background: #fff; border: 0; border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.16);
+  color: #05141D; cursor: pointer; padding: 0;
 }
-.arrow.prev { left: 0; } .arrow.next { right: 0; }
+.arrow svg { width: 42%; height: 42%; display: block; }
+.arrow.prev { left: 0;  transform: translate(-50%, -50%); }
+.arrow.next { right: 0; transform: translate(50%, -50%); }
+.arrow.next svg { transform: scaleX(-1); }
 
 .hot { position: absolute; display: block; z-index: 6; cursor: pointer; }
+
+/* Video-Lightbox */
+.lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.92); display: none; align-items: center; justify-content: center; padding: 4vw; }
+body.lb-open { overflow: hidden; }
+body.lb-open .lightbox { display: flex; }
+.lb-frame { width: min(92vw, 158vh); aspect-ratio: 16 / 9; }
+.lb-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+.lb-close { position: absolute; top: 14px; right: 22px; background: transparent; border: 0; color: #fff; font-size: 2.6rem; line-height: 1; cursor: pointer; }
 
 /* Mobil-Container im Desktop verstecken */
 #mobile { display: none; }
 
 /* ===================== MOBIL (<768px) ===================== */
 @media (max-width: 767px) {
-  body[data-page] .page { display: none; } /* SVG-Layout nur auf Graphic/Product aus */
+  body[data-page] .page { display: none; }
   #mobile { display: block; }
 
+  /* Kopf mit Burger */
   .m-head {
-    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px;
-    padding: 22px 20px 8px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; letter-spacing: 0.02em;
+    position: relative; display: flex; align-items: center; justify-content: space-between;
+    padding: 20px; font-family: 'IBM Plex Mono', monospace;
   }
-  .m-head .brand { flex: 1 1 100%; font-size: 1.05rem; text-transform: uppercase; margin-bottom: 10px; }
-  .m-head a { color: #000; text-decoration: none; text-transform: uppercase; }
-  .m-head a[aria-current="page"] { text-decoration: underline; }
+  .m-head .brand { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.02em; color: #000; text-decoration: none; }
+  .m-burger {
+    width: 34px; height: 26px; background: transparent; border: 0; padding: 0; cursor: pointer;
+    display: grid; align-content: space-between; z-index: 30;
+  }
+  .m-burger span { display: block; height: 2px; width: 100%; background: #000; transition: transform .25s, opacity .2s; }
+  body.nav-open .m-burger span:nth-child(1) { transform: translateY(12px) rotate(45deg); }
+  body.nav-open .m-burger span:nth-child(2) { opacity: 0; }
+  body.nav-open .m-burger span:nth-child(3) { transform: translateY(-12px) rotate(-45deg); }
 
-  .m-proj { padding: 28px 20px 8px; }
-  .m-car {
-    position: relative; width: 100%; height: 42vw; min-height: 200px; max-height: 280px;
-    overflow: hidden; margin-bottom: 16px;
-  }
-  .m-car .carousel {                       /* Overlay-Positionierung im Mobil aufheben */
-    position: static; left: auto; top: auto; width: 100%; height: 100%;
-  }
-  .m-car .arrow {
-    position: absolute; top: 0; height: 100%; width: 16%;
-    display: flex; align-items: center; justify-content: center; z-index: 5;
-    background: transparent; border: 0; cursor: pointer; color: #000; font-size: 1.4rem;
+  /* Overlay-Menü */
+  #m-nav {
+    position: fixed; inset: 0; z-index: 20; background: #fff;
+    display: flex; flex-direction: column; justify-content: center; gap: 26px;
+    padding: 40px; transform: translateY(-100%); transition: transform .3s var(--ease, ease);
     font-family: 'IBM Plex Mono', monospace;
   }
-  .m-car .arrow::before {
-    display: grid; place-content: center;
-    width: 38px; height: 38px; border-radius: 50%;
-    background: rgba(255,255,255,0.82);
+  body.nav-open #m-nav { transform: translateY(0); }
+  #m-nav a { color: #000; text-decoration: none; text-transform: uppercase; font-size: 1.5rem; letter-spacing: 0.02em; }
+  #m-nav a[aria-current="page"] { text-decoration: underline; }
+
+  .m-proj { padding: 26px 20px 8px; }
+  .carousel-wrap.m-car {
+    position: relative; left: auto; top: auto;
+    width: 100%; height: 42vw; min-height: 200px; max-height: 280px; margin-bottom: 16px;
   }
-  .m-car .arrow.prev { left: 0; }
-  .m-car .arrow.prev::before { content: "\2190"; }
-  .m-car .arrow.next { right: 0; }
-  .m-car .arrow.next::before { content: "\2192"; }
+  .m-car .arrow { width: 44px; }
 
   .m-proj h2 {
     font-family: 'IBM Plex Mono', monospace; font-weight: 400; text-transform: uppercase;
     font-size: 1.35rem; letter-spacing: 0.02em; margin: 0 0 12px;
   }
   .m-desc {
-    font-family: 'Neue Haas Grotesk', -apple-system, sans-serif; font-weight: 400;
-    font-size: 1rem; line-height: 1.45; margin: 0 0 18px; color: #000;
+    font-family: 'Neue Haas Grotesk', -apple-system, sans-serif; font-size: 1rem; line-height: 1.45;
+    margin: 0 0 18px; color: #000;
   }
   .m-meta {
     display: grid; grid-template-columns: max-content 1fr; gap: 4px 18px; margin: 0 0 8px;

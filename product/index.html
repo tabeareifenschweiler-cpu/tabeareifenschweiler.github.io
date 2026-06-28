@@ -4,20 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tabea Reifenschweiler · Product Design</title>
-  <link rel="stylesheet" href="../portfolio.css?v=5">
+  <link rel="stylesheet" href="../portfolio.css?v=7">
 </head>
 <body data-base="../" data-page="product">
   <div class="page">
     <img class="chrome" src="../product.svg" alt="Tabea Reifenschweiler – Product Design">
 
     <!-- Karussells (Product-Projekte) -->
-    <div class="carousel" data-project="modola"      style="--l:8.48;--t:8.32;--w:83.04;--h:11.79"></div>
-    <div class="carousel" data-project="designschau" style="--l:8.48;--t:29.13;--w:83.04;--h:11.79"></div>
-
-    <button class="arrow prev" data-for="modola"      style="--t:8.32;--h:11.79"  aria-label="zurück"></button>
-    <button class="arrow next" data-for="modola"      style="--t:8.32;--h:11.79"  aria-label="weiter"></button>
-    <button class="arrow prev" data-for="designschau" style="--t:29.13;--h:11.79" aria-label="zurück"></button>
-    <button class="arrow next" data-for="designschau" style="--t:29.13;--h:11.79" aria-label="weiter"></button>
+    <div class="carousel-wrap" data-project="modola"      style="--l:8.48;--t:8.32;--w:83.04;--h:11.79"></div>
+    <div class="carousel-wrap" data-project="designschau" style="--l:8.48;--t:29.13;--w:83.04;--h:11.79"></div>
 
     <!-- Menü: WHO I AM → who, GRAPHIC DESIGN → Startseite -->
     <a class="hot" href="../who/" style="left:56.8%;top:3.1%;width:6.8%;height:1.3%"  aria-label="Who I am"></a>
@@ -27,12 +22,16 @@
   <div id="mobile">
     <header class="m-head">
       <a class="brand" href="../">Tabea Reifenschweiler</a>
+      <button class="m-burger" aria-label="Menü" aria-expanded="false"><span></span><span></span><span></span></button>
+    </header>
+    <nav id="m-nav">
       <a href="../who/">Who I am</a>
       <a href="../">Graphic Design</a>
       <a href="./" aria-current="page">Product Design</a>
-    </header>
+    </nav>
+    <div id="mobile-list"></div>
   </div>
 
-  <script src="../portfolio.js?v=3"></script>
+  <script src="../portfolio.js?v=7"></script>
 </body>
 </html>
