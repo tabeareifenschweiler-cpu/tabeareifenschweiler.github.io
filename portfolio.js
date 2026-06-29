@@ -42,7 +42,8 @@
   };
 
   var BASE = document.body.getAttribute('data-base') || '';
-  var ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  // Pfeil-Form exakt aus dem Design-SVG (gefüllter Pfeil), auf 0–20 normiert
+  var ARROW = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M0.04 11.27L0.04 8.72L15.3 8.72L8.66 2.223L10.42 0.47L19.95 10.005L10.42 19.54L8.66 17.768L15.31 11.27L0.04 11.27Z" fill="currentColor"/></svg>';
 
   // YouTube-IDs der Projektvideos
   var VID = { garden: '1g8kzJn8J3w', smears: 'SP8tjID6y9U', essperten: '56To1LDAcGo' };
@@ -88,13 +89,35 @@
     return track;
   }
 
+  // Desktop-Karussell per transform: translateX (nativer Scroll von Overflow-
+  // Containern ist hier unzuverlässig). Position wird virtuell in track._x gehalten.
+  function setX(track, x) {
+    var max = track.scrollWidth - track.clientWidth;
+    if (max < 0) max = 0;
+    x = Math.max(0, Math.min(x, max));
+    track._x = x;
+    track.style.transform = 'translateX(' + (-x) + 'px)';
+  }
+  // Pro Klick genau ein Bild weiter (zum nächsten/vorigen Slide-Anfang); mit Loop.
   function scrollCar(track, dir) {
     if (!track) return;
-    var atStart = track.scrollLeft <= 2;
-    var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
-    if (dir < 0 && atStart) { track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' }); return; }
-    if (dir > 0 && atEnd)   { track.scrollTo({ left: 0, behavior: 'smooth' }); return; }
-    track.scrollBy({ left: dir * track.clientWidth * 0.7, behavior: 'smooth' });
+    var slides = track.children;
+    var x = track._x || 0;
+    var max = track.scrollWidth - track.clientWidth;
+    var i;
+    if (dir > 0) {
+      if (x >= max - 2) { setX(track, 0); return; }                 // Loop: am Ende → erstes
+      for (i = 0; i < slides.length; i++) {
+        if (slides[i].offsetLeft > x + 2) { setX(track, slides[i].offsetLeft); return; }
+      }
+      setX(track, max);
+    } else {
+      if (x <= 2) { setX(track, max); return; }                     // Loop: am Anfang → letztes
+      for (i = slides.length - 1; i >= 0; i--) {
+        if (slides[i].offsetLeft < x - 2) { setX(track, slides[i].offsetLeft); return; }
+      }
+      setX(track, 0);
+    }
   }
 
   // Innenleben (track + zwei Kreis-Pfeile) in einen .carousel-wrap bauen

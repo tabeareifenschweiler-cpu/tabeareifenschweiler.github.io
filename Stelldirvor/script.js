@@ -7,7 +7,10 @@
    Pro Viewport ist immer nur eines sichtbar; animiert wird das sichtbare.
    ============================================================= */
 (function () {
-  var FR = [0, 0.01, 0.2208, 0.3282, 0.4387, 0.7594, 1.0];  // Längenanteile an den Stationen
+  // Längenanteile an den Stationen. Jeder Frame wächst bis zu dem Marker, der
+  // in ihm hinzukommt: F4 erreicht die obere Ecke (links oben) und biegt nach
+  // rechts ab, F5 erreicht den rechten Marker.
+  var FR = [0, 0.01, 0.2355, 0.3282, 0.50, 0.775, 1.0];
   var N = 6;
   var DWELL = 0.45;
 
