@@ -284,6 +284,17 @@
   // ============================================================
   document.getElementById('startBtn').addEventListener('click', async () => {
     videoEl = document.getElementById('video');
+
+    // Ladebildschirm zeigen, Startbildschirm weg
+    document.getElementById('start').style.display = 'none';
+    document.getElementById('loading').style.display = 'flex';
+
+    // Kamera SOFORT anfragen – so erscheint der Erlaubnis-Dialog ohne Verzögerung.
+    // Muss synchron in der Klick-Geste laufen, also VOR jedem await und vor dem
+    // (langsamen) Audio-Entsperren.
+    const cameraPromise = setupCamera();
+
+    // Übrige Vorbereitung läuft, während der Dialog schon offen ist.
     canvas  = document.getElementById('motion-canvas');
     canvas.width  = CONFIG.motionWidth;
     canvas.height = CONFIG.motionHeight;
@@ -292,19 +303,15 @@
     pupilL = document.getElementById('pupilL');
     pupilR = document.getElementById('pupilR');
     debugEl = document.getElementById('debug');
-
     setupPupil(pupilL);
     setupPupil(pupilR);
 
-    // Ladebildschirm zeigen, Startbildschirm weg
-    document.getElementById('start').style.display = 'none';
-    document.getElementById('loading').style.display = 'flex';
-
+    // Audio entsperren – NICHT awaiten, damit es die Kamera-Abfrage nicht aufhält.
     setupAudio();
+    unlockAudio();
 
     try {
-      await unlockAudio();
-      await setupCamera();
+      await cameraPromise;
 
       // Kamera bereit: Ladebildschirm weg, Augen + Loops starten
       document.getElementById('loading').style.display = 'none';
