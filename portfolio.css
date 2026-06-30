@@ -19,7 +19,7 @@ body { -webkit-font-smoothing: antialiased; }
   left: calc(var(--l) * 1%); top: calc(var(--t) * 1%);
   width: calc(var(--w) * 1%); height: calc(var(--h) * 1%);
 }
-.carousel { position: absolute; inset: 0; overflow: hidden; }
+.carousel { position: absolute; inset: 0; overflow: hidden; background: #fff; }
 .track { display: flex; height: 100%; gap: 1.2%; }
 /* Desktop: Transform-Karussell – zuverlässig genau 1 Bild pro Klick */
 .carousel-wrap:not(.m-car) .track {
@@ -48,15 +48,15 @@ body { -webkit-font-smoothing: antialiased; }
 /* Kreis-Pfeile: weißer Kreis, halb über dem Bildrand, Pfeil mittig, ganzer Kreis klickbar */
 .arrow {
   position: absolute; top: 50%; z-index: 5;
-  width: clamp(32px, 2.6vw, 44px); aspect-ratio: 1;   /* kleiner, wie im Design */
-  display: grid; place-content: center;
+  width: clamp(32px, 2.6vw, 44px); aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
   background: #fff; border: 0; border-radius: 50%;
   color: #1D1D1B; cursor: pointer; padding: 0;        /* kein Schatten */
 }
-.arrow svg { width: 40%; height: 40%; display: block; }
+.arrow svg { width: 52%; height: 52%; display: block; }
 .arrow.prev { left: 0;  transform: translate(-50%, -50%); }
 .arrow.next { right: 0; transform: translate(50%, -50%); }
-.arrow.next svg { transform: scaleX(-1); }
+.arrow.prev svg { transform: scaleX(-1); }   /* Basispfeil zeigt rechts -> prev spiegeln (zeigt links) */
 
 .hot { position: absolute; display: block; z-index: 6; cursor: pointer; }
 
