@@ -77,6 +77,15 @@ body { margin: 0; background: var(--bg); -webkit-font-smoothing: antialiased; }
    auf großen Screens eine angenehm lesbare Spalte statt Handy-Schmalspalte. */
 body.doc { --col: min(100vw, 520px); }
 
+/* Mobil-SVG (<1024px) bzw. Laptop-SVG (>=1024px) der Rechtsseiten umschalten.
+   Laptop-Variante füllt die Breite und skaliert (Höhe via viewBox/aspect-ratio). */
+.doc .doc-lap { display: none; }
+.doc .doc-lap .page-lap { display: block; width: 100%; height: auto; border: 0; }
+@media (min-width: 1024px) {
+  .doc .doc-mobile { display: none; }
+  .doc .doc-lap { display: block; position: relative; width: 100%; margin-inline: auto; }
+}
+
 /* -------- Detailseiten (Ansicht 7–12), normales Scrollen -------- */
 .pages { background: #fff; }
 .page-wrap {

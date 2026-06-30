@@ -4,12 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Impressum · Stell dir vor, die Stadt funktioniert.</title>
-  <link rel="stylesheet" href="../styles.css?v=2">
+  <link rel="stylesheet" href="../styles.css?v=7">
 </head>
 <body class="doc">
-  <div class="page-wrap" style="aspect-ratio:1170/5630.63">
+  <!-- Mobil (<1024px) -->
+  <div class="page-wrap doc-mobile" style="aspect-ratio:1170/5630.63">
     <img class="page" src="../6_Anwendungsbeispiel/Impressum.svg" alt="Impressum">
     <a class="hot" style="left:4%;top:95.98%;width:26%;height:1.95%"
+       href="../" onclick="if(history.length>1){history.back();return false;}" aria-label="zurück"></a>
+  </div>
+  <!-- Laptop/Desktop (>=1024px) -->
+  <div class="doc-lap">
+    <img class="page-lap" src="../Web_Laptop/Impressum.svg?v=1" alt="Impressum">
+    <a class="hot" style="left:2.5%;top:93%;width:16%;height:4%"
        href="../" onclick="if(history.length>1){history.back();return false;}" aria-label="zurück"></a>
   </div>
 </body>
