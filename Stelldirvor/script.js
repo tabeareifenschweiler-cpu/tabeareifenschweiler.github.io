@@ -23,6 +23,17 @@
     [1146, 682, 1520, 714], [1146, 610, 1520, 643], [1146, 667, 1520, 699]
   ];
 
+  // Klickflächen über der hochgestellten Fußnote jeder Ansicht -> Quellen.
+  // Ansicht 6 (Ausstellung) hat keine Fußnote -> null (Feld wird ausgeblendet).
+  var QUELL_MOBILE = [
+    [558, 1744, 658, 1801], [850, 1800, 950, 1857], [810, 1800, 910, 1857],
+    [424, 1914, 524, 1971], [487, 1800, 587, 1857], null
+  ];
+  var QUELL_LAP = [
+    [1373, 476, 1410, 520], [1393, 514, 1432, 558], [1580, 514, 1619, 558],
+    [1357, 584, 1396, 628], [1237, 514, 1276, 558], null
+  ];
+
   function build(cfg) {
     var story = document.getElementById(cfg.storyId);
     if (!story) return null;
@@ -35,7 +46,9 @@
       route: route,
       frames: frames,
       infoHot: document.getElementById(cfg.infoId),
+      quellenHot: document.getElementById(cfg.quellenId),
       INFO: cfg.INFO,
+      QUELL: cfg.QUELL,
       vbW: cfg.vbW, vbH: cfg.vbH,
       contain: cfg.contain,
       prefix: cfg.prefix,
@@ -63,6 +76,28 @@
     S.infoHot.setAttribute('href', S.prefix + (7 + i));
   }
 
+  // Fußnoten-Klickfläche (-> Quellen) je sichtbarem Frame mitführen.
+  function placeQuellen(S, i) {
+    if (!S.quellenHot) return;
+    var b = S.QUELL && S.QUELL[i];
+    if (!b) { S.quellenHot.style.display = 'none'; return; }
+    S.quellenHot.style.display = 'block';
+    var W = S.stage.clientWidth, H = S.stage.clientHeight;
+    var sc, ox, oy;
+    if (S.contain) {
+      sc = Math.min(W / S.vbW, H / S.vbH);
+      ox = (W - S.vbW * sc) / 2;
+      oy = (H - S.vbH * sc) / 2;
+    } else {
+      sc = W / S.vbW;
+      ox = 0; oy = 0;
+    }
+    S.quellenHot.style.left = (ox + b[0] * sc) + 'px';
+    S.quellenHot.style.top = (oy + b[1] * sc) + 'px';
+    S.quellenHot.style.width = ((b[2] - b[0]) * sc) + 'px';
+    S.quellenHot.style.height = ((b[3] - b[1]) * sc) + 'px';
+  }
+
   function showFrame(S, i) {
     if (i === S.cur) return;
     S.prev = S.cur;
@@ -77,6 +112,7 @@
     void inc.getBoundingClientRect();
     inc.style.opacity = '1';
     placeInfo(S, i);
+    placeQuellen(S, i);
   }
 
   function update(S) {
@@ -104,9 +140,11 @@
 
   var stories = [
     build({ storyId: 'story', stageSel: '.stage', routeSel: '.route', frameSel: '.frame',
-            infoId: 'infoHot', INFO: INFO_MOBILE, vbW: 1170, vbH: 2532, contain: false, prefix: '#page' }),
+            infoId: 'infoHot', quellenId: 'quellenHot', INFO: INFO_MOBILE, QUELL: QUELL_MOBILE,
+            vbW: 1170, vbH: 2532, contain: false, prefix: '#page' }),
     build({ storyId: 'storyLap', stageSel: '.lap-fit', routeSel: '.route-lap', frameSel: '.frame-lap',
-            infoId: 'infoHotLap', INFO: INFO_LAP, vbW: 1920, vbH: 1080, contain: false, prefix: '#lpage' })
+            infoId: 'infoHotLap', quellenId: 'quellenHotLap', INFO: INFO_LAP, QUELL: QUELL_LAP,
+            vbW: 1920, vbH: 1080, contain: false, prefix: '#lpage' })
   ].filter(Boolean);
   if (!stories.length) return;
 
@@ -131,7 +169,7 @@
 
   function onResize() {
     var S = active();
-    if (S) { S.cur = -1; update(S); placeInfo(S, S.cur < 0 ? 0 : S.cur); }
+    if (S) { S.cur = -1; update(S); placeInfo(S, S.cur < 0 ? 0 : S.cur); placeQuellen(S, S.cur < 0 ? 0 : S.cur); }
   }
 
   // Startzustand für beide (das versteckte rechnet erst, wenn es sichtbar wird)
