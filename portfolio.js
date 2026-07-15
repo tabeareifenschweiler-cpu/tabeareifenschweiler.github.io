@@ -32,6 +32,18 @@
       n: 5, video: true,
       desc: 'Co-producing a photorealistic 3D short film titled Garden Reverie using Blender and Adobe Premiere. By exploring the concept of nature as a space for mental escape, the project focuses on creating a fully immersive sensory experience (utilizing high-fidelity textures and ambient sound design to achieve this). The narrative is driven by the flight of a butterfly, serving as a visual guide that threads together the exploration of an untamed, naturalistic environment.'
     },
+    stelldirvor: {
+      title: 'Stell dir vor, die Stadt funktioniert.', year: '2026',
+      role: 'Concept, Exhibition Design, Interaction Design, Visual Identity',
+      cat: 'Exhibition Design, Interaction Design, Social Commentary',
+      team: 'Tabea Reifenschweiler',
+      n: 3,
+      vids: [
+        { poster: 'ausstellung_poster.jpg', src: 'ausstellung.mp4' },
+        { poster: 'spiel_poster.jpg', src: 'spiel.mp4' }
+      ],
+      desc: 'Developing an interactive exhibition that makes gender-specific spatial inequality physically tangible in public space. Grounded in urban sociology and gender studies, the project translates empirical research into five sequential stations framing a single fictional evening. Rather than explaining inequality, the exhibition removes the frictionless movement most visitors take for granted: a telephone that never lets them speak, a bench that takes their space, a door that makes them wait, a path forcing a choice between the short route and the safe one. Only the closing resolution reveals the research behind each experience. The project was awarded the Student’s Choice MediaNight Award.'
+    },
     modola: {
       title: 'Modola', year: '2024', role: 'Industrial Designer, Product Engineer',
       cat: 'Product Design, Sustainable Design, Furniture Construction',
@@ -48,18 +60,27 @@
   // YouTube-IDs der Projektvideos
   var VID = { garden: '1g8kzJn8J3w', smears: 'SP8tjID6y9U', essperten: '56To1LDAcGo' };
 
-  // Lightbox für Videos
+  // Lightbox für Videos (YouTube-Embeds oder lokale MP4s)
   var box;
+  function ensureBox() {
+    if (box) return;
+    box = document.createElement('div'); box.className = 'lightbox';
+    box.innerHTML = '<button class="lb-close" aria-label="schließen">&times;</button><div class="lb-frame"></div>';
+    box.addEventListener('click', function (e) { if (e.target === box || e.target.className === 'lb-close') closeVideo(); });
+    document.body.appendChild(box);
+  }
   function openVideo(id) {
-    if (!box) {
-      box = document.createElement('div'); box.className = 'lightbox';
-      box.innerHTML = '<button class="lb-close" aria-label="schließen">&times;</button><div class="lb-frame"></div>';
-      box.addEventListener('click', function (e) { if (e.target === box || e.target.className === 'lb-close') closeVideo(); });
-      document.body.appendChild(box);
-    }
+    ensureBox();
     box.querySelector('.lb-frame').innerHTML =
       '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0" title="Video" ' +
       'allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>';
+    document.body.classList.add('lb-open');
+  }
+  function openLocalVideo(url) {
+    ensureBox();
+    box.querySelector('.lb-frame').innerHTML =
+      '<video src="' + url + '" controls autoplay playsinline ' +
+      'style="width:100%;height:100%;object-fit:contain;background:#000"></video>';
     document.body.classList.add('lb-open');
   }
   function closeVideo() { document.body.classList.remove('lb-open'); if (box) box.querySelector('.lb-frame').innerHTML = ''; }
@@ -81,10 +102,23 @@
     }
     return s;
   }
+  // Slide mit eigenem Poster, das ein lokales MP4 in der Lightbox öffnet
+  function localVideoSlide(slug, v) {
+    var s = document.createElement('div'); s.className = 'slide video';
+    var img = document.createElement('img'); img.loading = 'lazy';
+    img.src = BASE + 'img/' + slug + '/' + v.poster;
+    img.alt = (P[slug] ? P[slug].title : slug);
+    s.appendChild(img);
+    var play = document.createElement('span'); play.className = 'play'; s.appendChild(play);
+    s.style.cursor = 'pointer';
+    s.addEventListener('click', function () { openLocalVideo(BASE + 'img/' + slug + '/' + v.src); });
+    return s;
+  }
   function buildTrack(slug) {
     var track = document.createElement('div'); track.className = 'track';
     var p = P[slug] || {};
-    if (p.video) track.appendChild(videoSlide(slug));        // Video als erster Slide
+    if (p.video) track.appendChild(videoSlide(slug));        // YouTube-Video als erster Slide
+    if (p.vids) p.vids.forEach(function (v) { track.appendChild(localVideoSlide(slug, v)); });
     for (var i = 1; i <= (p.n || 0); i++) track.appendChild(slideImg(slug, i));
     return track;
   }
@@ -132,14 +166,14 @@
     wrap.appendChild(car); wrap.appendChild(prev); wrap.appendChild(next);
   }
 
-  // ---- Desktop ----
-  document.querySelectorAll('.page .carousel-wrap').forEach(fillCarousel);
+  // ---- Desktop ---- (SVG-Overlays + separater HTML-Projektblock)
+  document.querySelectorAll('.page .carousel-wrap, .proj-desk .carousel-wrap').forEach(fillCarousel);
 
   // ---- Mobil: gestapeltes Layout ----
   var page = document.body.getAttribute('data-page');
   var mount = document.getElementById('mobile-list');
   if (page && mount) {
-    var ORDER = { graphic: ['essperten', 'smears', 'designschau', 'garden'], product: ['modola', 'designschau'] };
+    var ORDER = { graphic: ['essperten', 'smears', 'designschau', 'garden', 'stelldirvor'], product: ['modola', 'designschau'] };
     (ORDER[page] || []).forEach(function (slug) {
       var p = P[slug]; if (!p) return;
       var sec = document.createElement('section'); sec.className = 'm-proj';

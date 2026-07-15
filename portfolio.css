@@ -68,12 +68,43 @@ body.lb-open .lightbox { display: flex; }
 .lb-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
 .lb-close { position: absolute; top: 14px; right: 22px; background: transparent; border: 0; color: #fff; font-size: 2.6rem; line-height: 1; cursor: pointer; }
 
+/* ---- Desktop-Projektblock (HTML statt SVG) – Bachelorarbeit ----
+   Alle Maße in vw, damit der Block exakt wie das SVG-Layout mitskaliert. */
+.proj-desk { display: block; width: 100%; margin: 0 0 4vw; }
+.proj-desk .carousel-wrap {
+  position: relative; left: auto; top: auto;
+  width: 83.04vw; height: 19.9vw; margin: 0 auto 2.6vw;
+}
+.pd-title {
+  margin: 0 0 1.15vw; padding-left: 15.5vw;
+  font-family: 'Neue Haas Grotesk', -apple-system, sans-serif; font-weight: 400;
+  text-transform: uppercase; font-size: 1.38vw; letter-spacing: 0.005em; color: #000;
+}
+.pd-cols { position: relative; padding-left: 15.5vw; }
+.pd-desc {
+  margin: 0; width: 33.5vw;
+  font-family: 'Neue Haas Grotesk', -apple-system, sans-serif; font-size: 0.82vw;
+  line-height: 1.14; color: #000;
+}
+.pd-meta {
+  position: absolute; top: 0.1vw; left: 57.6vw; right: 16.5vw; margin: 0;
+  display: grid; grid-template-columns: 7.1vw 1fr; row-gap: 0.05vw;
+  font-family: 'Neue Haas Grotesk', -apple-system, sans-serif; font-size: 0.82vw; line-height: 1.14;
+}
+.pd-meta dt {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.68vw; text-transform: uppercase;
+  letter-spacing: 0.03em; color: #000; padding-top: 0.04vw;
+}
+.pd-meta dd { margin: 0; color: #000; }
+.pd-meta .pd-gap { margin-top: 0.9vw; }
+
 /* Mobil-Container im Desktop verstecken */
 #mobile { display: none; }
 
 /* ===================== MOBIL (<768px) ===================== */
 @media (max-width: 767px) {
   body[data-page] .page { display: none; }
+  .proj-desk { display: none; }        /* Desktop-HTML-Block aus, Mobil nutzt #mobile-list */
   #mobile { display: block; }
 
   /* Kopf mit Burger */
