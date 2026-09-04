@@ -1,0 +1,197 @@
+/* =============================================================
+   /todos – Awards, Fristen, To-dos
+   Schlicht gehalten: Systemschriften, keine Effekte, viel Luft.
+   ============================================================= */
+
+:root {
+  --rot:    #d92b2b;
+  --text:   #111111;
+  --grau:   #6b7280;
+  --linie:  #d8d8d8;
+  --flaeche:#f4f4f4;
+  --weiss:  #ffffff;
+  --gruen:  #1a7f4b;
+
+  --ff: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --max: 1100px;
+  --rand: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--ff);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--weiss);
+  -webkit-text-size-adjust: 100%;
+}
+
+h1 { font-size: 22px; margin: 0; }
+h2 { font-size: 18px; margin: 0 0 12px; }
+h3 { font-size: 14px; margin: 0 0 8px; text-transform: uppercase; letter-spacing: .04em; color: var(--grau); }
+
+a { color: var(--text); }
+a:hover { color: var(--rot); }
+
+button, input, textarea, select { font: inherit; color: inherit; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--rand); }
+.dim  { color: var(--grau); }
+.klein { font-size: 13px; }
+.rot  { color: var(--rot); }
+
+/* --- Kopf ---------------------------------------------------- */
+.kopf { border-bottom: 1px solid var(--linie); padding: 18px 0; }
+.kopf__zeile { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; justify-content: space-between; }
+
+/* --- Reiter -------------------------------------------------- */
+.reiter { display: flex; gap: 4px; border-bottom: 1px solid var(--linie); overflow-x: auto; }
+.reiter button {
+  background: none; border: 0; border-bottom: 2px solid transparent;
+  padding: 12px 14px; cursor: pointer; white-space: nowrap;
+  color: var(--grau); font-weight: 600;
+}
+.reiter button:hover { color: var(--text); }
+.reiter button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--rot); }
+
+.seite { display: none; padding: 24px 0 64px; }
+.seite.aktiv { display: block; }
+
+/* --- Bedienleiste -------------------------------------------- */
+.leiste { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 20px; }
+.leiste__titel { font-size: 13px; color: var(--grau); margin-right: 4px; }
+
+.knopf {
+  background: var(--weiss); border: 1px solid var(--linie);
+  padding: 6px 12px; cursor: pointer; font-size: 13px; border-radius: 3px;
+}
+.knopf:hover { border-color: var(--text); }
+.knopf[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: var(--weiss); }
+.knopf--voll { background: var(--text); border-color: var(--text); color: var(--weiss); }
+.knopf--voll:hover { background: var(--rot); border-color: var(--rot); }
+.knopf--weg { color: var(--rot); border-color: var(--linie); }
+.knopf--weg:hover { border-color: var(--rot); }
+
+/* --- Award-Liste --------------------------------------------- */
+.karte { border: 1px solid var(--linie); border-radius: 3px; margin-bottom: 10px; }
+.karte--eilig { border-color: var(--rot); }
+.karte--vorbei { opacity: .55; }
+
+.karte__kopf {
+  display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center;
+  padding: 14px 16px; cursor: pointer;
+}
+.karte__kopf:hover { background: var(--flaeche); }
+.karte__name { font-weight: 600; flex: 1 1 260px; }
+.karte__veranstalter { display: block; font-weight: 400; font-size: 13px; color: var(--grau); }
+.karte__frist { font-size: 13px; text-align: right; white-space: nowrap; }
+.karte__tage { font-weight: 600; }
+.karte__tage--eilig { color: var(--rot); }
+
+.marke {
+  font-size: 12px; padding: 2px 8px; border-radius: 10px;
+  background: var(--flaeche); color: var(--grau); white-space: nowrap;
+}
+.marke--aktiv { background: var(--rot); color: var(--weiss); }
+.marke--gut { background: var(--gruen); color: var(--weiss); }
+
+.karte__inhalt { display: none; padding: 4px 16px 20px; border-top: 1px solid var(--linie); }
+.karte.offen .karte__inhalt { display: block; }
+
+.block { margin-top: 20px; }
+.block ul { margin: 0; padding-left: 18px; }
+.block li { margin-bottom: 4px; }
+
+.tabelle { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabelle th, .tabelle td { text-align: left; vertical-align: top; padding: 7px 12px 7px 0; border-bottom: 1px solid var(--flaeche); }
+.tabelle th { width: 190px; font-weight: 600; color: var(--grau); }
+
+.hinweis { border-left: 3px solid var(--rot); padding: 6px 0 6px 12px; margin-bottom: 8px; font-size: 14px; }
+.hinweis--ok { border-left-color: var(--linie); color: var(--grau); }
+
+/* --- Kalender ------------------------------------------------ */
+.kal__kopf { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.kal__monat { font-weight: 600; min-width: 160px; }
+
+.kal__gitter { display: grid; grid-template-columns: repeat(7, 1fr); border-left: 1px solid var(--linie); border-top: 1px solid var(--linie); }
+.kal__wt { padding: 6px; font-size: 12px; color: var(--grau); text-align: center; border-right: 1px solid var(--linie); border-bottom: 1px solid var(--linie); background: var(--flaeche); }
+.kal__tag { min-height: 84px; padding: 4px 5px; border-right: 1px solid var(--linie); border-bottom: 1px solid var(--linie); font-size: 12px; }
+.kal__tag--leer { background: var(--flaeche); }
+.kal__tag--heute { outline: 2px solid var(--rot); outline-offset: -2px; }
+.kal__zahl { color: var(--grau); }
+.kal__tag--heute .kal__zahl { color: var(--rot); font-weight: 700; }
+
+.kal__termin {
+  display: block; width: 100%; text-align: left; margin-top: 3px;
+  background: var(--text); color: var(--weiss); border: 0; cursor: pointer;
+  padding: 3px 5px; border-radius: 2px; font-size: 11px; line-height: 1.25;
+}
+.kal__termin--eilig { background: var(--rot); }
+.kal__termin--vorbei { background: var(--linie); color: var(--text); }
+
+.naechste { margin-top: 32px; }
+.naechste__zeile { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 9px 0; border-bottom: 1px solid var(--flaeche); font-size: 14px; }
+.naechste__datum { min-width: 110px; font-variant-numeric: tabular-nums; }
+
+/* --- To-do-Brett --------------------------------------------- */
+.brett { display: grid; gap: 12px; }
+.spalte { background: var(--flaeche); border-radius: 3px; padding: 10px; min-height: 120px; }
+.spalte.ueber { outline: 2px dashed var(--rot); outline-offset: -2px; }
+.spalte__kopf { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; font-size: 13px; font-weight: 600; }
+
+.zettel {
+  background: var(--weiss); border: 1px solid var(--linie); border-radius: 3px;
+  padding: 9px 10px; margin-bottom: 8px; cursor: grab; font-size: 14px;
+}
+.zettel:active { cursor: grabbing; }
+.zettel.zieht { opacity: .4; }
+.zettel__herkunft { display: block; font-size: 12px; color: var(--grau); margin-top: 4px; }
+.zettel__fuss { display: flex; gap: 4px; margin-top: 8px; }
+.zettel__pfeil {
+  background: none; border: 1px solid var(--linie); border-radius: 3px;
+  width: 26px; height: 24px; cursor: pointer; line-height: 1; color: var(--grau);
+}
+.zettel__pfeil:hover { border-color: var(--text); color: var(--text); }
+.zettel__pfeil[disabled] { opacity: .3; cursor: default; }
+.zettel__weg { margin-left: auto; border: 0; background: none; cursor: pointer; color: var(--grau); }
+.zettel__weg:hover { color: var(--rot); }
+
+/* --- Formulare ----------------------------------------------- */
+.feld { display: block; margin-bottom: 12px; }
+.feld > span { display: block; font-size: 13px; color: var(--grau); margin-bottom: 3px; }
+.feld input, .feld textarea, .feld select, .eingabe {
+  width: 100%; border: 1px solid var(--linie); border-radius: 3px;
+  padding: 7px 9px; background: var(--weiss);
+}
+.feld input:focus, .feld textarea:focus, .eingabe:focus { outline: 2px solid var(--rot); outline-offset: -2px; border-color: var(--rot); }
+
+.notiz { width: 100%; min-height: 90px; border: 1px solid var(--linie); border-radius: 3px; padding: 8px; resize: vertical; }
+
+.reihe { display: flex; gap: 8px; }
+.reihe .eingabe { flex: 1; }
+
+.pruefliste { list-style: none; margin: 0; padding: 0; max-width: 720px; }
+.pruefliste li { border-bottom: 1px solid var(--flaeche); }
+.pruefliste label { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; cursor: pointer; }
+.pruefliste input { margin-top: 3px; }
+.pruefliste input:checked + span { color: var(--grau); text-decoration: line-through; }
+
+.leer { color: var(--grau); padding: 28px 0; }
+
+/* --- ab Tablet ----------------------------------------------- */
+@media (min-width: 700px) {
+  :root { --rand: 24px; }
+  .brett { grid-template-columns: repeat(3, 1fr); }
+  .spalten2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .karte__inhalt { padding: 4px 16px 24px; }
+}
+@media (max-width: 699px) {
+  .karte__frist { text-align: left; flex-basis: 100%; }
+  .kal__tag { min-height: 62px; }
+  .tabelle th { width: auto; display: block; padding-bottom: 0; border: 0; }
+  .tabelle td { display: block; padding-top: 2px; }
+}

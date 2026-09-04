@@ -1,0 +1,1034 @@
+{
+  "meta": {
+    "version": 2,
+    "recherche_stand": "2026-09-04",
+    "hinweis": "Deadlines mit \"geschaetzt\": true sind aus dem Vorjahresrhythmus abgeleitet und noch nicht offiziell bestaetigt. Vor der Einreichung immer auf der Award-Seite nachpruefen."
+  },
+  "profil": {
+    "titel": "Stell dir vor, die Stadt funktioniert. Reibungslos für dich? Für andere nicht.",
+    "titel_akademisch": "Gestaltung einer interaktiven Ausstellung zur körperlichen Erfahrbarkeit geschlechterspezifischer Raumaneignung",
+    "art": "Bachelorarbeit, Einzelarbeit",
+    "studiengang": "Integriertes Produktdesign",
+    "hochschule": "Hochschule der Medien Stuttgart",
+    "abgabe_am": "2026-06-22",
+    "veroeffentlicht_am": "2026-07-02",
+    "betreuung": [
+      "Prof. Tim Klinger (Erstbetreuung)",
+      "Ursula Drees (Zweitbetreuung)",
+      "Hannes Melzian (extern)"
+    ],
+    "auszeichnungen": [
+      "Student's Choice MediaNight Award 2026, nominiert unter rund 130 Projekten"
+    ],
+    "auftragsarbeit": false,
+    "umsetzung": "gebaut",
+    "disziplinen": [
+      "Ausstellungsdesign",
+      "Szenografie",
+      "Interaction Design",
+      "Social Design"
+    ],
+    "disziplinen_sekundaer": [
+      "Kommunikationsdesign",
+      "Designforschung",
+      "Experience Design",
+      "Public Space"
+    ],
+    "schlagworte": [
+      "Gender",
+      "Raumaneignung",
+      "öffentlicher Raum",
+      "Stadtplanung",
+      "Ungleichheit",
+      "Feminismus",
+      "Habitus",
+      "körperliche Erfahrung",
+      "Research through Design",
+      "Double Diamond",
+      "Physical Computing",
+      "interaktive Installation"
+    ],
+    "sdg": [
+      5,
+      11
+    ],
+    "material": [
+      {
+        "id": "m-pdf",
+        "text": "Schriftliche Arbeit als PDF",
+        "vorhanden": true
+      },
+      {
+        "id": "m-fotos",
+        "text": "Fotos der gebauten Ausstellung (Gesamt, Eingang, Stationen, Auflösung)",
+        "vorhanden": true
+      },
+      {
+        "id": "m-video",
+        "text": "Video der Ausstellung, gerendert und real",
+        "vorhanden": true
+      },
+      {
+        "id": "m-audio",
+        "text": "Audiodateien der Stationen",
+        "vorhanden": true
+      },
+      {
+        "id": "m-flyer",
+        "text": "Flyer zweiseitig",
+        "vorhanden": true
+      },
+      {
+        "id": "m-web",
+        "text": "Website tabeareifenschweiler.de/Stelldirvor",
+        "vorhanden": true
+      },
+      {
+        "id": "m-schalt",
+        "text": "Schaltpläne Station 1 und 5",
+        "vorhanden": true
+      },
+      {
+        "id": "m-text-de",
+        "text": "Projektbeschreibung DE (200 / 500 / 1000 Zeichen, vier Abschnitte)",
+        "vorhanden": true
+      },
+      {
+        "id": "m-text-en",
+        "text": "Projektbeschreibung EN (200 / 500 / 1000 Zeichen, vier Abschnitte)",
+        "vorhanden": true
+      },
+      {
+        "id": "m-keyvisual",
+        "text": "Keyvisual / Titelbild im Querformat für Award-Datenbanken",
+        "vorhanden": false
+      },
+      {
+        "id": "m-portrait",
+        "text": "Porträtfoto + Kurzbio (DE/EN) für Einreicherprofil",
+        "vorhanden": false
+      },
+      {
+        "id": "m-board",
+        "text": "Präsentationsboards A1/A2 als PDF (viele Awards verlangen Boards, keine Fotostrecke)",
+        "vorhanden": false
+      },
+      {
+        "id": "m-video60",
+        "text": "Videoschnitt auf 60 s bzw. 120 s gekürzt (übliche Längenlimits)",
+        "vorhanden": false
+      },
+      {
+        "id": "m-freigabe",
+        "text": "Bild- und Tonrechte / Model Releases der gefilmten Besucher:innen",
+        "vorhanden": false
+      },
+      {
+        "id": "m-betreuer",
+        "text": "Betreuungsbestätigung bzw. Immatrikulationsnachweis",
+        "vorhanden": false
+      }
+    ]
+  },
+  "awards": [
+    {
+      "id": "gdg-2027",
+      "bereich": "abschluss",
+      "name": "German Design Graduates 2027",
+      "veranstalter": "German Design Graduates e. V.",
+      "url": "https://germandesigngraduates.com",
+      "kategorie": "Abschlussarbeit",
+      "einreichkategorie": "Product & Industrial Design",
+      "region": "Deutschland",
+      "zeitfenster_von": "2026-05-01",
+      "zeitfenster_bis": "2027-04-30",
+      "zeitfenster_bezug": "abgabe",
+      "deadlines": [
+        {
+          "typ": "regular",
+          "datum": "2027-06-15",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "keine (Einreichung läuft über die Hochschule)",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": true,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Ausstellungsdesign",
+        "Social Design",
+        "Designforschung",
+        "Interaction Design"
+      ],
+      "status": "geplant",
+      "notizen": "",
+      "quelle": "germandesigngraduates.com – Deadline 2026 war der 15.06.2026, Abschlusszeitfenster Mai bis April.",
+      "todos": [
+        {
+          "text": "Bei Prof. Klinger klären, ob die HdM bei GDG angemeldet ist",
+          "zustand": "offen"
+        },
+        {
+          "text": "Falls nein: HdM-Anmeldung anstoßen (läuft über den Studiengang)",
+          "zustand": "offen"
+        },
+        {
+          "text": "Projektbeschreibung DE auf GDG-Format bringen",
+          "zustand": "offen"
+        },
+        {
+          "text": "Bildstrecke auswählen (Gesamtansicht zuerst)",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "Aufnahme in die Jahresausstellung und das Jahrbuch, rund 70 Projekte aus 30 Hochschulen. Kein Preisgeld.",
+      "teilnahmebedingungen": [
+        "Die Hochschule muss bei German Design Graduates gemeldet sein – ohne das geht gar nichts.",
+        "Abschluss in den letzten zwei Semestern vor der Frist.",
+        "Studienbereich Produkt- und Industriedesign, Kommunikations- und Digitaldesign oder Textil- und Modedesign.",
+        "Einzel- und Gruppenarbeiten zugelassen."
+      ],
+      "einreichung": [
+        "Projektbeschreibung DE und EN",
+        "Bildstrecke der Arbeit, Hauptbild zuerst",
+        "Angaben zu Hochschule, Betreuung und Abschlussdatum",
+        "Genaues Format erst mit dem Call 2027 – noch prüfen"
+      ]
+    },
+    {
+      "id": "adc-talent-2027",
+      "bereich": "abschluss",
+      "name": "ADC Talent Award 2027",
+      "veranstalter": "Art Directors Club für Deutschland",
+      "url": "https://www.adc.de/talent-award/",
+      "kategorie": "Nachwuchs",
+      "einreichkategorie": "Abschlussarbeit – Experience & Spatial Design",
+      "region": "D/A/CH",
+      "zeitfenster_von": "2025-01-01",
+      "zeitfenster_bis": "2027-02-28",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "early_bird",
+          "datum": "2026-12-11",
+          "geschaetzt": true
+        },
+        {
+          "typ": "regular",
+          "datum": "2027-02-28",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "90 EUR pro Kategorie, ab 3 Kategorien 80 EUR, ab 4 Kategorien 70 EUR",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Ausstellungsdesign",
+        "Szenografie",
+        "Kommunikationsdesign",
+        "Experience Design"
+      ],
+      "status": "geplant",
+      "notizen": "",
+      "quelle": "adc.de – Talent Award Guidelines 2026, Early Bird jeweils Mitte Dezember, Regular Ende Februar.",
+      "todos": [
+        {
+          "text": "Guidelines 2027 abwarten (erscheinen meist Mitte November 2026)",
+          "zustand": "offen"
+        },
+        {
+          "text": "Kategorie festlegen – Räumliche Inszenierung vs. Design for Good",
+          "zustand": "offen"
+        },
+        {
+          "text": "Early Bird am 11.12.2026 nutzen, spart pro Kategorie",
+          "zustand": "offen"
+        },
+        {
+          "text": "Projektbeschreibung DE auf ADC-Länge kürzen",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "ADC Nagel in Gold, Silber oder Bronze, Auszeichnung im ADC Jahrbuch und auf dem ADC Festival. Kein Preisgeld.",
+      "teilnahmebedingungen": [
+        "Semester-, Abschluss- oder Praxisarbeit aus dem Einreichzeitraum.",
+        "Einreichende müssen zum Zeitpunkt der Arbeit Studierende oder Auszubildende gewesen sein.",
+        "Keine Auftragsarbeit nötig, freie Arbeiten ausdrücklich erwünscht.",
+        "Betreuende Person wird mit genannt."
+      ],
+      "einreichung": [
+        "Projektbeschreibung DE, kurz gehalten",
+        "Bildmaterial in der vom ADC vorgegebenen Auflösung",
+        "Case-Video, wenn vorhanden",
+        "Angabe von Hochschule und Betreuung",
+        "Pro Kategorie eine eigene Einreichung mit eigener Gebühr"
+      ]
+    },
+    {
+      "id": "mia-seeger-2028",
+      "bereich": "abschluss",
+      "name": "Mia Seeger Preis 2028",
+      "veranstalter": "Mia Seeger Stiftung / Design Center Baden-Württemberg",
+      "url": "https://www.mia-seeger.de",
+      "kategorie": "Nachwuchspreis Soziales Design",
+      "einreichkategorie": "Abschlussarbeit",
+      "region": "Deutschland",
+      "zeitfenster_von": "2026-01-01",
+      "zeitfenster_bis": "2028-04-30",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "regular",
+          "datum": "2028-04-24",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "keine",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Social Design",
+        "Designforschung",
+        "Ausstellungsdesign"
+      ],
+      "status": "geplant",
+      "notizen": "Inhaltlich der beste Fit der ganzen Liste: Nachwuchspreis für Soziales Design, Preisverleihung in Stuttgart.",
+      "quelle": "german-design-council.de und Design Center BW – Ausgabe 2026 hatte den 24.04.2026 als Frist, Preissumme 10.000 EUR, Verleihung 05.11.2026 Haus der Wirtschaft Stuttgart. Rhythmus der Folgeausschreibung prüfen.",
+      "todos": [
+        {
+          "text": "Prüfen, ob 2027 oder erst 2028 wieder ausgeschrieben wird – Stiftung direkt anschreiben",
+          "zustand": "offen"
+        },
+        {
+          "text": "Gesellschaftliche Wirkung der Ausstellung als eigenen Textabschnitt schreiben",
+          "zustand": "offen"
+        },
+        {
+          "text": "Besucherreaktionen von der MediaNight als Beleg dokumentieren",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "Preissumme insgesamt 10.000 EUR, von der Jury frei aufgeteilt. Preisverleihung im Haus der Wirtschaft Stuttgart.",
+      "teilnahmebedingungen": [
+        "Studien-, Abschluss- oder andere Entwurfsarbeiten aus den beiden Jahren vor der Ausschreibung.",
+        "Studierende und Absolvent:innen deutscher Hochschulen.",
+        "Thema: Beitrag von Gestaltung zum gesellschaftlichen Zusammenleben.",
+        "Keine Teilnahmegebühr."
+      ],
+      "einreichung": [
+        "Projektdokumentation als PDF",
+        "Fotos der Arbeit",
+        "Begründung des gesellschaftlichen Beitrags – hier zählt der Text mehr als die Bilder",
+        "Genaue Vorgaben mit der nächsten Ausschreibung – noch prüfen"
+      ]
+    },
+    {
+      "id": "focus-open-2027",
+      "bereich": "abschluss",
+      "name": "Focus Open 2027 – Internationaler Designpreis Baden-Württemberg",
+      "veranstalter": "Design Center Baden-Württemberg",
+      "url": "https://design-center.de/de/site/focusopen",
+      "kategorie": "Nachwuchs",
+      "einreichkategorie": "Newcomer / Public Design",
+      "region": "international, Ausrichter BW",
+      "zeitfenster_von": "2025-01-01",
+      "zeitfenster_bis": "2027-04-30",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "anmeldung",
+          "datum": "2027-04-16",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "reduzierte Nachwuchsgebühr, Höhe je Ausschreibung",
+      "kosten_bei_gewinn": "Ausstellungs- und Katalogpauschale möglich – vorher prüfen",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Ausstellungsdesign",
+        "Public Space",
+        "Social Design"
+      ],
+      "status": "geplant",
+      "notizen": "Regional stark – Stuttgarter Preis, gute Sichtbarkeit vor Ort.",
+      "quelle": "design-center.de – Anmeldeschluss 2026 war der 17.04.2026, 2025 der 04.04.2025.",
+      "todos": [
+        {
+          "text": "Ausschreibung 2027 im Februar 2027 prüfen",
+          "zustand": "offen"
+        },
+        {
+          "text": "Kategorie klären: Nachwuchs oder Public Design",
+          "zustand": "offen"
+        },
+        {
+          "text": "Kosten bei Auszeichnung erfragen, bevor eingereicht wird",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "Focus Gold, Silber oder Focus Open Auszeichnung, Aufnahme in Ausstellung und Katalog.",
+      "teilnahmebedingungen": [
+        "International offen, ausgerichtet vom Land Baden-Württemberg.",
+        "Eigene Nachwuchsschiene für Studierende und Absolvent:innen mit reduzierter Gebühr.",
+        "Produkt bzw. Projekt darf nicht älter als zwei Jahre sein."
+      ],
+      "einreichung": [
+        "Anmeldung online bis zum Anmeldeschluss",
+        "Bildmaterial und Projekttext",
+        "Bei Nominierung häufig Anlieferung des physischen Objekts zur Jurysitzung – bei einer Ausstellung vorher klären, was das heißt",
+        "Kosten für Ausstellung und Katalog im Gewinnfall – noch prüfen"
+      ]
+    },
+    {
+      "id": "gda-newcomer-2028",
+      "bereich": "abschluss",
+      "name": "German Design Award Newcomer 2028",
+      "veranstalter": "German Design Council / Rat für Formgebung",
+      "url": "https://www.german-design-award.com",
+      "kategorie": "Newcomer",
+      "einreichkategorie": "Newcomer (nur über Nominierung)",
+      "region": "international, Ausrichter D",
+      "zeitfenster_von": "2025-01-01",
+      "zeitfenster_bis": "2028-12-31",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "nominierung",
+          "datum": "2027-07-31",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "für Newcomer keine Teilnahmegebühr",
+      "kosten_bei_gewinn": "keine (Newcomer-Schiene)",
+      "hochschule_muss_angemeldet_sein": false,
+      "nominierung_noetig": true,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Ausstellungsdesign",
+        "Experience Design"
+      ],
+      "status": "geplant",
+      "notizen": "Nicht frei einreichbar – man muss vorgeschlagen werden. Weg über Hochschule oder Rat für Formgebung klären.",
+      "quelle": "german-design-award.com – Newcomer-Schiene läuft über Nominierung, Einreichungsstart jeweils Frühjahr.",
+      "todos": [
+        {
+          "text": "Klären, wer nominieren darf und ob die HdM das kann",
+          "zustand": "offen"
+        },
+        {
+          "text": "Betreuer:innen fragen, ob sie eine Nominierung einreichen",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "German Design Award Newcomer, dotiert; Finalist:innen werden auf der Ambiente präsentiert.",
+      "teilnahmebedingungen": [
+        "Nur über Nominierung – man kann sich nicht selbst anmelden.",
+        "Nachwuchsdesigner:innen bis wenige Jahre nach Abschluss.",
+        "Für Nominierte keine Teilnahmegebühr."
+      ],
+      "einreichung": [
+        "Portfolio der eigenen Arbeiten, nicht nur ein einzelnes Projekt",
+        "Lebenslauf und Kurzbio",
+        "Details erst nach erfolgter Nominierung – noch prüfen"
+      ]
+    },
+    {
+      "id": "reddot-concept-2027",
+      "bereich": "abschluss",
+      "name": "Red Dot Award: Design Concept 2027",
+      "veranstalter": "Red Dot GmbH & Co. KG",
+      "url": "https://www.red-dot.org/design-concept",
+      "kategorie": "Young Professionals",
+      "einreichkategorie": "Concept – Spaces / Social Impact",
+      "region": "international",
+      "zeitfenster_von": "2025-01-01",
+      "zeitfenster_bis": "2027-12-31",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "early_bird",
+          "datum": "2027-03-19",
+          "geschaetzt": true
+        },
+        {
+          "typ": "regular",
+          "datum": "2027-06-18",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "reduzierte Gebühr für Young Professionals, je Ausschreibung unterschiedlich",
+      "kosten_bei_gewinn": "hohe Gewinnergebühren üblich – vor Einreichung prüfen",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "konzept",
+      "passende_disziplinen": [
+        "Ausstellungsdesign",
+        "Interaction Design"
+      ],
+      "status": "geplant",
+      "notizen": "Achtung Kostenfalle: Red Dot verlangt bei Auszeichnung Gebühren für Label, Katalog und Ausstellung.",
+      "quelle": "red-dot.org – Termine variieren jährlich, Angaben hier aus dem üblichen Rhythmus abgeleitet.",
+      "todos": [
+        {
+          "text": "Gewinnergebühren recherchieren, bevor eingereicht wird",
+          "zustand": "offen"
+        },
+        {
+          "text": "Prüfen, ob eine gebaute und gezeigte Arbeit in Design Concept zulässig ist",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "Red Dot, Best of the Best, Luminary. Ausstellung im Red Dot Design Museum Singapur.",
+      "teilnahmebedingungen": [
+        "Für Konzepte und Prototypen, die noch nicht auf dem Markt sind.",
+        "Reduzierte Gebühr für Young Professionals bis zwei Jahre nach Abschluss.",
+        "Achtung: im Gewinnfall fallen Gebühren für Label, Katalog und Ausstellung an."
+      ],
+      "einreichung": [
+        "Projektbeschreibung EN",
+        "Bildmaterial in hoher Auflösung",
+        "Video optional",
+        "Gebührenordnung vor dem Absenden komplett durchlesen – noch prüfen"
+      ]
+    },
+    {
+      "id": "if-student-2027",
+      "bereich": "international",
+      "name": "iF Design Student Award 2027",
+      "veranstalter": "iF International Forum Design GmbH",
+      "url": "https://ifdesign.com/en/if-design-student-award",
+      "kategorie": "Student",
+      "einreichkategorie": "SDG 5 Gender Equality bzw. SDG 11 Sustainable Cities",
+      "region": "international",
+      "zeitfenster_von": "2025-01-01",
+      "zeitfenster_bis": "2027-02-03",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "regular",
+          "datum": "2027-02-03",
+          "geschaetzt": false
+        }
+      ],
+      "kosten": "keine Einreichgebühr",
+      "kosten_bei_gewinn": "keine, Preisfonds 50.000 EUR",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "egal",
+      "sdg_pflicht": true,
+      "passende_disziplinen": [
+        "Social Design",
+        "Ausstellungsdesign",
+        "Interaction Design",
+        "Public Space"
+      ],
+      "status": "geplant",
+      "notizen": "Kostenlos und thematisch exakt passend – SDG 5 und SDG 11 sind beide zugelassen. Hohe Priorität.",
+      "quelle": "ifdesign.com – Deadline 03.02.2027, 23:59 CET. Online-Jury 10.–19.03.2027, Finaljury Berlin 23.04.2027, Verleihung New York Juni 2027.",
+      "todos": [
+        {
+          "text": "Zwischen SDG 5 und SDG 11 entscheiden – nur eines wählbar",
+          "zustand": "offen"
+        },
+        {
+          "text": "Projektbeschreibung EN auf iF-Struktur bringen (Problem, Lösung, Wirkung)",
+          "zustand": "offen"
+        },
+        {
+          "text": "Video auf das iF-Längenlimit kürzen",
+          "zustand": "offen"
+        },
+        {
+          "text": "Account anlegen und Immatrikulationsnachweis hochladen",
+          "zustand": "offen"
+        },
+        {
+          "text": "Einreichung bis 03.02.2027, 23:59 CET abschicken",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "Anteil am Preisfonds von 50.000 EUR, iF Design Student Award Trophäe, Verleihung in New York im Juni 2027.",
+      "teilnahmebedingungen": [
+        "Offen für Studierende weltweit, Einreichung kostenlos.",
+        "Jede Einreichung muss einem der 15 zugelassenen UN-Nachhaltigkeitsziele zugeordnet werden.",
+        "SDG 5 Geschlechtergleichheit und SDG 11 Nachhaltige Städte sind beide zugelassen – nur eines wählbar.",
+        "Immatrikulationsnachweis erforderlich."
+      ],
+      "einreichung": [
+        "Projekttitel und Beschreibung EN",
+        "Bildmaterial der Arbeit",
+        "Video, Längenlimit beachten",
+        "Zuordnung zu genau einem SDG",
+        "Immatrikulationsnachweis",
+        "Exakte Formatvorgaben auf ifdesign.com – noch prüfen"
+      ]
+    },
+    {
+      "id": "ux-design-awards-spring-2027",
+      "bereich": "international",
+      "name": "UX Design Awards Spring 2027",
+      "veranstalter": "International Design Center Berlin",
+      "url": "https://ux-design-awards.com/enter/dates",
+      "kategorie": "New Talent",
+      "einreichkategorie": "New Talent (Bachelor-/Masterprojekte)",
+      "region": "international",
+      "zeitfenster_von": "2025-01-01",
+      "zeitfenster_bis": "2026-11-15",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "regular",
+          "datum": "2026-11-15",
+          "geschaetzt": false
+        }
+      ],
+      "kosten": "reduzierte Gebühr in der Kategorie New Talent",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Interaction Design",
+        "Experience Design",
+        "Ausstellungsdesign"
+      ],
+      "status": "geplant",
+      "notizen": "Nächste Frist überhaupt. Einreichung läuft seit 01.09.2026.",
+      "quelle": "ux-design-awards.com – Einreichzeitraum Spring 2027: 01.09.2026 bis 15.11.2026, Kategorien Product, Concept, New Talent.",
+      "todos": [
+        {
+          "text": "Gebühr für New Talent nachsehen",
+          "zustand": "offen"
+        },
+        {
+          "text": "Nutzererfahrung der fünf Stationen als UX-Case aufbereiten",
+          "zustand": "offen"
+        },
+        {
+          "text": "Physical-Computing-Aufbau als Interaktionsdiagramm zeichnen",
+          "zustand": "offen"
+        },
+        {
+          "text": "Einreichung bis 15.11.2026",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "Auszeichnung, Aufnahme in Online-Ausstellung und Jahrbuch, PR-Begleitung durch das IDZ. Kein Preisgeld.",
+      "teilnahmebedingungen": [
+        "Kategorie New Talent für Studierende, Absolvent:innen und Hochschulen mit Bachelor- oder Masterprojekten.",
+        "Ein Projekt pro Teilnehmer:in.",
+        "Teilnahmegebühr 70 EUR, keine zusätzliche Nominierungsgebühr.",
+        "Einreichzeitraum 01.09.2026 bis 15.11.2026."
+      ],
+      "einreichung": [
+        "Projektname, Beteiligte, Projektbeschreibung max. 500 Zeichen",
+        "Vier Projektbilder, 3000x2000 bis 4000x3000 px, JPEG, RGB",
+        "Logo als EPS oder SVG",
+        "Jury-Fragebogen: Pitch, Nutzerproblem, Research, Designprozess, Innovation, Barrierefreiheit, sozialer Impact – je max. 500 Zeichen",
+        "Empfohlen: Erklärvideo 60 bis 90 Sekunden",
+        "Empfohlen: PDF zu Research und Prozess, bis 10 Seiten"
+      ]
+    },
+    {
+      "id": "young-ones-adc-2027",
+      "bereich": "international",
+      "name": "Young Ones ADC 2027",
+      "veranstalter": "The One Club for Creativity",
+      "url": "https://youngones.org/categories/adc/",
+      "kategorie": "Student",
+      "einreichkategorie": "Experiential Design / Design for Good / Capstone Project",
+      "region": "international",
+      "zeitfenster_von": "2025-09-01",
+      "zeitfenster_bis": "2027-03-31",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "early_bird",
+          "datum": "2026-12-04",
+          "geschaetzt": true
+        },
+        {
+          "typ": "regular",
+          "datum": "2027-02-05",
+          "geschaetzt": true
+        },
+        {
+          "typ": "final",
+          "datum": "2027-03-08",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "Gebühr pro Einreichung und Kategorie, Early Bird günstiger",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Ausstellungsdesign",
+        "Szenografie",
+        "Experience Design",
+        "Social Design",
+        "Interaction Design"
+      ],
+      "status": "geplant",
+      "notizen": "Kategorien Experiential Design, Design for Good, Interactive und Capstone Project passen alle. Capstone Project ist explizit für Abschlussarbeiten.",
+      "quelle": "youngones.org – Young Ones 2027 öffnet im September 2026, Kategorien u. a. Experiential Design, Design for Good, Interactive, Capstone Project. Termine hier aus dem Vorjahresrhythmus abgeleitet.",
+      "todos": [
+        {
+          "text": "Ab September 2026 wöchentlich auf youngones.org nach dem Call schauen",
+          "zustand": "offen"
+        },
+        {
+          "text": "Entscheiden: eine Kategorie oder mehrere (Kosten pro Kategorie)",
+          "zustand": "offen"
+        },
+        {
+          "text": "Case-Video auf englisch vertonen oder untertiteln",
+          "zustand": "offen"
+        },
+        {
+          "text": "Projektbeschreibung EN auf 100 Wörter kürzen",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "Young Ones Cube in Gold, Silber, Bronze oder Merit. Aufnahme ins One Club Archiv, Sichtbarkeit bei Agenturen.",
+      "teilnahmebedingungen": [
+        "Offen für Studierende weltweit, Nachweis der Immatrikulation nötig.",
+        "Gebühr pro Einreichung und pro Kategorie, Early Bird günstiger.",
+        "Kategorie Capstone Project ist ausdrücklich für Abschlussarbeiten gedacht.",
+        "Kein Auftrag nötig, freie und fiktive Arbeiten zugelassen."
+      ],
+      "einreichung": [
+        "Case-Video auf englisch, vertont oder untertitelt",
+        "Bildmaterial der Arbeit",
+        "Projektbeschreibung EN, sehr kurz",
+        "Nachweis des Studierendenstatus",
+        "Genaue Limits mit dem Call ab September – noch prüfen"
+      ]
+    },
+    {
+      "id": "young-ones-gotv-2027",
+      "bereich": "international",
+      "name": "Young Ones Get Out The Vote 2027",
+      "veranstalter": "The One Club for Creativity",
+      "url": "https://getoutthevote.oneclub.org",
+      "kategorie": "Brief-Wettbewerb",
+      "einreichkategorie": "Participation / Relevance / Community",
+      "region": "international",
+      "zeitfenster_von": "2026-09-01",
+      "zeitfenster_bis": "2027-08-31",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "regular",
+          "datum": "2027-08-31",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "kostenlos",
+      "kosten_bei_gewinn": "keine, Preisgeld insgesamt 15.000 USD",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": true,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Kommunikationsdesign",
+        "Social Design",
+        "Public Space"
+      ],
+      "status": "geplant",
+      "notizen": "Die Ausgabe 2026 lief bis 31.08.2026 – knapp verpasst. Achtung: Brief-Wettbewerb zum Thema Wahlbeteiligung, die Bachelorarbeit passt nicht direkt. Nur sinnvoll, wenn eine eigene Arbeit auf den Brief hin entsteht.",
+      "quelle": "oneclub.org – Ausgabe 2026: Frist 31.08.2026, Gewinner Mitte September, Grand Prize 5.000 USD, offen für Studierende weltweit ab 18, Abschluss nicht vor dem 13.03.2025.",
+      "todos": [
+        {
+          "text": "Entscheiden, ob dafür eine eigene Arbeit entsteht – Thesis passt nicht auf den Brief",
+          "zustand": "offen"
+        },
+        {
+          "text": "Call 2027 abwarten (Start üblicherweise Frühsommer)",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "Preisgeld insgesamt 15.000 USD: Grand Prize 5.000, zwei Runner-up je 2.500, fünf Finalist:innen je 1.000.",
+      "teilnahmebedingungen": [
+        "Kostenlos, offen für Studierende weltweit ab 18 Jahren.",
+        "Auch frisch Graduierte, wenn der Abschluss nicht zu weit zurückliegt.",
+        "Gesetzter Brief zum Thema Wahlbeteiligung, global und parteipolitisch neutral.",
+        "Eine der drei Unterkategorien wählen: Participation, Relevance, Community."
+      ],
+      "einreichung": [
+        "Kampagne als Print, Video, Social oder Aktivierung",
+        "Kurze Erläuterung der Idee EN",
+        "Achtung: die Bachelorarbeit erfüllt den Brief nicht – dafür müsste eine eigene Arbeit entstehen"
+      ]
+    },
+    {
+      "id": "core77-2027",
+      "bereich": "international",
+      "name": "Core77 Design Awards 2027",
+      "veranstalter": "Core77",
+      "url": "https://designawards.core77.com",
+      "kategorie": "Student",
+      "einreichkategorie": "Social Impact / Interaction / Built Environment",
+      "region": "international",
+      "zeitfenster_von": "2025-01-01",
+      "zeitfenster_bis": "2027-03-25",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "early_bird",
+          "datum": "2027-01-28",
+          "geschaetzt": true
+        },
+        {
+          "typ": "regular",
+          "datum": "2027-02-25",
+          "geschaetzt": true
+        },
+        {
+          "typ": "final",
+          "datum": "2027-03-24",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "Student Rate, deutlich unter dem Profitarif",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Social Design",
+        "Interaction Design",
+        "Ausstellungsdesign",
+        "Public Space"
+      ],
+      "status": "geplant",
+      "notizen": "Jede der 20 Kategorien hat ein eigenes Studierendenfeld, Studi-Arbeiten werden untereinander bewertet.",
+      "quelle": "core77.com / designawards.core77.com – 2025er Termine: Early Bird 30.01., Regular 27.02., Final 25.03. Für 2027 entsprechend fortgeschrieben.",
+      "todos": [
+        {
+          "text": "Kategorie wählen – Social Impact vs. Interaction",
+          "zustand": "offen"
+        },
+        {
+          "text": "Core77 verlangt eine ausführliche Prozessdarstellung – Double-Diamond-Strecke aufbereiten",
+          "zustand": "offen"
+        },
+        {
+          "text": "Early Bird nutzen",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "Professional bzw. Student Notable, Winner und Best of Show. Ausführliche Veröffentlichung auf Core77.",
+      "teilnahmebedingungen": [
+        "20 Kategorien, jede mit eigenem Studierendenfeld – Studi-Arbeiten werden untereinander bewertet.",
+        "Reduzierter Student Rate.",
+        "International offen.",
+        "Core77 legt viel Gewicht auf den Prozess, nicht nur auf das Ergebnis."
+      ],
+      "einreichung": [
+        "Ausführliche Prozessdarstellung – Recherche, Iterationen, Scheitern gehört dazu",
+        "Bildmaterial, auch Arbeitsstände und Skizzen",
+        "Video optional",
+        "Projekttext EN",
+        "Genaue Formate mit dem Call – noch prüfen"
+      ]
+    },
+    {
+      "id": "creative-conscience-2027",
+      "bereich": "international",
+      "name": "Creative Conscience Awards 2027",
+      "veranstalter": "Creative Conscience (UK)",
+      "url": "https://www.creative-conscience.org.uk/awards/",
+      "kategorie": "Student & Graduate",
+      "einreichkategorie": "Impact Theme – Equality / Cities & Communities",
+      "region": "international",
+      "zeitfenster_von": "2025-05-01",
+      "zeitfenster_bis": "2027-05-17",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "abschluss_max_jahre": 2,
+      "deadlines": [
+        {
+          "typ": "regular",
+          "datum": "2027-04-16",
+          "geschaetzt": true
+        },
+        {
+          "typ": "final",
+          "datum": "2027-05-17",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "gering, teils kostenlos",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Social Design",
+        "Designforschung",
+        "Ausstellungsdesign",
+        "Public Space"
+      ],
+      "status": "geplant",
+      "notizen": "Offen für Studierende und Absolvent:innen bis zwei Jahre nach Abschluss – Frist läuft also bis Juni 2028.",
+      "quelle": "creative-conscience.org.uk – Ausgabe 2026: geöffnet 01.10.2025, Frist 17.04.2026, verlängert auf 17.05.2026.",
+      "todos": [
+        {
+          "text": "Passendes Impact Theme auswählen",
+          "zustand": "offen"
+        },
+        {
+          "text": "Wirkungsnachweis formulieren – was hat die Ausstellung bei Besucher:innen ausgelöst",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "Gold, Silber, Bronze und Highly Commended, Mentoring und Sichtbarkeit im Netzwerk. Teils kleine Geldpreise.",
+      "teilnahmebedingungen": [
+        "Studierende und Absolvent:innen bis zwei Jahre nach Abschluss, weltweit.",
+        "Projekt muss einem der Impact Themes zugeordnet werden.",
+        "Sozialer oder ökologischer Fokus ist Pflicht, nicht Beiwerk.",
+        "Geringe oder keine Gebühr."
+      ],
+      "einreichung": [
+        "Projektbeschreibung EN mit klarem Wirkungsnachweis",
+        "Bildmaterial",
+        "Video optional",
+        "Zuordnung zu einem Impact Theme"
+      ]
+    },
+    {
+      "id": "prix-ars-2027",
+      "bereich": "international",
+      "name": "Prix Ars Electronica 2027",
+      "veranstalter": "Ars Electronica Linz",
+      "url": "https://ars.electronica.art/prix/en/opencall/",
+      "kategorie": "Medienkunst",
+      "einreichkategorie": "Interactive Art + / Digital Humanity",
+      "region": "international",
+      "zeitfenster_von": "2025-01-01",
+      "zeitfenster_bis": "2027-03-31",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "regular",
+          "datum": "2027-03-12",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "keine Einreichgebühr",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "gebaut",
+      "passende_disziplinen": [
+        "Interaction Design",
+        "Ausstellungsdesign",
+        "Designforschung"
+      ],
+      "status": "geplant",
+      "notizen": "Kunstkontext statt Designkontext – die Arbeit müsste als künstlerische Position argumentiert werden. Interactive Art + und Digital Humanity werden nur alle zwei Jahre vergeben, 2027 sind sie dran.",
+      "quelle": "ars.electronica.art – Call startet Januar 2027, Frist im März 2027. Interactive Art +, Digital Humanity, Artificial Life & Intelligence und Digital Musics werden im Zweijahresrhythmus vergeben.",
+      "todos": [
+        {
+          "text": "Prüfen, ob Interactive Art + 2027 tatsächlich ausgeschrieben ist",
+          "zustand": "offen"
+        },
+        {
+          "text": "Statement als künstlerische Position schreiben, nicht als Designprozess",
+          "zustand": "offen"
+        },
+        {
+          "text": "Dokumentationsvideo ohne Erklärstimme schneiden",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "Goldene Nica, Awards of Distinction und Honorary Mentions. Ausstellung beim Ars Electronica Festival in Linz.",
+      "teilnahmebedingungen": [
+        "Kostenlose Einreichung, international offen, kein Studierendenstatus nötig.",
+        "Kunstkontext: die Arbeit muss als künstlerische Position überzeugen, nicht als Designprozess.",
+        "Interactive Art + und Digital Humanity werden nur alle zwei Jahre vergeben.",
+        "Die Arbeit muss realisiert sein, reine Konzepte haben es schwer."
+      ],
+      "einreichung": [
+        "Werkbeschreibung EN als künstlerisches Statement",
+        "Dokumentationsvideo, möglichst ohne Erklärstimme",
+        "Bildmaterial der Installation im Betrieb",
+        "Technische Beschreibung des Aufbaus",
+        "Künstlerische Vita"
+      ]
+    },
+    {
+      "id": "dandad-new-blood-2027",
+      "bereich": "international",
+      "name": "D&AD New Blood Awards 2027",
+      "veranstalter": "D&AD",
+      "url": "https://www.dandad.org/awards/new-blood-awards/",
+      "kategorie": "Student",
+      "einreichkategorie": "gesetzter Brief",
+      "region": "international",
+      "zeitfenster_von": "2026-09-01",
+      "zeitfenster_bis": "2027-03-31",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "regular",
+          "datum": "2027-03-18",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "ca. 15 GBP pro Einreichung, per Entrant-Survey auf 0 reduzierbar",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": true,
+      "immatrikulation_stichtag": "2027-01-01",
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Kommunikationsdesign",
+        "Experience Design"
+      ],
+      "status": "geplant",
+      "notizen": "Nur gesetzte Briefs von Partnerunternehmen – eine freie Bachelorarbeit ist nicht einreichbar. Außerdem Immatrikulation am 01.01. des Award-Jahres nötig. Steht hier bewusst als geprüftes Nein.",
+      "quelle": "dandad.org – New Blood 2026: 15 GBP Gebühr, Voucher über Entrant-Survey, Immatrikulation am 01.01.2026 Voraussetzung, Einreichung nur auf gesetzte Briefs.",
+      "todos": [
+        {
+          "text": "Entscheidung: nur relevant, wenn ich einen Brief separat bearbeite",
+          "zustand": "offen"
+        }
+      ],
+      "preis": "New Blood Pencil in Wood, Graphite, Yellow oder Black. Zugang zur New Blood Academy.",
+      "teilnahmebedingungen": [
+        "Einreichung ausschließlich auf einen der gesetzten Briefs von Partnerunternehmen.",
+        "Immatrikulation am 01.01. des Award-Jahres vorausgesetzt.",
+        "Gebühr rund 15 GBP, über den Entrant-Survey auf null reduzierbar.",
+        "Eine freie Bachelorarbeit ist nicht einreichbar."
+      ],
+      "einreichung": [
+        "Antwort auf einen konkreten Brief",
+        "Präsentation als PDF plus Bildmaterial",
+        "Nur relevant, wenn du einen Brief separat bearbeitest"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Awards, Fristen, To-dos</title>
+<link rel="stylesheet" href="todos.css">
+</head>
+<body>
+
+<header class="kopf">
+  <div class="wrap kopf__zeile">
+    <h1>Awards &amp; Fristen</h1>
+    <span class="klein dim" id="kopfinfo"></span>
+  </div>
+</header>
+
+<nav class="wrap" style="padding:0">
+  <div class="wrap reiter" role="tablist" id="reiter">
+    <button role="tab" data-seite="uebersicht" aria-selected="true">Übersicht</button>
+    <button role="tab" data-seite="kalender"   aria-selected="false">Kalender</button>
+    <button role="tab" data-seite="todos"      aria-selected="false">To-dos</button>
+    <button role="tab" data-seite="material"   aria-selected="false">Material</button>
+    <button role="tab" data-seite="daten"      aria-selected="false">Daten</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ÜBERSICHT ------------------------------------------------- -->
+  <section class="seite aktiv" id="seite-uebersicht">
+    <div class="leiste">
+      <span class="leiste__titel">Kategorie</span>
+      <button class="knopf" data-bereich="alle" aria-pressed="true">Alle</button>
+      <button class="knopf" data-bereich="abschluss" aria-pressed="false">Abschlussarbeitspreise D/A/CH</button>
+      <button class="knopf" data-bereich="international" aria-pressed="false">Internationale Studiwettbewerbe</button>
+    </div>
+    <div class="leiste">
+      <span class="leiste__titel">Status</span>
+      <button class="knopf" data-status="alle" aria-pressed="true">Alle</button>
+      <button class="knopf" data-status="geplant" aria-pressed="false">geplant</button>
+      <button class="knopf" data-status="in Vorbereitung" aria-pressed="false">in Vorbereitung</button>
+      <button class="knopf" data-status="eingereicht" aria-pressed="false">eingereicht</button>
+      <button class="knopf" data-status="gewonnen" aria-pressed="false">gewonnen</button>
+      <button class="knopf" data-status="abgelehnt" aria-pressed="false">abgelehnt</button>
+      <button class="knopf" data-status="verpasst" aria-pressed="false">verpasst</button>
+    </div>
+
+    <div id="liste"></div>
+
+    <div id="papierkorb" style="margin-top:24px"></div>
+
+    <div style="margin-top:48px;max-width:560px">
+      <h2>Award hinzufügen</h2>
+      <p class="klein dim">Erscheint sofort in Übersicht und Kalender.</p>
+      <form id="neu" style="margin-top:14px">
+        <label class="feld"><span>Name</span><input name="name" required></label>
+        <label class="feld"><span>Veranstalter</span><input name="veranstalter"></label>
+        <label class="feld"><span>Website</span><input name="url" type="url" placeholder="https://"></label>
+        <label class="feld"><span>Kategorie</span>
+          <select name="bereich">
+            <option value="abschluss">Abschlussarbeitspreise D/A/CH</option>
+            <option value="international">Internationale Studiwettbewerbe</option>
+          </select>
+        </label>
+        <label class="feld"><span>Deadline</span><input name="deadline" type="date" required></label>
+        <label class="feld"><span>Kosten</span><input name="kosten"></label>
+        <label class="feld"><span>Preis / was es zu gewinnen gibt</span><input name="preis"></label>
+        <label class="feld"><span>Was eingereicht werden muss (eine Zeile pro Punkt)</span><textarea name="einreichung" rows="3"></textarea></label>
+        <label class="feld"><span>Teilnahmebedingungen (eine Zeile pro Punkt)</span><textarea name="teilnahmebedingungen" rows="3"></textarea></label>
+        <label class="feld"><span>Notizen</span><textarea name="notizen" rows="2"></textarea></label>
+        <button class="knopf knopf--voll" type="submit">Hinzufügen</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- KALENDER -------------------------------------------------- -->
+  <section class="seite" id="seite-kalender">
+    <div class="kal__kopf">
+      <button class="knopf" id="kal-zurueck" aria-label="Vorheriger Monat">←</button>
+      <span class="kal__monat" id="kal-monat"></span>
+      <button class="knopf" id="kal-vor" aria-label="Nächster Monat">→</button>
+      <button class="knopf" id="kal-heute">Heute</button>
+    </div>
+    <div class="kal__gitter" id="kal"></div>
+
+    <div class="naechste">
+      <h2>Alle Fristen</h2>
+      <div id="fristenliste"></div>
+    </div>
+  </section>
+
+  <!-- TO-DOS ---------------------------------------------------- -->
+  <section class="seite" id="seite-todos">
+    <div class="leiste">
+      <span class="leiste__titel">Zeigen</span>
+      <button class="knopf" data-tfilter="alle" aria-pressed="true">Alle</button>
+      <button class="knopf" data-tfilter="abschluss" aria-pressed="false">D/A/CH</button>
+      <button class="knopf" data-tfilter="international" aria-pressed="false">International</button>
+      <button class="knopf" data-tfilter="eigene" aria-pressed="false">Eigene</button>
+    </div>
+
+    <form id="neu-todo" class="reihe" style="max-width:560px;margin-bottom:22px">
+      <input class="eingabe" name="text" placeholder="Eigenes To-do" required>
+      <select class="eingabe" name="award" style="max-width:220px"></select>
+      <button class="knopf knopf--voll" type="submit">+</button>
+    </form>
+
+    <div class="brett" id="brett"></div>
+    <p class="klein dim" style="margin-top:16px">
+      Zettel per Drag &amp; Drop zwischen den Spalten ziehen. Auf dem Handy gehen die Pfeile.
+    </p>
+  </section>
+
+  <!-- MATERIAL -------------------------------------------------- -->
+  <section class="seite" id="seite-material">
+    <h2>Material</h2>
+    <p class="klein dim">Globale Checkliste über alle Einreichungen.</p>
+    <ul class="pruefliste" id="material" style="margin-top:16px"></ul>
+    <form id="neu-material" class="reihe" style="max-width:560px;margin-top:18px">
+      <input class="eingabe" name="text" placeholder="Weiteres Material" required>
+      <button class="knopf knopf--voll" type="submit">+</button>
+    </form>
+  </section>
+
+  <!-- DATEN ----------------------------------------------------- -->
+  <section class="seite" id="seite-daten">
+    <div class="spalten2">
+      <div>
+        <h2>Speichern</h2>
+        <p class="klein dim">
+          Grundlage ist <code>awards.json</code>. Status, Notizen, To-do-Spalten,
+          gelöschte und selbst angelegte Awards liegen im localStorage dieses Browsers.
+          Exportieren und die Datei im Repo ersetzen, damit nichts verloren geht.
+        </p>
+        <div class="leiste" style="margin-top:16px">
+          <button class="knopf knopf--voll" id="export">Als JSON exportieren</button>
+          <button class="knopf" id="neuladen">Daten neu laden</button>
+          <button class="knopf knopf--weg" id="zuruecksetzen">Eigene Angaben löschen</button>
+        </div>
+        <p class="klein dim" id="speicherinfo"></p>
+      </div>
+      <div>
+        <h2>Recherchestand</h2>
+        <p class="klein dim" id="standtext"></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="todos.js"></script>
+</body>
+</html>
