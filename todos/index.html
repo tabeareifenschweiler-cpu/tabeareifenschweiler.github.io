@@ -13,6 +13,10 @@
   <div class="wrap kopf__zeile">
     <h1>Awards &amp; Fristen</h1>
     <span class="klein dim" id="kopfinfo"></span>
+    <label class="schalter klein" title="Wettbewerbe, für die eine neue Arbeit entstehen muss">
+      <input type="checkbox" id="briefschalter">
+      <span>Wettbewerbe mit eigener Aufgabe einblenden (<span id="briefzahl">0</span>)</span>
+    </label>
   </div>
 </header>
 
@@ -31,10 +35,10 @@
   <!-- ÜBERSICHT ------------------------------------------------- -->
   <section class="seite aktiv" id="seite-uebersicht">
     <div class="leiste">
-      <span class="leiste__titel">Kategorie</span>
-      <button class="knopf" data-bereich="alle" aria-pressed="true">Alle</button>
-      <button class="knopf" data-bereich="abschluss" aria-pressed="false">Abschlussarbeitspreise D/A/CH</button>
-      <button class="knopf" data-bereich="international" aria-pressed="false">Internationale Studiwettbewerbe</button>
+      <span class="leiste__titel">Region</span>
+      <button class="knopf" data-raum="alle" aria-pressed="true">Alle</button>
+      <button class="knopf" data-raum="dach" aria-pressed="false">D/A/CH</button>
+      <button class="knopf" data-raum="international" aria-pressed="false">International</button>
     </div>
     <div class="leiste">
       <span class="leiste__titel">Status</span>
@@ -58,10 +62,16 @@
         <label class="feld"><span>Name</span><input name="name" required></label>
         <label class="feld"><span>Veranstalter</span><input name="veranstalter"></label>
         <label class="feld"><span>Website</span><input name="url" type="url" placeholder="https://"></label>
-        <label class="feld"><span>Kategorie</span>
+        <label class="feld"><span>Art</span>
           <select name="bereich">
-            <option value="abschluss">Abschlussarbeitspreise D/A/CH</option>
-            <option value="international">Internationale Studiwettbewerbe</option>
+            <option value="arbeit">Bachelorarbeit einreichen</option>
+            <option value="brief">Wettbewerb mit eigener Aufgabe</option>
+          </select>
+        </label>
+        <label class="feld"><span>Region</span>
+          <select name="raum">
+            <option value="dach">D/A/CH</option>
+            <option value="international">International</option>
           </select>
         </label>
         <label class="feld"><span>Deadline</span><input name="deadline" type="date" required></label>
@@ -96,8 +106,8 @@
     <div class="leiste">
       <span class="leiste__titel">Zeigen</span>
       <button class="knopf" data-tfilter="alle" aria-pressed="true">Alle</button>
-      <button class="knopf" data-tfilter="abschluss" aria-pressed="false">D/A/CH</button>
-      <button class="knopf" data-tfilter="international" aria-pressed="false">International</button>
+      <button class="knopf" data-tfilter="arbeit" aria-pressed="false">Bachelorarbeit</button>
+      <button class="knopf" data-tfilter="brief" aria-pressed="false">Eigene Aufgabe</button>
       <button class="knopf" data-tfilter="eigene" aria-pressed="false">Eigene</button>
     </div>
 

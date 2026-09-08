@@ -27,8 +27,8 @@
     anmeldung: 'Anmeldeschluss', nominierung: 'Nominierungsschluss', brief: 'Brief-Abgabe'
   };
   const BEREICH_TITEL = {
-    abschluss: 'Abschlussarbeitspreise D/A/CH',
-    international: 'Internationale Studiwettbewerbe'
+    arbeit: 'Bachelorarbeit einreichen',
+    brief:  'Eigene Aufgabe'
   };
 
   let basis = null;
@@ -36,8 +36,8 @@
   let awards = [];                 // sichtbar, Basis + eigene, ohne gelöschte
   let alleAwards = [];             // inklusive gelöschter
 
-  let fBereich = 'alle';
-  let fStatus  = 'alle';
+  let fRaum   = 'alle';
+  let fStatus = 'alle';
   let fTodo    = 'alle';
   let kalMonat = new Date(HEUTE.getFullYear(), HEUTE.getMonth(), 1);
   let aufgeklappt = null;
@@ -63,7 +63,7 @@
 
   /* --- Speicher --------------------------------------------- */
   function ladeOverlay() {
-    const leer = { awards:{}, material:{}, eigene:[], eigeneTodos:[], geloescht:[], eigenesMaterial:[], gespeichert:null };
+    const leer = { awards:{}, material:{}, eigene:[], eigeneTodos:[], geloescht:[], eigenesMaterial:[], zeigeBriefs:false, gespeichert:null };
     try {
       const o = JSON.parse(localStorage.getItem(KEY));
       return Object.assign(leer, o || {});
@@ -104,7 +104,10 @@
         })
       });
     });
-    awards = alleAwards.filter(a => !a.geloescht);
+    // Brief-Wettbewerbe sind global ausgeblendet, bis sie eingeschaltet werden.
+    // Das wirkt auf Übersicht, Kalender und To-do-Brett gleichzeitig.
+    awards = alleAwards.filter(a => !a.geloescht)
+                       .filter(a => overlay.zeigeBriefs || a.bereich !== 'brief');
   }
 
   /* --- Eignungsprüfung -------------------------------------- */
@@ -124,6 +127,8 @@
     if (a.auftrag_vorausgesetzt)           out.push({ warn:true, text:'Setzt ein Auftragsverhältnis voraus. Eine freie Abschlussarbeit fällt hier meist raus.' });
     if (a.brief_vorausgesetzt)             out.push({ warn:true, text:'Nur Einreichungen auf einen gesetzten Brief. Die Bachelorarbeit passt nicht direkt.' });
     if (a.immatrikulation_stichtag)        out.push({ warn:true, text:`Immatrikulation am ${fmt(a.immatrikulation_stichtag)} vorausgesetzt.` });
+    if (a.landesbezug)                     out.push({ warn:true, text:`Landesbezug zu ${a.landesbezug} vorausgesetzt – die HdM liegt in Baden-Württemberg. Fällt damit raus.` });
+    if (a.objekt_einsenden)                out.push({ warn:true, text:'Das Original soll zur Jurysitzung geschickt werden. Bei einer begehbaren Ausstellung vorher klären, ob eine Station oder eine Dokumentation reicht.' });
     if (a.umsetzung_gefordert === 'konzept' && p.umsetzung === 'gebaut')
       out.push({ warn:true, text:'Zielt auf noch nicht realisierte Konzepte. Die Ausstellung ist gebaut und gezeigt – Zulässigkeit prüfen.' });
     if (a.kosten_bei_gewinn && !/^keine/i.test(a.kosten_bei_gewinn))
@@ -150,7 +155,7 @@
   /* --- Übersicht -------------------------------------------- */
   function sichtbareAwards() {
     return awards
-      .filter(a => fBereich === 'alle' || a.bereich === fBereich)
+      .filter(a => fRaum === 'alle' || a.raum === fRaum)
       .filter(a => fStatus  === 'alle' || a.status  === fStatus)
       .sort((x,y) => {
         const nx = naechsteFrist(x), ny = naechsteFrist(y);
@@ -180,6 +185,7 @@
           <span class="karte__name">${esc(a.name)}
             <span class="karte__veranstalter">${esc(a.veranstalter||'')}</span>
           </span>
+          ${a.bereich==='brief' ? '<span class="marke marke--brief">eigene Aufgabe</span>' : ''}
           <span class="marke ${a.status==='gewonnen'?'marke--gut':(a.status!=='geplant'?'marke--aktiv':'')}">${esc(a.status)}</span>
           <span class="marke">${fertig}/${a.todos.length} To-dos</span>
           <span class="karte__frist">
@@ -374,8 +380,8 @@
     document.querySelectorAll('[data-zeige]').forEach(b => b.addEventListener('click', e => {
       e.preventDefault();
       aufgeklappt = b.dataset.zeige;
-      fBereich = 'alle'; fStatus = 'alle';
-      document.querySelectorAll('[data-bereich]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.bereich==='alle')));
+      fRaum = 'alle'; fStatus = 'alle';
+      document.querySelectorAll('[data-raum]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.raum==='alle')));
       document.querySelectorAll('[data-status]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.status==='alle')));
       zeigeSeite('uebersicht');
       zeichneListe();
@@ -396,7 +402,7 @@
     return out.filter(t =>
       fTodo === 'alle' ? true :
       fTodo === 'eigene' ? (t.eigen || t.awardId === null) :
-      t.bereich === fTodo);
+      t.bereich === fTodo);   // 'arbeit' oder 'brief'
   }
 
   function setzeZustand(awardId, text, zustand) {
@@ -505,7 +511,11 @@
 
   function zeichneAlles() {
     zeichneListe(); zeichnePapierkorb(); zeichneKalender(); zeichneBrett();
-    el('kopfinfo').textContent = awards.length + ' Awards · ' + alleTermine().filter(t => tage(t.d.datum) >= 0).length + ' offene Fristen';
+    const briefs = alleAwards.filter(a => !a.geloescht && a.bereich === 'brief').length;
+    el('briefschalter').checked = !!overlay.zeigeBriefs;
+    el('briefzahl').textContent = briefs;
+    el('kopfinfo').textContent = awards.length + (awards.length===1?' Award · ':' Awards · ') +
+      alleTermine().filter(t => tage(t.d.datum) >= 0).length + ' offene Fristen';
   }
 
   /* --- Export ----------------------------------------------- */
@@ -547,11 +557,17 @@
     const b = e.target.closest('button'); if (b) zeigeSeite(b.dataset.seite);
   });
 
-  document.querySelectorAll('[data-bereich]').forEach(b => b.addEventListener('click', () => {
-    fBereich = b.dataset.bereich;
-    document.querySelectorAll('[data-bereich]').forEach(x => x.setAttribute('aria-pressed', String(x===b)));
+  document.querySelectorAll('[data-raum]').forEach(b => b.addEventListener('click', () => {
+    fRaum = b.dataset.raum;
+    document.querySelectorAll('[data-raum]').forEach(x => x.setAttribute('aria-pressed', String(x===b)));
     zeichneListe();
   }));
+
+  // Globaler Schalter für die Brief-Wettbewerbe
+  el('briefschalter').addEventListener('change', e => {
+    overlay.zeigeBriefs = e.target.checked;
+    sichern(); mischen(); zeichneAlles();
+  });
   document.querySelectorAll('[data-status]').forEach(b => b.addEventListener('click', () => {
     fStatus = b.dataset.status;
     document.querySelectorAll('[data-status]').forEach(x => x.setAttribute('aria-pressed', String(x===b)));
@@ -573,7 +589,7 @@
     const name = String(f.get('name')).trim();
     const id = 'eigen-' + name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '-' + Date.now().toString(36);
     overlay.eigene.push({
-      id, bereich: f.get('bereich'), name,
+      id, bereich: f.get('bereich'), raum: f.get('raum') || 'international', name,
       veranstalter: String(f.get('veranstalter')||'').trim(),
       url: String(f.get('url')||'').trim(),
       kategorie: '', einreichkategorie: '', region: '',

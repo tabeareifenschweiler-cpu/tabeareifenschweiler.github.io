@@ -1,8 +1,12 @@
 {
   "meta": {
     "version": 2,
-    "recherche_stand": "2026-09-04",
-    "hinweis": "Deadlines mit \"geschaetzt\": true sind aus dem Vorjahresrhythmus abgeleitet und noch nicht offiziell bestaetigt. Vor der Einreichung immer auf der Award-Seite nachpruefen."
+    "recherche_stand": "2026-09-08",
+    "hinweis": "Deadlines mit \"geschaetzt\": true sind aus dem Vorjahresrhythmus abgeleitet und noch nicht offiziell bestaetigt. Vor der Einreichung immer auf der Award-Seite nachpruefen.",
+    "kategorien": {
+      "arbeit": "Awards, bei denen die Bachelorarbeit eingereicht wird",
+      "brief": "Wettbewerbe mit eigener Aufgabe – dafür entsteht eine neue Arbeit"
+    }
   },
   "profil": {
     "titel": "Stell dir vor, die Stadt funktioniert. Reibungslos für dich? Für andere nicht.",
@@ -133,7 +137,7 @@
   "awards": [
     {
       "id": "gdg-2027",
-      "bereich": "abschluss",
+      "bereich": "arbeit",
       "name": "German Design Graduates 2027",
       "veranstalter": "German Design Graduates e. V.",
       "url": "https://germandesigngraduates.com",
@@ -195,11 +199,12 @@
         "Bildstrecke der Arbeit, Hauptbild zuerst",
         "Angaben zu Hochschule, Betreuung und Abschlussdatum",
         "Genaues Format erst mit dem Call 2027 – noch prüfen"
-      ]
+      ],
+      "raum": "dach"
     },
     {
       "id": "adc-talent-2027",
-      "bereich": "abschluss",
+      "bereich": "arbeit",
       "name": "ADC Talent Award 2027",
       "veranstalter": "Art Directors Club für Deutschland",
       "url": "https://www.adc.de/talent-award/",
@@ -267,11 +272,12 @@
         "Case-Video, wenn vorhanden",
         "Angabe von Hochschule und Betreuung",
         "Pro Kategorie eine eigene Einreichung mit eigener Gebühr"
-      ]
+      ],
+      "raum": "dach"
     },
     {
       "id": "mia-seeger-2028",
-      "bereich": "abschluss",
+      "bereich": "arbeit",
       "name": "Mia Seeger Preis 2028",
       "veranstalter": "Mia Seeger Stiftung / Design Center Baden-Württemberg",
       "url": "https://www.mia-seeger.de",
@@ -328,11 +334,12 @@
         "Fotos der Arbeit",
         "Begründung des gesellschaftlichen Beitrags – hier zählt der Text mehr als die Bilder",
         "Genaue Vorgaben mit der nächsten Ausschreibung – noch prüfen"
-      ]
+      ],
+      "raum": "dach"
     },
     {
       "id": "focus-open-2027",
-      "bereich": "abschluss",
+      "bereich": "arbeit",
       "name": "Focus Open 2027 – Internationaler Designpreis Baden-Württemberg",
       "veranstalter": "Design Center Baden-Württemberg",
       "url": "https://design-center.de/de/site/focusopen",
@@ -388,11 +395,12 @@
         "Bildmaterial und Projekttext",
         "Bei Nominierung häufig Anlieferung des physischen Objekts zur Jurysitzung – bei einer Ausstellung vorher klären, was das heißt",
         "Kosten für Ausstellung und Katalog im Gewinnfall – noch prüfen"
-      ]
+      ],
+      "raum": "dach"
     },
     {
       "id": "gda-newcomer-2028",
-      "bereich": "abschluss",
+      "bereich": "arbeit",
       "name": "German Design Award Newcomer 2028",
       "veranstalter": "German Design Council / Rat für Formgebung",
       "url": "https://www.german-design-award.com",
@@ -443,11 +451,12 @@
         "Portfolio der eigenen Arbeiten, nicht nur ein einzelnes Projekt",
         "Lebenslauf und Kurzbio",
         "Details erst nach erfolgter Nominierung – noch prüfen"
-      ]
+      ],
+      "raum": "dach"
     },
     {
       "id": "reddot-concept-2027",
-      "bereich": "abschluss",
+      "bereich": "arbeit",
       "name": "Red Dot Award: Design Concept 2027",
       "veranstalter": "Red Dot GmbH & Co. KG",
       "url": "https://www.red-dot.org/design-concept",
@@ -503,11 +512,12 @@
         "Bildmaterial in hoher Auflösung",
         "Video optional",
         "Gebührenordnung vor dem Absenden komplett durchlesen – noch prüfen"
-      ]
+      ],
+      "raum": "dach"
     },
     {
       "id": "if-student-2027",
-      "bereich": "international",
+      "bereich": "arbeit",
       "name": "iF Design Student Award 2027",
       "veranstalter": "iF International Forum Design GmbH",
       "url": "https://ifdesign.com/en/if-design-student-award",
@@ -576,11 +586,12 @@
         "Zuordnung zu genau einem SDG",
         "Immatrikulationsnachweis",
         "Exakte Formatvorgaben auf ifdesign.com – noch prüfen"
-      ]
+      ],
+      "raum": "international"
     },
     {
       "id": "ux-design-awards-spring-2027",
-      "bereich": "international",
+      "bereich": "arbeit",
       "name": "UX Design Awards Spring 2027",
       "veranstalter": "International Design Center Berlin",
       "url": "https://ux-design-awards.com/enter/dates",
@@ -643,11 +654,12 @@
         "Jury-Fragebogen: Pitch, Nutzerproblem, Research, Designprozess, Innovation, Barrierefreiheit, sozialer Impact – je max. 500 Zeichen",
         "Empfohlen: Erklärvideo 60 bis 90 Sekunden",
         "Empfohlen: PDF zu Research und Prozess, bis 10 Seiten"
-      ]
+      ],
+      "raum": "international"
     },
     {
       "id": "young-ones-adc-2027",
-      "bereich": "international",
+      "bereich": "arbeit",
       "name": "Young Ones ADC 2027",
       "veranstalter": "The One Club for Creativity",
       "url": "https://youngones.org/categories/adc/",
@@ -721,11 +733,12 @@
         "Projektbeschreibung EN, sehr kurz",
         "Nachweis des Studierendenstatus",
         "Genaue Limits mit dem Call ab September – noch prüfen"
-      ]
+      ],
+      "raum": "international"
     },
     {
       "id": "young-ones-gotv-2027",
-      "bereich": "international",
+      "bereich": "brief",
       "name": "Young Ones Get Out The Vote 2027",
       "veranstalter": "The One Club for Creativity",
       "url": "https://getoutthevote.oneclub.org",
@@ -754,7 +767,7 @@
         "Public Space"
       ],
       "status": "geplant",
-      "notizen": "Die Ausgabe 2026 lief bis 31.08.2026 – knapp verpasst. Achtung: Brief-Wettbewerb zum Thema Wahlbeteiligung, die Bachelorarbeit passt nicht direkt. Nur sinnvoll, wenn eine eigene Arbeit auf den Brief hin entsteht.",
+      "notizen": "Gesetzter Brief zur Wahlbeteiligung. Du bist teilnahmeberechtigt, die Bachelorarbeit passt aber nicht auf den Brief – dafür entsteht eine eigene kleine Arbeit. Die Runde 2026 lief bis 31.08.2026.",
       "quelle": "oneclub.org – Ausgabe 2026: Frist 31.08.2026, Gewinner Mitte September, Grand Prize 5.000 USD, offen für Studierende weltweit ab 18, Abschluss nicht vor dem 13.03.2025.",
       "todos": [
         {
@@ -777,11 +790,12 @@
         "Kampagne als Print, Video, Social oder Aktivierung",
         "Kurze Erläuterung der Idee EN",
         "Achtung: die Bachelorarbeit erfüllt den Brief nicht – dafür müsste eine eigene Arbeit entstehen"
-      ]
+      ],
+      "raum": "international"
     },
     {
       "id": "core77-2027",
-      "bereich": "international",
+      "bereich": "arbeit",
       "name": "Core77 Design Awards 2027",
       "veranstalter": "Core77",
       "url": "https://designawards.core77.com",
@@ -850,11 +864,12 @@
         "Video optional",
         "Projekttext EN",
         "Genaue Formate mit dem Call – noch prüfen"
-      ]
+      ],
+      "raum": "international"
     },
     {
       "id": "creative-conscience-2027",
-      "bereich": "international",
+      "bereich": "arbeit",
       "name": "Creative Conscience Awards 2027",
       "veranstalter": "Creative Conscience (UK)",
       "url": "https://www.creative-conscience.org.uk/awards/",
@@ -914,11 +929,12 @@
         "Bildmaterial",
         "Video optional",
         "Zuordnung zu einem Impact Theme"
-      ]
+      ],
+      "raum": "international"
     },
     {
       "id": "prix-ars-2027",
-      "bereich": "international",
+      "bereich": "arbeit",
       "name": "Prix Ars Electronica 2027",
       "veranstalter": "Ars Electronica Linz",
       "url": "https://ars.electronica.art/prix/en/opencall/",
@@ -976,58 +992,317 @@
         "Bildmaterial der Installation im Betrieb",
         "Technische Beschreibung des Aufbaus",
         "Künstlerische Vita"
-      ]
+      ],
+      "raum": "international"
+    },
+    {
+      "id": "hessen-universelles-design-2028",
+      "bereich": "arbeit",
+      "name": "Hessischer Staatspreis Universelles Design 2028",
+      "veranstalter": "Hessisches Ministerium der Finanzen / Hessen Design e. V.",
+      "url": "https://universellesdesign.de/wettbewerb",
+      "kategorie": "Nachwuchspreis",
+      "einreichkategorie": "Nachwuchs – Universelles Design / Design for All",
+      "region": "bundesweit offen, Ausrichter Hessen",
+      "zeitfenster_von": "2025-01-01",
+      "zeitfenster_bis": "2028-08-31",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "abschluss_max_jahre": 3,
+      "deadlines": [
+        {
+          "typ": "regular",
+          "datum": "2026-08-14",
+          "geschaetzt": false
+        },
+        {
+          "typ": "regular",
+          "datum": "2028-08-14",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "kostenlos",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "objekt_einsenden": true,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Social Design",
+        "Public Space",
+        "Ausstellungsdesign",
+        "Designforschung"
+      ],
+      "status": "geplant",
+      "notizen": "Trotz des Namens bundesweit offen – der Landesbezug gilt hier nicht. Die Runde 2026 lief bis 14.08.2026, das war knapp nach deiner Veröffentlichung und ist durch. Turnus sieht nach alle zwei Jahre aus (2020, 2022, 2024, 2026), nächste Runde also vermutlich 2028.",
+      "quelle": "universellesdesign.de und german-design-council.de – Runde 2026: Anmeldung ab 13.04.2026, Frist 14.08.2026, Nachwuchspreis mit 7.000 EUR dotiert, Teilnahme kostenlos, Verleihung November 2026 in Frankfurt. Nachwuchs: Studierende und Absolvent:innen bundesweit, Abschluss max. drei Jahre alt.",
+      "preis": "Nachwuchspreis mit insgesamt 7.000 EUR dotiert, Urkunde, Verleihung durch die Landesregierung in Frankfurt. Für Studierende zusätzlich ein Mentoring-Programm von Hessen Design e. V.",
+      "teilnahmebedingungen": [
+        "Bundesweit offen – Studierende und Absolvent:innen aus gestaltungsnahen Studiengängen, kein Hessenbezug nötig.",
+        "Abschluss darf höchstens drei Jahre zurückliegen – für dich also bis Sommer 2029.",
+        "Gruppenarbeiten sind zugelassen.",
+        "Teilnahme ist kostenlos.",
+        "Thema ist Design for All: inklusive, nachhaltige, für möglichst viele nutzbare Gestaltung.",
+        "Achtung: Originale sollen zur Jurysitzung nach Frankfurt geschickt werden – bei einer begehbaren Ausstellung vorher klären, was das konkret heißt."
+      ],
+      "einreichung": [
+        "Anmeldung über das Portal My Design Council",
+        "Projektbeschreibung mit Maßangaben",
+        "Fotos des Projekts",
+        "Fragebogen der Jury ausfüllen",
+        "Originalobjekt zur Jurysitzung nach Frankfurt – für diese Arbeit vorab klären, ob eine Station oder eine Dokumentation reicht"
+      ],
+      "todos": [
+        {
+          "text": "Bei Hessen Design e. V. nachfragen, wann die nächste Runde ausgeschrieben wird",
+          "zustand": "offen"
+        },
+        {
+          "text": "Klären, ob statt des Originals eine Station oder eine Dokumentation zur Jury reichen kann",
+          "zustand": "offen"
+        },
+        {
+          "text": "Argumentation schreiben: Raumaneignung als Frage von Design for All, nicht nur als Genderthema",
+          "zustand": "offen"
+        }
+      ],
+      "raum": "dach"
     },
     {
       "id": "dandad-new-blood-2027",
-      "bereich": "international",
+      "bereich": "brief",
+      "raum": "international",
       "name": "D&AD New Blood Awards 2027",
       "veranstalter": "D&AD",
-      "url": "https://www.dandad.org/awards/new-blood-awards/",
-      "kategorie": "Student",
-      "einreichkategorie": "gesetzter Brief",
-      "region": "international",
+      "url": "https://www.dandad.org/awards/new-blood-awards",
+      "kategorie": "Brief-Wettbewerb",
+      "einreichkategorie": "einer der Jahresbriefs",
+      "region": "weltweit",
       "zeitfenster_von": "2026-09-01",
       "zeitfenster_bis": "2027-03-31",
       "zeitfenster_bezug": "veroeffentlichung",
       "deadlines": [
         {
-          "typ": "regular",
+          "typ": "brief",
           "datum": "2027-03-18",
           "geschaetzt": true
         }
       ],
-      "kosten": "ca. 15 GBP pro Einreichung, per Entrant-Survey auf 0 reduzierbar",
+      "kosten": "ca. 15 GBP pro Einreichung, über den Entrant-Survey auf 0 reduzierbar",
       "kosten_bei_gewinn": "keine",
       "hochschule_muss_angemeldet_sein": false,
       "auftrag_vorausgesetzt": false,
       "brief_vorausgesetzt": true,
-      "immatrikulation_stichtag": "2027-01-01",
       "umsetzung_gefordert": "egal",
       "passende_disziplinen": [
         "Kommunikationsdesign",
-        "Experience Design"
+        "Experience Design",
+        "Social Design"
       ],
       "status": "geplant",
-      "notizen": "Nur gesetzte Briefs von Partnerunternehmen – eine freie Bachelorarbeit ist nicht einreichbar. Außerdem Immatrikulation am 01.01. des Award-Jahres nötig. Steht hier bewusst als geprüftes Nein.",
-      "quelle": "dandad.org – New Blood 2026: 15 GBP Gebühr, Voucher über Entrant-Survey, Immatrikulation am 01.01.2026 Voraussetzung, Einreichung nur auf gesetzte Briefs.",
-      "todos": [
-        {
-          "text": "Entscheidung: nur relevant, wenn ich einen Brief separat bearbeite",
-          "zustand": "offen"
-        }
-      ],
+      "notizen": "Korrektur: du bist teilnahmeberechtigt. New Blood ist ausdrücklich offen für Studierende, frisch Graduierte und Berufseinsteiger:innen weltweit – Grenze ist höchstens ein Jahr bezahlte Erfahrung in der Kreativbranche. Als Nicht-Studierende brauchst du auch keine betreuende Person. Die Briefs kommen jedes Jahr neu von Partnerunternehmen.",
+      "quelle": "dandad.org/awards/new-blood-awards und deren FAQ – offen für Studierende, recent graduates und emerging creatives weltweit; max. ein Jahr bezahlte Erfahrung; Studierende brauchen eine betreuende Person, Nicht-Studierende nicht; Einreichung immer als Antwort auf einen der Jahresbriefs; Gebühr über den Entrant-Survey auf null reduzierbar. Termin 2027 aus dem Vorjahresrhythmus.",
       "preis": "New Blood Pencil in Wood, Graphite, Yellow oder Black. Zugang zur New Blood Academy.",
       "teilnahmebedingungen": [
-        "Einreichung ausschließlich auf einen der gesetzten Briefs von Partnerunternehmen.",
-        "Immatrikulation am 01.01. des Award-Jahres vorausgesetzt.",
-        "Gebühr rund 15 GBP, über den Entrant-Survey auf null reduzierbar.",
-        "Eine freie Bachelorarbeit ist nicht einreichbar."
+        "Offen für Studierende, frisch Graduierte und Berufseinsteiger:innen weltweit.",
+        "Höchstens ein Jahr bezahlte Erfahrung in der Kreativbranche.",
+        "Als Nicht-Studierende brauchst du keine betreuende Person.",
+        "Einzeln oder im Team bis fünf Personen.",
+        "Einreichung nur als Antwort auf einen der Jahresbriefs, beliebig viele Briefs möglich.",
+        "Gebühr über den Entrant-Survey auf null reduzierbar."
       ],
       "einreichung": [
         "Antwort auf einen konkreten Brief",
         "Präsentation als PDF plus Bildmaterial",
-        "Nur relevant, wenn du einen Brief separat bearbeitest"
+        "Kurze Begründung der Idee EN",
+        "Genaue Formatvorgaben mit dem Brief-Release – noch prüfen"
+      ],
+      "todos": [
+        {
+          "text": "Briefs 2027 durchsehen, sobald sie erscheinen",
+          "zustand": "offen"
+        },
+        {
+          "text": "Entrant-Survey ausfüllen, dann kostet die Einreichung nichts",
+          "zustand": "offen"
+        }
+      ]
+    },
+    {
+      "id": "young-ones-briefs-2027",
+      "bereich": "brief",
+      "raum": "international",
+      "name": "Young Ones One Show Client Briefs 2027",
+      "veranstalter": "The One Club for Creativity",
+      "url": "https://youngones.org/briefs-request-download/",
+      "kategorie": "Brief-Wettbewerb",
+      "einreichkategorie": "Client Brief nach Wahl",
+      "region": "weltweit",
+      "zeitfenster_von": "2026-09-01",
+      "zeitfenster_bis": "2027-03-31",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "early_bird",
+          "datum": "2026-12-04",
+          "geschaetzt": true
+        },
+        {
+          "typ": "brief",
+          "datum": "2027-03-08",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "Gebühr pro Einreichung, Early Bird günstiger",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": true,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Kommunikationsdesign",
+        "Experience Design",
+        "Social Design"
+      ],
+      "status": "geplant",
+      "notizen": "Läuft parallel zum Young Ones ADC, aber auf gesetzte Briefs von Sponsoren statt auf freie Arbeiten. Briefs stehen auf youngones.org zum Download.",
+      "quelle": "youngones.org und oneclub.org – Young Ones 2027 startet im September 2026 mit neuen Kategorien und neuen Brief-Sponsoren. Teilnahme für eingeschriebene und frisch graduierte Studierende. Termine aus dem Vorjahresrhythmus.",
+      "preis": "One Show Pencil, Aufnahme ins One Club Archiv.",
+      "teilnahmebedingungen": [
+        "Für eingeschriebene Studierende und frisch Graduierte weltweit.",
+        "Antwort auf einen der Client Briefs des Jahrgangs.",
+        "Gebühr pro Einreichung.",
+        "Briefs werden ab September 2026 veröffentlicht."
+      ],
+      "einreichung": [
+        "Kampagne oder Konzept als Antwort auf den Brief",
+        "Case-Video oder Präsentation EN",
+        "Bildmaterial",
+        "Nachweis des Studierenden- bzw. Absolventenstatus"
+      ],
+      "todos": [
+        {
+          "text": "Ab September 2026 Briefs herunterladen und durchsehen",
+          "zustand": "offen"
+        },
+        {
+          "text": "Prüfen, ob ein Brief zu Stadt, Raum oder Gleichstellung dabei ist",
+          "zustand": "offen"
+        }
+      ]
+    },
+    {
+      "id": "hochschulwettbewerb-2027",
+      "bereich": "brief",
+      "raum": "dach",
+      "name": "Hochschulwettbewerb Wissenschaft im Dialog 2027",
+      "veranstalter": "Wissenschaft im Dialog / BMBF",
+      "url": "https://www.hochschulwettbewerb.net/",
+      "kategorie": "Brief-Wettbewerb",
+      "einreichkategorie": "Wissenschaftskommunikation zum Wissenschaftsjahr",
+      "region": "Deutschland",
+      "zeitfenster_von": "2026-01-01",
+      "zeitfenster_bis": "2026-11-30",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "brief",
+          "datum": "2026-11-30",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "keine",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": true,
+      "umsetzung_gefordert": "konzept",
+      "passende_disziplinen": [
+        "Designforschung",
+        "Social Design",
+        "Public Space",
+        "Ausstellungsdesign"
+      ],
+      "status": "geplant",
+      "notizen": "Interessantester Brief-Wettbewerb der Liste: bis zu 15 Teams bekommen je 10.000 EUR, um ihre Kommunikationsidee tatsächlich umzusetzen. Eingereicht wird eine Projektidee, keine fertige Arbeit. Thema richtet sich nach dem Wissenschaftsjahr – für 2027 prüfen, welches es ist. Deine Methode Research through Design und die Ausstellungserfahrung sind dafür genau das richtige Fundament.",
+      "quelle": "wissenschaft-im-dialog.de und hochschulwettbewerb.net – jährlich seit 2007, richtet sich an Studierende, Promovierende und Postdocs aller Fachrichtungen; bis zu 15 Teams erhalten je 10.000 EUR plus Trainings; Ausschreibung 2026 lief bis 30.11.2025, Termin für 2027 entsprechend fortgeschrieben.",
+      "preis": "Bis zu 15 Teams erhalten je 10.000 EUR für die Umsetzung ihrer Idee, dazu Trainings und Workshops zur Wissenschaftskommunikation.",
+      "teilnahmebedingungen": [
+        "Studierende, Promovierende und Postdocs aller Fachrichtungen.",
+        "Thema orientiert sich am jeweiligen Wissenschaftsjahr.",
+        "Eingereicht wird eine Projektidee zur Wissenschaftskommunikation, nicht eine fertige Arbeit.",
+        "Teilnahme kostenlos.",
+        "Prüfen, ob der Status nach dem Bachelorabschluss noch zählt – noch prüfen"
+      ],
+      "einreichung": [
+        "Projektskizze der Kommunikationsidee",
+        "Bezug zum Thema des Wissenschaftsjahres",
+        "Kosten- und Zeitplan für die Umsetzung",
+        "Angaben zum Team und zur Hochschule"
+      ],
+      "todos": [
+        {
+          "text": "Nachsehen, welches Thema das Wissenschaftsjahr 2027 hat",
+          "zustand": "offen"
+        },
+        {
+          "text": "Klären, ob ich nach dem Bachelor noch teilnahmeberechtigt bin",
+          "zustand": "offen"
+        },
+        {
+          "text": "Frist Ende November 2026 im Blick behalten",
+          "zustand": "offen"
+        }
+      ]
+    },
+    {
+      "id": "kieler-woche-design-2028",
+      "bereich": "brief",
+      "raum": "dach",
+      "name": "Kieler-Woche-Design 2028",
+      "veranstalter": "Landeshauptstadt Kiel",
+      "url": "https://www.kieler-woche.de/de/service/design.php",
+      "kategorie": "Brief-Wettbewerb",
+      "einreichkategorie": "Erscheinungsbild der Kieler Woche",
+      "region": "offen",
+      "zeitfenster_von": "2026-01-01",
+      "zeitfenster_bis": "2027-12-31",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "brief",
+          "datum": "2027-09-30",
+          "geschaetzt": true
+        }
+      ],
+      "kosten": "keine",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": true,
+      "umsetzung_gefordert": "konzept",
+      "passende_disziplinen": [
+        "Kommunikationsdesign"
+      ],
+      "status": "geplant",
+      "notizen": "Klassischer offener Gestaltungswettbewerb mit klarer Aufgabe: das komplette Erscheinungsbild einer der größten Veranstaltungen Europas. Sehr sichtbar, wenn man gewinnt. Termin und Bedingungen für die nächste Runde prüfen.",
+      "quelle": "kieler-woche.de – das Kieler-Woche-Design wird regelmäßig ausgeschrieben. Konkrete Frist und Bedingungen der nächsten Runde nicht verifiziert.",
+      "preis": "Umsetzungshonorar und die gesamte Sichtbarkeit der Kieler Woche.",
+      "teilnahmebedingungen": [
+        "Offener Wettbewerb, Bedingungen je Ausschreibung.",
+        "Aufgabe ist das vollständige Erscheinungsbild einer Kieler Woche.",
+        "Frist und Teilnahmeberechtigung der nächsten Runde – noch prüfen"
+      ],
+      "einreichung": [
+        "Entwurf des Erscheinungsbilds",
+        "Anwendungen auf Plakat, Programm und weiteren Medien",
+        "Genaue Anforderungen mit der Ausschreibung – noch prüfen"
+      ],
+      "todos": [
+        {
+          "text": "Ausschreibungstermin auf kieler-woche.de nachsehen",
+          "zustand": "offen"
+        }
       ]
     }
   ]
