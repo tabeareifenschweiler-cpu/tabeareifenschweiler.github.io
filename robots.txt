@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /todos/
+Disallow: /Beobachtet/
+
+Sitemap: https://tabeareifenschweiler.de/sitemap.xml

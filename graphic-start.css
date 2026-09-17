@@ -416,6 +416,8 @@ html[lang="de"] #datenschutz { grid-column: 7 / span 5; }
   transform: scale(1.03) translate(var(--px, 0px), var(--py, 0px));
   will-change: transform;          /* Bewegung läuft im JS (Lerp), keine Transition */
 }
+/* Nur für Suchmaschinen/Screenreader (H1 auf der Startseite) */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 /* Kopf- und Fußzeile: Vektortext ist nicht markierbar, die Klickflächen liegen darüber */
 .chrome text, .chrome tspan { user-select: none; -webkit-user-select: none; }
 
