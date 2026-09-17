@@ -117,10 +117,8 @@ body { -webkit-font-smoothing: antialiased; }
   /* Ein Hauch Schatten über der Oberkante, damit der Stapel schon
      im Stillstand Tiefe hat. */
   filter: drop-shadow(0 -2px 3px rgba(18, 22, 30, .16));
-  /* Zurückfallen: langsamer, ohne Überschwingen (Papier setzt sich). */
-  transition:
-    transform 520ms cubic-bezier(.22, 1, .36, 1),
-    filter    380ms ease;
+  /* Zurückfallen: langsamer, ohne Überschwingen (Papier setzt sich).
+     Die transition steht unten beim Aufklappen (inkl. translate). */
 }
 
 /* Weiße Grundfläche in Ordnerform – liegt unter der Farbebene und
@@ -139,6 +137,20 @@ body { -webkit-font-smoothing: antialiased; }
   transition: opacity 380ms ease;
 }
 .folder--front .fdr-tex { opacity: var(--front-fade); }
+
+/* -------------------------------------------------------------
+   Aufklappen (graphic-start.js open/close): der angeklickte Ordner
+   steigt per Morph nach oben, der restliche Stapel sinkt gestaffelt
+   aus dem Bild (translate, getrennt vom Hover-transform), Kopfzeile
+   nach oben, Fußzeile nach unten. Rückweg: dieselben Übergänge.
+   ------------------------------------------------------------- */
+.folder { translate: 0 0; transition: transform 520ms cubic-bezier(.22, 1, .36, 1), filter 380ms ease, translate 600ms cubic-bezier(.5, 0, .3, 1) var(--exit-delay, 0ms); }
+.stage.is-open .folder:not(.is-active) { translate: 0 var(--exit-y, 1280px); filter: none; }
+.stage.is-open .folder.is-active { filter: none; }
+.chrome-top, .chrome-bottom { translate: 0 0; transition: translate 500ms cubic-bezier(.5, 0, .3, 1); }
+.stage.is-open .chrome-top    { translate: 0 -220px; }
+.stage.is-open .chrome-bottom { translate: 0  220px; }
+.stage.is-open .hot, .stage.is-open .lang--stage { pointer-events: none; }
 
 .folder--proj { cursor: pointer; }
 

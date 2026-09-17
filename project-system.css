@@ -30,7 +30,7 @@
   color: var(--ink);
   font-family: var(--ff-body);
   clip-path: inset(var(--clip-t, 0px) var(--clip-r, 0px) var(--clip-b, 0px) var(--clip-l, 0px));
-  transition: clip-path 620ms cubic-bezier(.22, 1, .36, 1);
+  transition: clip-path 350ms cubic-bezier(.2, .7, .2, 1);
 }
 .proj[hidden] { display: none; }
 .proj.is-expanded { clip-path: inset(0px); }
@@ -94,7 +94,20 @@ body.proj-open { overflow: hidden; }
 .pv-body {
   position: absolute; inset: var(--band-h) 0 0 0;
   background: #fff;                      /* Kontur kommt aus .pv-tab__line */
+  /* Das Blatt wird aus dem Ordner gezogen: kommt von unten hoch (is-tucked
+     = noch im Ordner), der Inhalt erscheint erst, wenn es steht. */
+  transition: transform 350ms cubic-bezier(.2, .7, .2, 1);
 }
+.proj--v2.is-tucked .pv-body { transform: translateY(100%); transition-duration: 300ms; transition-timing-function: cubic-bezier(.5, 0, .7, .4); }
+.pv-sheet { transition: opacity 220ms ease 300ms; }
+.proj--v2.is-tucked .pv-sheet { opacity: 0; transition-delay: 0ms; transition-duration: 120ms; }
+/* Solange das Blatt fährt, ist das Panel durchsichtig: oben bleibt der
+   hochgestiegene Ordner der Bühne sichtbar (gleiche Farbe, gleicher Reiter).
+   Erst wenn das Blatt steht, blenden Grund und weißer Reiter darüber ein. */
+.proj--v2 { transition: background-color 200ms ease 300ms; }
+.proj--v2.is-tucked { background-color: transparent; transition-delay: 0ms; }
+.pv-tab { transition: opacity 200ms ease 300ms; }
+.proj--v2.is-tucked .pv-tab { opacity: 0; transition-delay: 0ms; }
 .pv-sheet {
   position: absolute; top: 0; left: 50%; translate: -50% 0;
   width: var(--sheet-w); height: calc(var(--u) * 1080 - var(--band-h));

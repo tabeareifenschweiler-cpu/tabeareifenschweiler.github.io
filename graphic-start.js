@@ -17,9 +17,11 @@
 (() => {
   'use strict';
 
-  const OPEN_MS   = 720;
-  const CLOSE_MS  = 520;
-  const EXPAND_MS = 620;          /* muss zur transition in project-system.css passen */
+  const OPEN_MS   = 600;          /* Ordner steigt (Morph) */
+  const SHEET_MS  = 350;          /* Blatt wird herausgezogen – muss zu .pv-body in project-system.css passen */
+  const TUCK_MS   = 300;          /* Blatt zurück in den Ordner */
+  const CLOSE_MS  = 420;          /* Ordner sinkt zurück in den Stapel */
+  const EXPAND_MS = SHEET_MS;
 
   /* Ordner mit eigener Projektseite. Die Zielform wird nicht mehr als
      Delta hinterlegt, sondern beim Öffnen aus der aktuellen Form
@@ -99,6 +101,24 @@
      und Burger – deshalb hier kein Abbruch mehr; alle Schleifen unten
      laufen mit leerer Map einfach leer. */
 
+  /* Staffelung beim Absinken (hinten zuerst) und Kopf-/Fußzeile markieren */
+  ['garden', 'smears', 'modola', 'essperten', 'designschau', 'stelldirvor', 'front'].forEach((k, i) => {
+    const g = stage.querySelector(`.folder[data-folder="${k}"]`);
+    if (g) g.style.setProperty('--exit-delay', (i * 40) + 'ms');
+  });
+  /* (aus den Attributen gelesen, nicht per getBBox – die ausgeblendete
+     Sprachgruppe hat keine Layoutbox) */
+  const yOf = el => {
+    const t = el.getAttribute('transform'), m = t && t.match(/translate\(\s*[-\d.]+[\s,]+([-\d.]+)/);
+    if (m) return +m[1];
+    if (el.hasAttribute('y')) return +el.getAttribute('y');
+    const c = el.querySelector('[y], [transform]'); return c ? yOf(c) : NaN;
+  };
+  for (const el of stage.querySelectorAll('.svg-i18n > *')) {
+    const y = yOf(el); if (isNaN(y)) continue;
+    el.classList.add(y < 300 ? 'chrome-top' : 'chrome-bottom');
+  }
+
   /* ---------- Morph ---------- */
   const easeOutBack = t => { const s = 0.8, u = t - 1; return 1 + u * u * ((s + 1) * u + s); };
   const easeInCubic = t => t * t * t;
@@ -171,19 +191,30 @@
     document.body.classList.add('proj-open');
     f.panel.hidden = false;
     f.panel.setAttribute('aria-hidden', 'false');
-    if (f.panel.__pv) f.panel.__pv.reset();
 
     if (!animated || reduced.matches) {
       paint(f, 1);
+      f.panel.classList.remove('is-tucked');
       f.panel.classList.add('is-expanded');
+      if (f.panel.__pv) f.panel.__pv.reset();
       return;
     }
 
-    clipToStage(f.panel);
+    /* 1. Ordner steigt, der Rest sinkt, Kopfzeile fährt raus (CSS über
+          stage.is-open). Das Panel bleibt so lange unsichtbar. */
+    f.panel.hidden = true;
+    f.panel.classList.add('is-tucked');
     f.panel.classList.remove('is-expanded');
     animate(f, 0, 1, OPEN_MS, easeOutBack, () => {
-      requestAnimationFrame(() => f.panel.classList.add('is-expanded'));
-      timer = setTimeout(() => f.panel.focus({ preventScroll: true }), EXPAND_MS);
+      /* 2. Blatt aus dem Ordner ziehen: Panel durchsichtig einblenden
+            (der Ordner der Bühne bleibt sichtbar), dann Blatt hochfahren. */
+      clipToStage(f.panel);
+      f.panel.hidden = false;
+      if (f.panel.__pv) f.panel.__pv.reset();    /* misst den Pfeil – erst jetzt, sichtbar */
+      void f.panel.offsetHeight;                 /* Reflow, damit die Transition greift */
+      f.panel.classList.add('is-expanded');
+      f.panel.classList.remove('is-tucked');
+      timer = setTimeout(() => f.panel.focus({ preventScroll: true }), SHEET_MS + 250);
     });
   }
 
@@ -206,9 +237,16 @@
 
     if (!animated || reduced.matches) { paint(f, 0); f.panel.classList.remove('is-expanded'); done(); return; }
 
-    clipToStage(f.panel);                       /* Zielwerte für den Rückweg */
-    f.panel.classList.remove('is-expanded');    /* klappt zurück aufs Blatt */
-    timer = setTimeout(() => animate(f, 1, 0, CLOSE_MS, easeInCubic, done), EXPAND_MS * 0.7);
+    /* Rückweg: Blatt zurück in den Ordner, dann sinkt der Ordner in den
+       Stapel, während der Rest hochkommt und die Kopfzeile zurückfährt. */
+    clipToStage(f.panel);
+    f.panel.classList.add('is-tucked');
+    timer = setTimeout(() => {
+      f.panel.hidden = true;
+      f.panel.classList.remove('is-expanded');
+      stage.classList.remove('is-open');
+      animate(f, 1, 0, CLOSE_MS, easeInCubic, () => { f.g.classList.remove('is-active'); f.panel.hidden = true; f.g.focus?.(); });
+    }, TUCK_MS);
   }
 
   /* ---------- Routing ---------- */
@@ -342,10 +380,12 @@
     if (mobile) {
       const vbH = Math.round(1920 * innerHeight / innerWidth);
       svg.setAttribute('viewBox', `0 0 1920 ${vbH}`);
+      stage.style.setProperty('--exit-y', (vbH + 200) + 'px');   /* Absinkweg des Stapels */
       layoutMobile(vbH);
       mobileOn = vbH;
     } else if (mobileOn !== false) {
       svg.setAttribute('viewBox', VB_DESKTOP);
+      stage.style.setProperty('--exit-y', '1280px');
       layoutDesktop();
       mobileOn = false;
     }
