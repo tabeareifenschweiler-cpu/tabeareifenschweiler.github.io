@@ -59,12 +59,13 @@ body { -webkit-font-smoothing: antialiased; }
   overflow: hidden;
 }
 
-/* 16:9-Bühne, komplett sichtbar (contain): passt sich der kürzeren Achse an.
-   --u ist eine SVG-Nutzereinheit in px. Damit lässt sich HTML-Inhalt über der
-   Bühne exakt in SVG-Koordinaten bemaßen und skaliert mit der Komposition. */
-.stage { position: relative; aspect-ratio: 1920 / 1080; }
-@media (min-aspect-ratio: 16/9) { .stage { height: 100vh; width: auto;  --u: calc(100vh / 1080); } }
-@media (max-aspect-ratio: 16/9) { .stage { width: 100vw; height: auto; --u: calc(100vw / 1920); } }
+/* Bühne füllt den Viewport. Die Vorlage ist 1920 × 1080; bei anderen
+   Seitenverhältnissen setzt graphic-start.js den viewBox auf 1920 × H
+   (H = 1080 · Viewport-Höhe/Breite) und rechnet Ordnerstapel und Fußzeile
+   um: Kopfzeile bleibt oben, Fußzeile und Stapel hängen an der Unterkante.
+   --u ist eine SVG-Nutzereinheit in px – immer Breite/1920, damit die
+   Kopfzeile auf allen Seiten dieselbe Größe und Position hat. */
+.stage { position: relative; width: 100vw; height: 100vh; --u: calc(100vw / 1920); }
 
 .chrome { display: block; width: 100%; height: 100%; }
 
@@ -277,11 +278,7 @@ html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de
   .screen { align-items: stretch; }
   /* Bühne füllt den Viewport; das Seitenverhältnis setzt das JS über
      den viewBox-Wert, deshalb hier keine aspect-ratio mehr. */
-  .stage {
-    aspect-ratio: auto;
-    width: 100vw; height: 100dvh;
-    --u: calc(100vw / 1920);
-  }
+  .stage { width: 100vw; height: 100dvh; --u: calc(100vw / 1920); }
   .chrome { height: 100%; }
 
   /* Kopf- und Fußzeile aus dem SVG samt Klickflächen entfallen –
@@ -371,7 +368,7 @@ body.proj-open .m-nav { display: none; }
   padding-block: calc(var(--u) * 110) calc(var(--u) * 160);
   color: #05141d;
   font-family: 'Neue Haas Grotesk Display', system-ui, sans-serif;
-  font-size: max(15px, calc(var(--u) * 18));
+  font-size: clamp(15px, calc(var(--u) * 18), 21px);   /* Lesetext: nach oben gedeckelt (große Monitore) */
   line-height: 1.38;
 }
 .imp-col { grid-column: 2 / span 5; }
@@ -387,8 +384,8 @@ html[lang="de"] #datenschutz { grid-column: 7 / span 5; }
   font-family: 'IBM Plex Mono', ui-monospace, monospace;
   font-weight: 400; text-transform: uppercase; letter-spacing: .02em;
 }
-.imprint h1 { margin: 0 0 calc(var(--u) * 46); font-size: max(17px, calc(var(--u) * 23)); line-height: 1.2; }
-.imprint h2 { margin: calc(var(--u) * 44) 0 calc(var(--u) * 10); font-size: max(13px, calc(var(--u) * 18)); line-height: 1.3; }
+.imprint h1 { margin: 0 0 calc(var(--u) * 46); font-size: clamp(17px, calc(var(--u) * 23), 27px); line-height: 1.2; }
+.imprint h2 { margin: calc(var(--u) * 44) 0 calc(var(--u) * 10); font-size: clamp(13px, calc(var(--u) * 18), 21px); line-height: 1.3; }
 .imprint p  { margin: 0 0 calc(var(--u) * 14); }
 .imprint a  { color: inherit; text-decoration: underline; text-underline-offset: .18em; }
 .imprint a:hover { text-decoration-thickness: 2px; }

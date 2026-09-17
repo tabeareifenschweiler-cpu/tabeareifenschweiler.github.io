@@ -235,7 +235,7 @@
       f.g.focus?.();
     };
 
-    if (!animated || reduced.matches) { paint(f, 0); f.panel.classList.remove('is-expanded'); done(); return; }
+    if (!animated || reduced.matches) { paint(f, 0); f.panel.classList.remove('is-expanded'); done(); applyLayout(); return; }
 
     /* Rückweg: Blatt zurück in den Ordner, dann sinkt der Ordner in den
        Stapel, während der Rest hochkommt und die Kopfzeile zurückfährt. */
@@ -245,7 +245,10 @@
       f.panel.hidden = true;
       f.panel.classList.remove('is-expanded');
       stage.classList.remove('is-open');
-      animate(f, 1, 0, CLOSE_MS, easeInCubic, () => { f.g.classList.remove('is-active'); f.panel.hidden = true; f.g.focus?.(); });
+      animate(f, 1, 0, CLOSE_MS, easeInCubic, () => {
+        f.g.classList.remove('is-active'); f.panel.hidden = true; f.g.focus?.();
+        applyLayout();                          /* Fenster wurde evtl. bei offenem Projekt verändert */
+      });
     }, TUCK_MS);
   }
 
@@ -334,9 +337,6 @@
     };
   }).filter(Boolean);
 
-  const VB_DESKTOP = '0 0 1920 1080';
-  let mobileOn = null;
-
   function layoutMobile(vbH) {
     /* Kopfzeile oben frei lassen, unten etwas Luft für den Deckel. */
     const top = 280, tail = 0.16 * vbH;   /* 280: Abstand zur Kopfzeile */
@@ -358,37 +358,95 @@
       }
       const str = pts.join(' ');
       for (const p of f.polys) p.setAttribute('points', str);
-      if (f.logo) f.logo.style.transform = `translateY(${(tabTop - yTab).toFixed(2)}px)`;
+      if (f.key === 'front' && coverImg) {
+        coverImg.setAttribute('transform', `translate(-1 ${tabTop.toFixed(2)}) scale(1.0562)`);
+        cover.style.transformOrigin = `960px ${((tabTop + vbH) / 2).toFixed(1)}px`;
+      }
+      /* Logo wandert mit dem Reiter. Beim Deckel ist die Gruppe das Foto samt
+         Clip – der Clip ist schon über die Polygone umgerechnet, das Foto
+         wird unten eigens gesetzt; die Gruppe darf nicht zusätzlich wandern. */
+      if (f.logo && f.key !== 'front') f.logo.style.transform = `translateY(${(tabTop - yTab).toFixed(2)}px)`;
     });
   }
 
-  function layoutDesktop() {
+  /* ---------- Desktop: Bühne füllt jedes Seitenverhältnis ----------
+     viewBox 1920 × vbH. Kopfzeile bleibt, Fußzeile (Vektortext und
+     Klickflächen) und Stapel hängen an der Unterkante:
+       vbH ≥ 1080  Stapel rutscht um (vbH − 1080) nach unten, Register
+                   bleiben exakt wie in der Vorlage (16:10, 4:3 …)
+       vbH < 1080  Registerschritte werden ab dem obersten Reiter
+                   proportional gestaucht, Reiterhöhe bleibt (21:9 …)
+     Alle Werte werden aus den Vorlagenkoordinaten (base) gerechnet,
+     nie aus dem vorherigen Zustand – so bleibt es bei jedem Resize exakt. */
+  const Y_TOP = Math.min(...stack.map(f => Math.min(...f.base.filter((_, n) => n % 2))));   /* oberster Reiter (227.37) */
+  const chromeBottom = [...stage.querySelectorAll('.chrome-bottom')].map(el => ({
+    el, t: el.getAttribute('transform'), y: el.hasAttribute('y') ? +el.getAttribute('y') : null
+  }));
+  /* Klickflächen: aus den Prozentwerten der Vorlage (1920 × 1080) in Einheiten */
+  const hots = [...stage.querySelectorAll('.hot')].map(a => {
+    const st = a.style, pc = k => parseFloat(st[k]) || 0;
+    return { a, x: pc('left') * 19.2, y: pc('top') * 10.8, w: pc('width') * 19.2, h: pc('height') * 10.8, foot: a.classList.contains('foot') };
+  });
+  const cover = stage.querySelector('.front-photo');
+  const coverImg = cover && cover.querySelector('image');
+
+  function layoutFit(vbH) {
+    const shift = Math.max(0, vbH - 1080);
+    const k = vbH >= 1080 ? 1 : (vbH - Y_TOP) / (1080 - Y_TOP);
+    let frontTop = 491.3;
     stack.forEach(f => {
-      const str = f.base.join(' ');
+      const v = f.base, ys = v.filter((_, n) => n % 2);
+      const yTab = Math.min(...ys), yBody = [...new Set(ys)].sort((a, b) => a - b)[1];
+      const tabTop = Y_TOP + (yTab - Y_TOP) * k + shift;
+      const bodyTop = tabTop + (yBody - yTab);                  /* Reiterhöhe wie in der Vorlage */
+      if (f.key === 'front') frontTop = tabTop;
+      const pts = new Array(v.length);
+      for (let n = 0; n < v.length; n += 2) {
+        pts[n] = v[n];
+        pts[n + 1] = v[n + 1] === yTab ? tabTop : v[n + 1] === yBody ? bodyTop : vbH + 1;
+      }
+      const str = pts.map(x => +x.toFixed(2)).join(' ');
       for (const p of f.polys) p.setAttribute('points', str);
-      if (f.logo) f.logo.style.transform = '';
+      /* Logo wandert mit dem Reiter. Beim Deckel ist die Gruppe das Foto samt
+         Clip – der Clip ist schon über die Polygone umgerechnet, das Foto
+         wird unten eigens gesetzt; die Gruppe darf nicht zusätzlich wandern. */
+      if (f.logo && f.key !== 'front') f.logo.style.transform = `translateY(${(tabTop - yTab).toFixed(2)}px)`;
     });
+    /* Deckelfoto: Oberkante auf den Deckelreiter, Parallax-Drehpunkt in die Mitte */
+    if (coverImg) {
+      coverImg.setAttribute('transform', `translate(-1 ${frontTop.toFixed(2)}) scale(1.0562)`);
+      cover.style.transformOrigin = `960px ${((frontTop + vbH) / 2).toFixed(1)}px`;
+    }
+    /* Fußzeile: Vektortext und Klickflächen um (vbH − 1080) versetzen */
+    const dy = vbH - 1080;
+    for (const c of chromeBottom) {
+      if (c.t) c.el.setAttribute('transform', c.t.replace(/translate\(\s*([-\d.]+)[\s,]+([-\d.]+)\s*\)/, (m, x, y) => `translate(${x} ${(+y + dy).toFixed(4)})`));
+      else if (c.y !== null) c.el.setAttribute('y', (c.y + dy).toFixed(2));
+    }
+    for (const h of hots) {
+      const y = h.foot ? h.y + dy : h.y;
+      h.a.style.left = `calc(var(--u) * ${h.x.toFixed(3)})`;
+      h.a.style.top = `calc(var(--u) * ${y.toFixed(3)})`;
+      h.a.style.width = `calc(var(--u) * ${h.w.toFixed(3)})`;
+      h.a.style.height = `calc(var(--u) * ${h.h.toFixed(3)})`;
+    }
   }
 
+  let lastVbH = null;
   function applyLayout() {
     if (current) return;                       /* offenes Projekt nicht anfassen */
     /* Ohne gültiges Viewport (versteckter Tab, Druckvorschau) nichts
        rechnen – sonst landet NaN im viewBox und in allen Polygonen. */
     if (!(innerWidth > 0 && innerHeight > 0)) return;
     if (!stack.length) return;                 /* Seiten ohne Stapel (Impressum) */
+    const vbH = Math.round(1920 * innerHeight / innerWidth);
     const mobile = innerWidth <= 767;
-    if (mobile) {
-      const vbH = Math.round(1920 * innerHeight / innerWidth);
-      svg.setAttribute('viewBox', `0 0 1920 ${vbH}`);
-      stage.style.setProperty('--exit-y', (vbH + 200) + 'px');   /* Absinkweg des Stapels */
-      layoutMobile(vbH);
-      mobileOn = vbH;
-    } else if (mobileOn !== false) {
-      svg.setAttribute('viewBox', VB_DESKTOP);
-      stage.style.setProperty('--exit-y', '1280px');
-      layoutDesktop();
-      mobileOn = false;
-    }
+    const key = (mobile ? 'm' : 'd') + vbH;
+    if (key === lastVbH) return;
+    lastVbH = key;
+    svg.setAttribute('viewBox', `0 0 1920 ${vbH}`);
+    stage.style.setProperty('--exit-y', (vbH + 200) + 'px');   /* Absinkweg des Stapels */
+    if (mobile) layoutMobile(vbH); else layoutFit(vbH);
   }
 
   /* Auf Mobil ist der Stapel die Navigation – Hover gibt es dort nicht,
