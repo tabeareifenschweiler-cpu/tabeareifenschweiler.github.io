@@ -1,0 +1,285 @@
+/* =============================================================
+   Projektansichten – Tabea Reifenschweiler
+
+   Der Ordner wird aus dem Stapel gezogen (graphic-start.js) und
+   klappt dann auf die volle Seite auf (.proj = feste Bühne, per
+   clip-path aufgezogen). Alles Weitere ist die Projektansicht v2
+   weiter unten: Screens + Bildstapel.
+
+   Schriften (@font-face) liegen in graphic-start.css.
+   Hausregel: IBM Plex Mono immer in Versalien (text-transform: uppercase).
+   ============================================================= */
+
+/* ---------------------------------------------------------------
+   1. Tokens
+   --------------------------------------------------------------- */
+.proj {
+  --ink:   #05141d;
+  --paper: #f8f8f7;
+  --ff-head: 'IBM Plex Mono', ui-monospace, monospace;
+  --ff-body: 'Neue Haas Grotesk Display', system-ui, sans-serif;
+}
+
+/* ---------------------------------------------------------------
+   2. Bühne: der Ordner wird zur Seite
+   --------------------------------------------------------------- */
+.proj {
+  position: fixed; inset: 0;
+  z-index: 8;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ff-body);
+  clip-path: inset(var(--clip-t, 0px) var(--clip-r, 0px) var(--clip-b, 0px) var(--clip-l, 0px));
+  transition: clip-path 620ms cubic-bezier(.22, 1, .36, 1);
+}
+.proj[hidden] { display: none; }
+.proj.is-expanded { clip-path: inset(0px); }
+body.proj-open { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .proj { transition-duration: 1ms; }
+}
+
+/* =============================================================
+   Projektansicht v2 – Screens + Bildstapel (zuerst: Smears)
+
+   Vorlage: Anwendungsbeispiele/Projektansicht_Smears_EN.svg (+ _2)
+   Komposition 1920×1080, eingepasst (contain) und zentriert; Band und
+   Ordnerkorpus laufen randlos über den ganzen Viewport.
+
+     Band          0 – 126.38   Projektfarbe, Klick = zurück
+     Reiter        55.81 – 126.38 an der Stapelposition
+     Text          x 161.75, Spalte 2–4 (bis 627), ab y 318.83
+     Bild          x 647, y 283.43, 1120 × 630 (Spalte 5–11)
+     Pfeilspitze   y 913.43 (Bildunterkante), Linie beginnt 51 unter dem Textende
+     (more)        x 193.74, Grundlinie 906.26
+   ============================================================= */
+.proj--v2 {
+  --u: min(calc(100vw / 1920), calc(100vh / 1080));
+  --sheet-w: calc(var(--u) * 1920);
+  --band-h:  calc(var(--u) * 126.38);
+  --arrow-gap: calc(var(--u) * 51);
+  --throw-ms: 700ms;
+  display: block; overflow: hidden;
+  background: var(--proj-color);
+  color: #05141d;
+  font-family: var(--ff-body);
+}
+
+/* ---- Band + Reiter ---- */
+.pv-band {
+  position: absolute; inset: 0 0 auto 0; height: var(--band-h);
+  cursor: none;                                  /* der Zeiger wird zu "(back)" */
+  z-index: 3;
+}
+.pv-back {
+  position: fixed; left: 0; top: 0; pointer-events: none;
+  display: none; transform: translate(14px, -8px);
+  font-family: var(--ff-body); font-style: italic;
+  font-size: max(13px, calc(var(--u) * 18)); line-height: 1;
+  color: var(--back-ink, #05141d); white-space: nowrap;   /* weiß auf dunklem Band */
+}
+.pv-band.is-hover .pv-back { display: block; }
+.pv-band:focus-visible { outline: 2px solid #05141d; outline-offset: -4px; }
+
+.pv-tab {
+  position: absolute; z-index: 4; pointer-events: none; overflow: visible;
+  top: 0; left: 50%; translate: -50% 0;
+  width: var(--sheet-w); height: var(--band-h);
+}
+.pv-tab__shape { fill: #fff; }
+.pv-tab__line  { fill: none; stroke: #000; stroke-width: 2px; stroke-miterlimit: 10; vector-effect: non-scaling-stroke; }
+
+/* ---- Ordnerkorpus: weiß, randlos, ab Bandunterkante ---- */
+.pv-body {
+  position: absolute; inset: var(--band-h) 0 0 0;
+  background: #fff;                      /* Kontur kommt aus .pv-tab__line */
+}
+.pv-sheet {
+  position: absolute; top: 0; left: 50%; translate: -50% 0;
+  width: var(--sheet-w); height: calc(var(--u) * 1080 - var(--band-h));
+}
+/* alle Kinder in Kompositionskoordinaten, y relativ zur Bandunterkante (126.38) */
+.pv-sheet > * { position: absolute; }
+
+/* ---- Text ---- */
+.pv-text {
+  /* Versalhöhe der ersten Zeile liegt auf der Bildoberkante (283.43):
+     Blockoben = 283.43 − Halbdurchschuss − (Schriftgrad − Versalhöhe) */
+  left: calc(var(--u) * 161.75); top: calc(var(--u) * (283.43 - 126.38 - 6.8));
+  width: calc(var(--u) * var(--text-w, 466));      /* Essperten: 600 */
+  font-size: calc(var(--u) * 18); line-height: 1.2;
+  opacity: 0; visibility: hidden;
+  transition: opacity 320ms ease, visibility 0s 320ms;
+}
+.pv-text--2 { top: calc(var(--u) * (283.43 - 126.38 - 9.3)); }   /* erste Zeile ist Mono 23 */
+.proj--v2[data-step="0"] .pv-text--1,
+.proj--v2:not([data-step="0"]) .pv-text--2 { opacity: 1; visibility: visible; transition: opacity 320ms ease 140ms, visibility 0s; }
+.pv-text p { margin: 0 0 calc(var(--u) * 21.6); }
+.pv-text em { font-style: italic; }
+.pv-text p:last-child { margin: 0; }
+.pv-text h2 {
+  margin: calc(var(--u) * 31.6) 0 calc(var(--u) * 9);
+  font-family: var(--ff-head); font-weight: 400; text-transform: uppercase;
+  font-size: calc(var(--u) * 23); line-height: 1.2; letter-spacing: .01em;
+}
+.pv-sec:first-child h2 { margin-top: 0; }   /* nur die erste Überschrift, nicht jede Sektionsüberschrift */
+
+/* Screen 2 baut sich auf: Schritt 1 nur THE PROJECT, Schritt 2 + THE IDEA,
+   Schritt 3 + THE EXECUTION (Klasse is-shown, gesetzt in graphic-start.js).
+   Ausgeblendete Abschnitte bleiben transparent im Fluss; der Pfeil wird nur
+   bis zum letzten sichtbaren gemessen und rückt so in den freien Platz. */
+.pv-sec { opacity: 0; transition: opacity 320ms ease 140ms; }
+.pv-sec.is-shown { opacity: 1; }
+/* swap-Modus (Stell dir vor): je Schritt steht nur ein Abschnitt, die
+   anderen sind aus dem Fluss genommen; jede Überschrift beginnt oben. */
+.proj--v2[data-mode="swap"] .pv-sec.is-off { display: none; }
+.pv-sub { opacity: 0; transition: opacity 320ms ease 140ms; }
+.pv-sub.is-shown { opacity: 1; }
+.proj--v2[data-mode="swap"] .pv-sec h2 { margin-top: 0; }
+.pv-text h2 em { font-family: var(--ff-body); font-style: italic; text-transform: none; font-size: calc(var(--u) * 18); }
+.pv-text h3 {
+  margin: calc(var(--u) * 21.6) 0 calc(var(--u) * 6);
+  font-family: var(--ff-head); font-weight: 400; text-transform: uppercase;
+  font-size: calc(var(--u) * 18); line-height: 1.2; letter-spacing: .01em;
+}
+.pv-text h3 em, .pv-text .pv-q em { font-family: var(--ff-body); font-style: italic; text-transform: none; }
+.pv-text strong { font-weight: 700; }
+.pv-text a { color: inherit; text-decoration: underline; text-underline-offset: .12em; }
+.pv-text ul { margin: 0 0 calc(var(--u) * 21.6); padding: 0; list-style: none; }
+.pv-text li { margin: 0 0 calc(var(--u) * 9); }
+.pv-text li:last-child { margin: 0; }
+.pv-meta {
+  display: grid; grid-template-columns: calc(var(--u) * 190) 1fr;
+  column-gap: 0; row-gap: calc(var(--u) * 4);
+  margin: calc(var(--u) * 21.6) 0 0;
+}
+.pv-meta dt { font-family: var(--ff-head); font-size: calc(var(--u) * 23); line-height: 1.1; text-transform: uppercase; }
+.pv-meta dd { margin: 0; align-self: end; }
+
+/* ---- Bildstapel ---- */
+.pv-stack {
+  left: calc(var(--u) * 647); top: calc(var(--u) * (283.43 - 126.38));
+  width: calc(var(--u) * 1120); height: calc(var(--u) * 630);
+}
+.pv-fig {
+  /* Standard: füllt die Stapelbox. Eigene Box per --fx/--fy (Versatz zur
+     Stapelbox) und --fw/--fh, alles in SVG-Einheiten. */
+  position: absolute; margin: 0;
+  left: calc(var(--u) * var(--fx, 0)); top: calc(var(--u) * var(--fy, 0));
+  width: calc(var(--u) * var(--fw, 1120)); height: calc(var(--u) * var(--fh, 630));
+  /* Nur Wurf und Ausblenden animieren – Box-Maße bewusst nicht: eine Transition
+     auf width/height verfälscht jede Messung der Bildunterkante (Pfeilspitze). */
+  transition: transform var(--throw-ms) cubic-bezier(.4, 0, .9, .45), opacity 200ms ease calc(var(--throw-ms) - 200ms);
+  background: #e9e9e7; overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .06);     /* minimal, nur zum Abheben vom Weiß */
+  transform-origin: 50% 60%;
+}
+/* Manche Bilder haben als oberstes Bild eine eigene, größere Box (--tx …) */
+.pv-fig.is-top {
+  left: calc(var(--u) * var(--tx, var(--fx, 0))); top: calc(var(--u) * var(--ty, var(--fy, 0)));
+  width: calc(var(--u) * var(--tw, var(--fw, 1120))); height: calc(var(--u) * var(--th, var(--fh, 630)));
+}
+.pv-fig img, .pv-fig video { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* "aus dem Ordner geworfen": nach rechts raus, leicht gedreht */
+.pv-fig.is-out { transform: translate(115%, 10%) rotate(9deg); opacity: 0; pointer-events: none; }
+.pv-fig.is-back { transition-timing-function: cubic-bezier(.2, .6, .3, 1); }   /* zurück: sanfter */
+
+.pv-fig video { position: absolute; inset: 0; display: none; background: #000; }
+/* Video-Karte (Essperten): hellblaue Fläche in Bildgröße, das Hochformat-Video
+   sitzt mittig darauf und ist immer sichtbar (Poster bis zum Play). */
+.pv-fig--card { background: var(--card-bg, #bce0f6); }
+.pv-fig--card video {
+  display: block; inset: auto;
+  left: 50%; top: 0; height: 100%; width: auto; translate: -50% 0;
+  background: transparent; object-fit: contain;
+}
+.pv-fig--card.is-playing video { display: block; }
+/* Abweichendes Seitenverhältnis (Stell dir vor: 16:9-Filme, Website-Mockup):
+   eingepasst und mittig auf einer farbigen Karte in Stapelgröße, damit alle
+   Karten gleich groß bleiben und nichts darunter hervorschaut. */
+.pv-fig--wide { background: var(--card-bg, #c6c6c7); }
+.pv-fig--wide img, .pv-fig--wide video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain; background: transparent;
+}
+/* Zwei Hochformate nebeneinander auf einer Karte (Modola: Studiofotos) */
+.pv-fig--pair { background: var(--card-bg, #0b6128); display: flex; justify-content: center; gap: calc(var(--u) * 20); }
+.pv-fig--pair img { position: static; width: auto; height: 100%; }
+.pv-fig.is-playing video { display: block; }
+.pv-fig.is-playing img, .pv-fig.is-playing .pv-play { display: none; }
+.pv-play {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: calc(var(--u) * 91); height: calc(var(--u) * 114);
+  padding: 0; border: 0; background: none; cursor: pointer;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.35));
+  transition: transform 160ms ease;
+}
+.pv-play svg { width: 100%; height: 100%; display: block; fill: #fff; }
+.pv-play:hover, .pv-play:focus-visible { transform: scale(1.06); outline: none; }
+
+/* ---- Pfeil + (more) ---- */
+.pv-arrow {
+  /* Spitze auf der Unterkante des obersten Bildes (--arrow-tip, vom JS
+     gemessen – die Bilder sind je Projekt unterschiedlich hoch) */
+  left: calc(var(--u) * 161.75); top: var(--arrow-top, 0px);
+  height: calc(var(--arrow-tip, calc(var(--u) * 787.05)) - var(--arrow-top, 0px));
+  transition: opacity 260ms ease, height 420ms cubic-bezier(.22,1,.36,1), top 420ms cubic-bezier(.22,1,.36,1);
+  width: calc(var(--u) * 15.69);
+}
+.pv-arrow__line {
+  position: absolute; left: calc(var(--u) * 6.81); top: 0; bottom: calc(var(--u) * 4);
+  width: calc(var(--u) * 2.07); background: #05141d;
+}
+.pv-arrow__head { position: absolute; left: 0; bottom: 0; width: 100%; height: calc(var(--u) * 9.32); fill: #05141d; display: block; }
+.pv-more {
+  position: absolute; left: calc(var(--u) * (193.74 - 161.75)); bottom: calc(var(--u) * 2.25);
+  font-style: italic; font-size: calc(var(--u) * 18); line-height: 1; white-space: nowrap;
+}
+.proj--v2.is-last .pv-arrow { opacity: 0; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pv-fig, .pv-text { transition-duration: 1ms; }
+}
+
+/* =============================================================
+   Who I am – eigenständige Seite (who.html), gleiche Mechanik wie die
+   Projektansicht v2: Screen 1 Vorstellung, Screen 2 Lebenslauf, das
+   Porträt bleibt liegen (einziges Bild, data-i="1", fliegt nie raus).
+   Vorlage: Anwendungsbeispiele/Wer1_EN.png, Wer2_EN.png
+     Text     Spalte 3–5 (x 323.5, Breite 466), Versalhöhe auf Bildoberkante 222
+     Porträt  Spalte 7–10 (x 970.5, 628 × 628), y 222
+     Hinweis  unter dem Porträt, Pfeil ab y 881, Text Grundlinie 920
+   ============================================================= */
+.page--who, .page--who body { height: 100%; overflow: hidden; background: #fff; }
+.page--who .stage--head { position: relative; z-index: 9; background: #fff; }
+.who { z-index: 1; background: #fff; }
+.who .pv-text { left: calc(var(--u) * 323.5); top: calc(var(--u) * (222 - 126.38 - 9.3)); }
+.who .pv-text--2 { width: calc(var(--u) * 628); }
+.who .pv-arrow { left: calc(var(--u) * 323.5); }
+.who .pv-more { left: calc(var(--u) * (193.74 - 161.75)); }
+.who .pv-fig { box-shadow: none; background: #fff; }
+.who .pv-fig img { position: absolute; inset: 0; }
+.who .pv-fig .who-hover { opacity: 0; transition: opacity 180ms ease; }
+.who .pv-fig:hover .who-hover { opacity: 1; }
+.who-hint {
+  left: calc(var(--u) * 970.5); top: calc(var(--u) * (881 - 126.38));
+  font-size: calc(var(--u) * 20); line-height: 1.2; white-space: nowrap;
+}
+.who-hint svg { display: block; width: calc(var(--u) * 15.69); height: calc(var(--u) * 15); margin-bottom: calc(var(--u) * 8); }
+.who-hint a { color: inherit; text-decoration: underline; text-underline-offset: .12em; }
+/* Lebenslauf: Name fett, darunter Abschluss/Rolle mit Zeitraum in Spalte 2 */
+.cv { margin: 0 0 calc(var(--u) * 21.6); padding: 0; list-style: none; }
+.cv li { margin: 0 0 calc(var(--u) * 12); }
+.cv li:last-child { margin: 0; }
+.cv strong { display: block; font-weight: 700; }
+.cv .cv-row { display: grid; grid-template-columns: calc(var(--u) * 432.5) 1fr; }
+.who .pv-text h2:first-child { margin-top: 0; }
+/* Footer: Mono 22.96 in Versalien, Grundlinie 1018.19 wie auf der Startseite,
+   links bei 161.75, rechts bündig auf 1758.4 */
+.who-foot { left: calc(var(--u) * 161.75); right: calc(var(--u) * (1920 - 1758.4)); top: calc(var(--u) * (1018.19 - 126.38 - 22.96 + 4.6));   /* + Unterlänge: Grundlinie wie im SVG */ display: flex; justify-content: space-between; font-family: var(--ff-head); font-size: calc(var(--u) * 22.96); line-height: 1; text-transform: uppercase; white-space: nowrap; }
+.who-foot a { color: inherit; text-decoration: none; }
+.who-foot a:hover, .who-foot a:focus-visible { text-decoration: underline; text-underline-offset: .2em; }
+.who .cv + h2 { margin-top: calc(var(--u) * 31.6); }
+/* Stell dir vor: sehr helle Fotos auf Weiß – Schatten noch zurückhaltender */
+#proj-stelldirvor .pv-fig { box-shadow: 0 1px 4px rgba(0, 0, 0, .04); }

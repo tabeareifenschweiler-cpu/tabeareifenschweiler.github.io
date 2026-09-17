@@ -1,0 +1,547 @@
+/* =============================================================
+   Startseite → Projektseite
+
+   Zwei Phasen:
+     1. MORPH   Der Ordner wird aus dem Stapel gezogen. Seine 9 Polygon-
+                punkte werden von der Stapelform auf die Projektform
+                interpoliert. Beide Formen haben identische x-Werte –
+                nur y ändert sich, der Morph ist deshalb exakt.
+     2. AUFKLAPP Der Ordner expandiert per clip-path von der Bühne auf den
+                vollen Viewport. Ab da ist es ein normales Dokument.
+
+   Zielform nach Anwendungsbeispiele/Projektansicht.svg: der Ordner läuft
+   randlos von 0 bis 1920, Reiteroberkante 55.81, Korpusoberkante 126.38,
+   Unterkante 1080. Der Reiter behält seine x-Position aus dem Stapel.
+   Deshalb ändern sich hier x UND y – beides wird interpoliert.
+   ============================================================= */
+(() => {
+  'use strict';
+
+  const OPEN_MS   = 720;
+  const CLOSE_MS  = 520;
+  const EXPAND_MS = 620;          /* muss zur transition in project-system.css passen */
+
+  /* Ordner mit eigener Projektseite. Die Zielform wird nicht mehr als
+     Delta hinterlegt, sondern beim Öffnen aus der aktuellen Form
+     abgeleitet – so stimmt sie am Desktop wie im Hochformat. */
+  const PROJECTS = ['smears', 'modola', 'garden', 'essperten', 'designschau', 'stelldirvor'];
+
+
+
+
+  const stage = document.querySelector('.stage');
+  if (!stage) return;
+  const svg = stage.querySelector('svg');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ---------- Sprache ---------- */
+  const LANGS = ['en', 'de'];
+  function currentLang() {
+    const q = new URLSearchParams(location.search).get('lang');
+    if (LANGS.includes(q)) return q;
+    try { const v = localStorage.getItem('lang'); if (LANGS.includes(v)) return v; } catch (e) {}
+    return 'en';
+  }
+  function setLang(lang, push) {
+    if (!LANGS.includes(lang)) return;
+    document.documentElement.lang = lang;
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+    for (const b of document.querySelectorAll('.lang__btn')) {
+      const on = b.dataset.lang === lang;
+      b.setAttribute('aria-current', on ? 'true' : 'false');
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    if (push) {
+      const u = new URL(location.href);
+      u.searchParams.set('lang', lang);
+      history.replaceState(history.state, '', u);
+    }
+    /* Sprache in alle internen Links schreiben. Nötig, weil Safari bei
+       lokal geöffneten Dateien jede Datei als eigene Herkunft behandelt
+       und localStorage dann nicht von Seite zu Seite reicht. */
+    for (const a of document.querySelectorAll('a[href]')) {
+      const h = a.getAttribute('href');
+      if (/^(https?:|mailto:|#)/.test(h)) continue;
+      const [base, hash = ''] = h.split('#');
+      const [path, q = ''] = base.split('?');
+      const p = new URLSearchParams(q); p.set('lang', lang);
+      a.setAttribute('href', path + '?' + p.toString() + (hash ? '#' + hash : ''));
+    }
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.lang__btn');
+    if (b) { e.preventDefault(); setLang(b.dataset.lang, true); }
+  });
+  setLang(currentLang(), false);
+
+  /* Cookie-Hinweis + Analytics: consent.js (eine Datei für alle Seiten der Domain) */
+
+  /* ---------- Formen einlesen ---------- */
+  const folders = new Map();
+  for (const key of PROJECTS) {
+    const g = stage.querySelector(`.folder[data-folder="${key}"]`);
+    const panel = document.getElementById('proj-' + key);
+    if (!g || !panel) continue;
+
+    const polys = [...g.querySelectorAll('polygon.fdr-base, .fdr-tex > polygon')];
+    if (!polys.length) continue;
+    const from = polys[0].getAttribute('points').trim().split(/\s+/).map(Number);
+    if (from.length !== 18) { console.warn('[proj] unerwartete Punktzahl bei', key); continue; }
+
+    /* from/to werden beim Öffnen aus der dann gültigen Form gesetzt,
+       weil der Stapel im Hochformat anders gerechnet ist. */
+    folders.set(key, {
+      g, polys, panel, from, to: from.slice(), logoShift: 0,
+      logo: g.querySelector('.fdr-tex > g')
+    });
+  }
+  /* Seiten ohne Detail-Panels (Produkt) brauchen trotzdem Mobil-Layout
+     und Burger – deshalb hier kein Abbruch mehr; alle Schleifen unten
+     laufen mit leerer Map einfach leer. */
+
+  /* ---------- Morph ---------- */
+  const easeOutBack = t => { const s = 0.8, u = t - 1; return 1 + u * u * ((s + 1) * u + s); };
+  const easeInCubic = t => t * t * t;
+
+  function paint(f, t) {
+    const pts = new Array(f.from.length);
+    for (let i = 0; i < f.from.length; i++) {
+      pts[i] = (f.from[i] + (f.to[i] - f.from[i]) * t).toFixed(2);
+    }
+    const s = pts.join(' ');
+    for (const p of f.polys) p.setAttribute('points', s);
+    /* Das Logo sitzt im Reiter und muss dessen Weg mitgehen. */
+    if (f.logo) f.logo.style.transform = `translateY(${(f.logoShift * t).toFixed(2)}px)`;
+  }
+
+  let raf = 0, rafGuard = 0;
+  function animate(f, a, b, ms, ease, done) {
+    cancelAnimationFrame(raf); clearTimeout(rafGuard);
+    if (reduced.matches) { paint(f, b); done && done(); return; }
+    let finished = false;
+    const finish = () => { if (finished) return; finished = true; clearTimeout(rafGuard); paint(f, b); done && done(); };
+    const t0 = performance.now();
+    (function step(now) {
+      if (finished) return;
+      const p = Math.min(1, (now - t0) / ms);
+      paint(f, a + (b - a) * ease(p));
+      if (p < 1) raf = requestAnimationFrame(step); else finish();
+    })(t0);
+    /* Sicherheitsnetz: liefert der Browser keine Frames (Hintergrund-Tab,
+       gedrosselte Ansicht), wird der Endzustand trotzdem gesetzt. */
+    rafGuard = setTimeout(finish, ms + 250);
+  }
+
+  /* ---------- Aufklappen: Bühne → voller Viewport ----------
+     Der Ordner füllt am Ende des Morphs die ganze Bühne, also wächst
+     das Panel von genau diesem Rechteck auf den Viewport. */
+  function clipToStage(panel) {
+    const r = stage.getBoundingClientRect();
+    panel.style.setProperty('--clip-l', Math.max(0, r.x) + 'px');
+    panel.style.setProperty('--clip-t', Math.max(0, r.y) + 'px');
+    panel.style.setProperty('--clip-r', Math.max(0, innerWidth  - r.right)  + 'px');
+    panel.style.setProperty('--clip-b', Math.max(0, innerHeight - r.bottom) + 'px');
+  }
+
+  /* ---------- Zustand ---------- */
+  let current = null;
+  let timer = 0;
+
+  function open(key, { animated = true } = {}) {
+    const f = folders.get(key);
+    if (!f || current === key) return;
+    current = key;
+    clearTimeout(timer);
+
+    /* Startform frisch aus dem DOM lesen – mobil ist der Stapel anders
+       gerechnet als am Desktop. Die Zielform füllt jeweils den ganzen
+       viewBox, dessen Höhe im Hochformat größer als 1080 ist. */
+    const vbH = +(svg.getAttribute('viewBox').split(/\s+/)[3]) || 1080;
+    f.from = f.polys[0].getAttribute('points').trim().split(/\s+/).map(Number);
+    const fy = f.from.filter((_, n) => n % 2);
+    const yTab = Math.min(...fy), yBot = Math.max(...fy);
+    f.to = f.from.map((v, i) => i % 2
+      ? (v === yTab ? 55.81 : v === yBot ? vbH : 126.38)
+      : (Math.abs(v) < .01 || Math.abs(v - 46.78) < .01 ? 0
+        : Math.abs(v - 1920) < .01 || Math.abs(v - 1873.22) < .01 ? 1920 : v));
+    f.logoShift = 55.81 - yTab;
+
+    stage.classList.add('is-open');
+    f.g.classList.add('is-active');
+    document.body.classList.add('proj-open');
+    f.panel.hidden = false;
+    f.panel.setAttribute('aria-hidden', 'false');
+    if (f.panel.__pv) f.panel.__pv.reset();
+
+    if (!animated || reduced.matches) {
+      paint(f, 1);
+      f.panel.classList.add('is-expanded');
+      return;
+    }
+
+    clipToStage(f.panel);
+    f.panel.classList.remove('is-expanded');
+    animate(f, 0, 1, OPEN_MS, easeOutBack, () => {
+      requestAnimationFrame(() => f.panel.classList.add('is-expanded'));
+      timer = setTimeout(() => f.panel.focus({ preventScroll: true }), EXPAND_MS);
+    });
+  }
+
+  function close({ animated = true } = {}) {
+    if (!current) return;
+    const key = current, f = folders.get(current);
+    current = null;
+    clearTimeout(timer);
+
+    document.body.classList.remove('proj-open');
+    f.panel.setAttribute('aria-hidden', 'true');
+
+    if (f.panel.__pv) f.panel.__pv.stop();
+    const done = () => {
+      stage.classList.remove('is-open');
+      f.g.classList.remove('is-active');
+      f.panel.hidden = true;
+      f.g.focus?.();
+    };
+
+    if (!animated || reduced.matches) { paint(f, 0); f.panel.classList.remove('is-expanded'); done(); return; }
+
+    clipToStage(f.panel);                       /* Zielwerte für den Rückweg */
+    f.panel.classList.remove('is-expanded');    /* klappt zurück aufs Blatt */
+    timer = setTimeout(() => animate(f, 1, 0, CLOSE_MS, easeInCubic, done), EXPAND_MS * 0.7);
+  }
+
+  /* ---------- Routing ---------- */
+  function sync(animated) {
+    const key = new URLSearchParams(location.search).get('p');
+    if (key && folders.has(key)) open(key, { animated });
+    else close({ animated });
+  }
+  addEventListener('popstate', () => sync(true));
+
+  /* Beim Größenändern den Clip nachziehen, solange geschlossen wird. */
+  addEventListener('resize', () => { if (current) clipToStage(folders.get(current).panel); });
+
+  /* ---------- Bedienung ---------- */
+  for (const [key, f] of folders) {
+    f.g.setAttribute('role', 'link');
+    f.g.setAttribute('tabindex', '0');
+    f.g.setAttribute('aria-label', f.panel.dataset.title || key);
+
+    const go = e => {
+      e.preventDefault();
+      if (current === key) return;
+      const u = new URL(location.href);
+      u.searchParams.set('p', key);
+      history.pushState({ p: key }, '', u);
+      open(key);
+    };
+    f.g.addEventListener('click', go);
+    f.g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') go(e); });
+  }
+  /* Ordner ohne Panel auf dieser Seite (Produkt): Klick führt zur
+     Projektansicht auf der Startseite, Sprache bleibt erhalten. */
+  for (const key of PROJECTS) {
+    const g = stage.querySelector(`.folder[data-folder="${key}"]`);
+    if (!g || folders.has(key)) continue;
+    g.setAttribute('role', 'link'); g.setAttribute('tabindex', '0'); g.setAttribute('aria-label', key);
+    const go = e => {
+      e.preventDefault();
+      const u = new URL('./', location.href);
+      u.searchParams.set('p', key);
+      u.searchParams.set('lang', document.documentElement.lang || 'en');
+      location.href = u;
+    };
+    g.addEventListener('click', go);
+    g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') go(e); });
+  }
+
+  function back() {
+    const u = new URL(location.href);
+    u.searchParams.delete('p');
+    history.pushState({}, '', u);
+    close();
+  }
+  /* Zurück über den Namen oder den Weißraum der Kopfzeile.
+     Der Sprachumschalter darin ist ausgenommen. */
+  document.addEventListener('click', e => {
+    if (!current) return;
+    if (e.target.closest('.lang')) return;
+    const home = e.target.closest('[data-proj-home]');
+    if (home) { e.preventDefault(); back(); }
+  });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && current) back(); });
+
+
+  /* =============================================================
+     Mobilfassung: Bühne hochkant, Stapel neu gerechnet
+
+     Auf dem Handy schrumpft die 16:9-Bühne zu einem Streifen. Statt
+     dessen wird der viewBox hochkant gesetzt (Breite bleibt 1920, die
+     Höhe folgt dem Seitenverhältnis) und die sechs Ordner werden über
+     die volle Höhe verteilt. Reiterform und -breite bleiben unverändert,
+     nur die Registerschritte werden größer. Die Logos wandern mit ihrem
+     Reiter mit.
+     ============================================================= */
+  const TAB_H = 70.57;                 /* Reiterhöhe, bleibt konstant */
+  const ORDER = ['garden', 'smears', 'modola', 'essperten', 'designschau', 'stelldirvor', 'front'];
+  const stack = ORDER.map(k => {
+    const g = stage.querySelector(`.folder[data-folder="${k}"]`);
+    if (!g) return null;
+    const polys = [...g.querySelectorAll('polygon.fdr-base, .fdr-tex > polygon, .fdr-tex polygon.fdr-clip')];
+    return {
+      key: k, g, polys,
+      base: polys[0].getAttribute('points').trim().split(/\s+/).map(Number),
+      logo: g.querySelector('.fdr-tex > g')
+    };
+  }).filter(Boolean);
+
+  const VB_DESKTOP = '0 0 1920 1080';
+  let mobileOn = null;
+
+  function layoutMobile(vbH) {
+    /* Kopfzeile oben frei lassen, unten etwas Luft für den Deckel. */
+    const top = 280, tail = 0.16 * vbH;   /* 280: Abstand zur Kopfzeile */
+    const slot = (vbH - tail - top - TAB_H) / (stack.length - 1);
+
+    stack.forEach((f, i) => {
+      const v = f.base;
+      const ys = v.filter((_, n) => n % 2);
+      const yTab = Math.min(...ys), yBody = [...new Set(ys)].sort((a, b) => a - b)[1];
+      const tabTop = top + i * slot;
+      const bodyTop = tabTop + TAB_H;
+
+      const pts = new Array(v.length);
+      for (let n = 0; n < v.length; n += 2) {
+        pts[n]     = v[n];                                   /* x unverändert */
+        pts[n + 1] = v[n + 1] === yTab  ? tabTop
+                   : v[n + 1] === yBody ? bodyTop
+                   : vbH;                                    /* Unterkante */
+      }
+      const str = pts.join(' ');
+      for (const p of f.polys) p.setAttribute('points', str);
+      if (f.logo) f.logo.style.transform = `translateY(${(tabTop - yTab).toFixed(2)}px)`;
+    });
+  }
+
+  function layoutDesktop() {
+    stack.forEach(f => {
+      const str = f.base.join(' ');
+      for (const p of f.polys) p.setAttribute('points', str);
+      if (f.logo) f.logo.style.transform = '';
+    });
+  }
+
+  function applyLayout() {
+    if (current) return;                       /* offenes Projekt nicht anfassen */
+    /* Ohne gültiges Viewport (versteckter Tab, Druckvorschau) nichts
+       rechnen – sonst landet NaN im viewBox und in allen Polygonen. */
+    if (!(innerWidth > 0 && innerHeight > 0)) return;
+    if (!stack.length) return;                 /* Seiten ohne Stapel (Impressum) */
+    const mobile = innerWidth <= 767;
+    if (mobile) {
+      const vbH = Math.round(1920 * innerHeight / innerWidth);
+      svg.setAttribute('viewBox', `0 0 1920 ${vbH}`);
+      layoutMobile(vbH);
+      mobileOn = vbH;
+    } else if (mobileOn !== false) {
+      svg.setAttribute('viewBox', VB_DESKTOP);
+      layoutDesktop();
+      mobileOn = false;
+    }
+  }
+
+  /* Auf Mobil ist der Stapel die Navigation – Hover gibt es dort nicht,
+     ein Tipp öffnet direkt. Das erledigt der bestehende click-Handler. */
+  addEventListener('resize', applyLayout);
+  applyLayout();
+
+  /* ---------- Deckel-Foto: Parallax mit der Maus ----------
+     Kleine, gegenläufige Verschiebung in SVG-Einheiten. Die Position
+     läuft dem Ziel in einer rAF-Schleife weich hinterher (Lerp) statt
+     über eine CSS-Transition, die bei jedem mousemove neu anlaufen und
+     dadurch ruckeln würde. */
+  const photo = stage.querySelector('.front-photo');
+  if (photo && matchMedia('(hover: hover)').matches && !reduced.matches) {
+    const AMP_X = 9, AMP_Y = 4, EASE = .08;
+    let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+    function tick() {
+      cx += (tx - cx) * EASE; cy += (ty - cy) * EASE;
+      photo.style.setProperty('--px', cx.toFixed(2) + 'px');
+      photo.style.setProperty('--py', cy.toFixed(2) + 'px');
+      raf = (Math.abs(tx - cx) > .02 || Math.abs(ty - cy) > .02) ? requestAnimationFrame(tick) : 0;
+    }
+    const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    stage.addEventListener('mousemove', e => {
+      const r = stage.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width - .5, ny = (e.clientY - r.top) / r.height - .5;
+      tx = -nx * AMP_X * 2; ty = -ny * AMP_Y * 2; kick();
+    });
+    stage.addEventListener('mouseleave', () => { tx = 0; ty = 0; kick(); });
+  }
+
+  /* ---------- Burgermenü ---------- */
+  const burger = document.querySelector('.m-burger');
+  const mnav = document.querySelector('.m-nav');
+  if (burger && mnav) {
+    const setMenu = open => {
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      mnav.hidden = !open;
+    };
+    burger.addEventListener('click', () => setMenu(mnav.hidden));
+    mnav.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+    addEventListener('keydown', e => { if (e.key === 'Escape' && !mnav.hidden) setMenu(false); });
+    addEventListener('resize', () => { if (innerWidth > 767) setMenu(false); });
+  }
+
+
+  /* =============================================================
+     Projektansicht v2: Screens + Bildstapel
+
+     Zustand = Schritt 0 … N-1 (N = Bilder). Schritt 0 zeigt Screen 1
+     (Intro + Fakten), ab Schritt 1 steht Screen 2. Bei jedem Schritt
+     fliegt das oberste Bild nach rechts aus dem Ordner; rückwärts kommt
+     es wieder herein. Beim letzten Bild verschwinden Pfeil und (more).
+     Der Pfeil beginnt immer im selben Abstand unter dem sichtbaren Text
+     – seine Linie wird nach dem Umschalten gemessen und gesetzt.
+     ============================================================= */
+  for (const panel of document.querySelectorAll('.proj--v2')) {
+    const N = +panel.dataset.count || panel.querySelectorAll('.pv-fig').length;
+    const figs = [...panel.querySelectorAll('.pv-fig')];
+    const arrow = panel.querySelector('.pv-arrow');
+    const band = panel.querySelector('.pv-band');
+    const back = panel.querySelector('.pv-back');
+    /* Ein Projekt kann mehrere Filme im Stapel haben (Stell dir vor) */
+    const vidFigs = [...panel.querySelectorAll('.pv-fig--video')];
+    /* mode="swap": Screen 2 tauscht den Abschnitt pro Schritt aus statt ihn
+       anzuhängen (lange Texte, ein Abschnitt je Bild); ein Abschnitt kann
+       mehrere Schritte abdecken (data-sec bis data-until). */
+    const swap = panel.dataset.mode === 'swap';
+    let step = 0, lock = 0;
+
+    const u = () => Math.min(innerWidth / 1920, innerHeight / 1080);
+
+    function placeArrow() {
+      const txt = panel.querySelector(step === 0 ? '.pv-text--1' : '.pv-text--2');
+      const block = txt && [...txt.children].find(c => getComputedStyle(c).display !== 'none');
+      if (!block) return;
+      const sheet = panel.querySelector('.pv-sheet').getBoundingClientRect();
+      /* Screen 2: bis zum letzten eingeblendeten Abschnitt messen */
+      const shown = [...block.querySelectorAll('.pv-sec.is-shown')];
+      let ref = shown.length ? shown[shown.length - 1] : block;
+      /* noch unsichtbarer Unterabschnitt: nur bis zum Element davor messen */
+      const hiddenSub = ref.querySelector('.pv-sub:not(.is-shown)');
+      if (hiddenSub && hiddenSub.previousElementSibling) ref = hiddenSub.previousElementSibling;
+      const bottom = ref.getBoundingClientRect().bottom - sheet.top;
+      /* Grundlinie der letzten Zeile ≈ Unterkante minus Unterlänge (~0.2em) */
+      const baseline = bottom - 0.2 * 18 * u();
+      panel.style.setProperty('--arrow-top', (baseline + 51 * u()) + 'px');
+      /* Spitze auf der Unterkante des obersten noch liegenden Bildes.
+         Ist das Bild kürzer als der Text (Designschau), bleibt eine
+         Mindestlänge von 40 Einheiten – sonst zeigte der Pfeil nach oben. */
+      const top = figs.filter(f => +f.dataset.i >= step).sort((a, b) => +a.dataset.i - +b.dataset.i)[0];
+      if (top) {
+        const arrowTop = baseline + 51 * u();
+        /* Layoutbox statt getBoundingClientRect: die enthält beim Zurückholen
+           noch die Wurf-Transformation (verschoben, gedreht) und lieferte eine
+           andere Unterkante als beim Runterscrollen. offset* ignoriert Transforms. */
+        const stack = top.offsetParent;
+        const bottom = (stack ? stack.offsetTop : 0) + top.offsetTop + top.offsetHeight;
+        panel.style.setProperty('--arrow-tip', Math.max(bottom, arrowTop + 40 * u()) + 'px');
+      }
+    }
+
+    function render(dir) {
+      panel.dataset.step = step;
+      panel.classList.toggle('is-last', step >= N - 1);
+      /* Screen 2 stufenweise: Schritt 1 -> Abschnitt 1, 2 -> 1+2, ab 3 alle.
+         Im swap-Modus steht nur der Abschnitt des aktuellen Schritts; er wird
+         erst aus dem Fluss genommen (is-off) und nach einem erzwungenen
+         Reflow eingeblendet, damit die Opacity-Transition greift. */
+      panel.querySelectorAll('.pv-sec').forEach(sec => {
+        const from = +sec.dataset.sec, to = +(sec.dataset.until || sec.dataset.sec);
+        const on = swap ? (step >= from && step <= to) : from <= step;
+        if (swap) {
+          sec.classList.toggle('is-off', !on);
+          /* Reflow erzwingen, damit die Opacity-Transition nach display:none greift
+             (kein requestAnimationFrame: das steht in Hintergrund-Tabs still) */
+          if (on) { void sec.offsetHeight; sec.classList.add('is-shown'); }
+          else sec.classList.remove('is-shown');
+        } else sec.classList.toggle('is-shown', on);
+      });
+      /* Unterabschnitt innerhalb eines Abschnitts (z. B. Website unter
+         Accompanying media): bleibt im Fluss, blendet ab seinem Schritt ein */
+      panel.querySelectorAll('.pv-sub').forEach(sub => sub.classList.toggle('is-shown', step >= +sub.dataset.sec));
+      figs.forEach(f => {
+        const i = +f.dataset.i, out = i < step;
+        f.classList.toggle('is-back', !out && dir < 0);
+        f.classList.toggle('is-out', out);
+        f.classList.toggle('is-top', i === step);
+      });
+      vidFigs.forEach(vf => { if (+vf.dataset.i !== step) stopVideo(vf); });
+      /* Text blendet 140 ms verzögert ein – danach messen */
+      setTimeout(placeArrow, 180);
+    }
+
+    function go(d) {
+      const next = Math.max(0, Math.min(N - 1, step + d));
+      if (next === step || lock) return;
+      lock = 1; step = next; render(d);
+      setTimeout(() => { lock = 0; }, 760);
+    }
+
+    function stopVideo(vf) {
+      if (!vf) { vidFigs.forEach(stopVideo); return; }
+      vf.querySelector('video').pause(); vf.classList.remove('is-playing');
+    }
+
+    panel.addEventListener('wheel', e => {
+      if (panel.hidden) return;
+      e.preventDefault();
+      if (Math.abs(e.deltaY) < 8) return;
+      go(e.deltaY > 0 ? 1 : -1);
+    }, { passive: false });
+    panel.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(1); }
+      if (e.key === 'ArrowUp'   || e.key === 'PageUp')                    { e.preventDefault(); go(-1); }
+    });
+    let ty = null;
+    panel.addEventListener('touchstart', e => { ty = e.touches[0].clientY; }, { passive: true });
+    panel.addEventListener('touchend',   e => {
+      if (ty === null) return;
+      const dy = ty - e.changedTouches[0].clientY; ty = null;
+      if (Math.abs(dy) > 40) go(dy > 0 ? 1 : -1);
+    });
+
+    /* Video: Play-Button startet den Film im selben Rahmen */
+    for (const vf of vidFigs) {
+      const play = vf.querySelector('.pv-play'), video = vf.querySelector('video');
+      if (!play || !video) continue;
+      play.addEventListener('click', e => {
+        e.stopPropagation();
+        vf.classList.add('is-playing');
+        video.play();
+      });
+      video.addEventListener('ended', () => vf.classList.remove('is-playing'));
+    }
+
+    /* "(back)" folgt dem Zeiger über dem Band */
+    if (band && back) {
+      band.addEventListener('mouseenter', () => band.classList.add('is-hover'));
+      band.addEventListener('mouseleave', () => band.classList.remove('is-hover'));
+      band.addEventListener('mousemove', e => { back.style.left = e.clientX + 'px'; back.style.top = e.clientY + 'px'; });
+      band.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); band.click(); } });
+    }
+
+    addEventListener('resize', () => { if (!panel.hidden) placeArrow(); });
+
+    panel.__pv = {
+      reset() { step = 0; lock = 0; figs.forEach(f => f.classList.remove('is-out', 'is-back')); stopVideo(); render(0); setTimeout(placeArrow, 400); },
+      stop()  { stopVideo(); }
+    };
+    /* Eigenständige Seite ohne Ordnerstapel (Who I am): sofort aufbauen */
+    if (!panel.hidden) { panel.__pv.reset(); addEventListener('load', placeArrow); }
+  }
+
+  sync(false);
+})();
