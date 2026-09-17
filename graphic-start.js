@@ -17,10 +17,10 @@
 (() => {
   'use strict';
 
-  const OPEN_MS    = 600;         /* Ordner steigt (Morph), Stapel wird nach oben gezogen */
-  const SHEET_LAG  = 200;         /* Blatt setzt verzögert an … */
-  const SHEET_MS   = 520;         /* … und wird in 520 ms herausgezogen (muss zu .pv-body in project-system.css passen) */
-  const TUCK_MS    = 300;         /* Blatt zurück in den Ordner */
+  const OPEN_MS    = 600;         /* Ordner steigt (Morph) bis nur die Fläche bleibt; Stapel sinkt */
+  const SHEET_LAG  = 120;         /* Blatt (weißer Ordner mit Inhalt) setzt kurz danach an … */
+  const SHEET_MS   = 600;         /* … und kommt in 600 ms hoch (muss zu .pv-body/.pv-tab in project-system.css passen) */
+  const TUCK_MS    = 340;         /* Blatt zurück in den Ordner: 300 ms Transition + Reserve, erst dann ausblenden */
   const CLOSE_MS   = 420;         /* Ordner sinkt zurück in den Stapel */
 
   /* Ordner mit eigener Projektseite. Die Zielform wird nicht mehr als
@@ -178,23 +178,23 @@
     f.from = f.polys[0].getAttribute('points').trim().split(/\s+/).map(Number);
     const fy = f.from.filter((_, n) => n % 2);
     const yTab = Math.min(...fy), yBot = Math.max(...fy);
+    /* Zielform: der Ordner steigt so weit, dass sein Reiter über den oberen
+       Rand hinaus ist (Reiter -70.57, Korpus 0) und nur noch die farbige
+       Fläche bleibt – das Band der Projektansicht. Die Unterkante bleibt
+       am unteren Rand, die Breite wird voll. */
+    const TAB_TOP = 55.81 - 126.38 - 1.5, BODY_TOP = -1.5;   /* 1.5 über dem Rand: die Kontur (2 Einheiten) bleibt unsichtbar */
     f.to = f.from.map((v, i) => i % 2
-      ? (v === yTab ? 55.81 : v === yBot ? vbH : 126.38)
+      ? (v === yTab ? TAB_TOP : v === yBot ? vbH + 1 : BODY_TOP)
       : (Math.abs(v) < .01 || Math.abs(v - 46.78) < .01 ? 0
         : Math.abs(v - 1920) < .01 || Math.abs(v - 1873.22) < .01 ? 1920 : v));
-    f.logoShift = 55.81 - yTab;
+    f.logoShift = TAB_TOP - yTab;
 
-    /* Der Stapel öffnet sich am angeklickten Ordner: was dahinter liegt, wird
-       nach oben gezogen, was davor liegt, nach unten – so läuft nichts über
-       den Ordner, der nach oben steigt. Staffelung jeweils vom angeklickten
-       Ordner weg (40 ms je Ordner). */
+    /* Der restliche Stapel geht nach unten aus dem Bild, gestaffelt vom
+       angeklickten Ordner weg (40 ms je Ordner); die Kopfzeile nach oben. */
     const order = ORDER.filter(k => stage.querySelector(`.folder[data-folder="${k}"]`));
     const ai = order.indexOf(key);
     order.forEach((k, i) => {
-      const g = stage.querySelector(`.folder[data-folder="${k}"]`);
-      g.classList.toggle('is-behind', i < ai);
-      g.classList.toggle('is-front', i > ai);
-      g.style.setProperty('--exit-delay', (Math.abs(i - ai) - 1) * 40 + 'ms');
+      stage.querySelector(`.folder[data-folder="${k}"]`).style.setProperty('--exit-delay', Math.max(0, Math.abs(i - ai) - 1) * 40 + 'ms');
     });
     stage.classList.add('is-open');
     f.g.classList.add('is-active');
@@ -212,10 +212,11 @@
       return;
     }
 
-    /* Der Stapel wird nach oben gezogen (CSS über stage.is-open), der
-       angeklickte Ordner bleibt oben hängen (Morph, ohne Überschwingen).
-       Kurz danach kommt das Blatt mit Inhalt von unten aus dem Stapel;
-       das Panel ist dabei durchsichtig, der Ordner der Bühne bleibt sichtbar. */
+    /* Stapel sinkt, Kopfzeile fährt hoch, der angeklickte Ordner steigt
+       (Morph, ohne Überschwingen), bis nur seine Fläche als Band bleibt.
+       Kurz danach zieht er das weiße Blatt mit Reiter und Inhalt aus dem
+       Stapel nach; das Panel ist dabei durchsichtig, der Ordner der Bühne
+       bleibt als Band sichtbar. */
     f.panel.hidden = true;
     f.panel.classList.add('is-tucked');
     f.panel.classList.remove('is-expanded', 'is-closing');

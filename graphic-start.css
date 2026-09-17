@@ -149,13 +149,12 @@ body { -webkit-font-smoothing: antialiased; }
    nach oben, Fußzeile nach unten. Rückweg: dieselben Übergänge.
    ------------------------------------------------------------- */
 .folder { translate: 0 0; transition: transform 520ms cubic-bezier(.22, 1, .36, 1), filter 380ms ease, translate 600ms cubic-bezier(.5, 0, .3, 1) var(--exit-delay, 0ms); }
-/* Der Stapel öffnet sich am angeklickten Ordner (graphic-start.js setzt
-   is-behind/is-front und --exit-delay): dahinter nach oben raus, davor nach
-   unten raus; der angeklickte bleibt oben hängen (Morph). Zurück kommt jeder
-   von dort, wohin er ging. */
-.stage.is-open .folder.is-behind { translate: 0 calc(-1 * var(--exit-y, 1280px)); filter: none; }
-.stage.is-open .folder.is-front  { translate: 0 var(--exit-y, 1280px); filter: none; }
-.stage.is-open .folder.is-active { filter: none; }
+/* Der restliche Stapel sinkt aus dem Bild (graphic-start.js setzt
+   --exit-delay je Ordner), der angeklickte steigt per Morph. */
+.stage.is-open .folder:not(.is-active) { translate: 0 var(--exit-y, 1280px); }
+/* Schatten während der Bewegung sofort aus (ein animierter drop-shadow auf
+   sechs Flächen kostet pro Frame am meisten); zurück blendet er weich ein. */
+.stage.is-open .folder { filter: none; transition-property: transform, translate; }
 .chrome-top { translate: 0 0; transition: translate 500ms cubic-bezier(.5, 0, .3, 1); }
 .chrome-bottom { opacity: 1; transition: opacity 250ms ease; }
 .stage.is-open .chrome-top    { translate: 0 -220px; }

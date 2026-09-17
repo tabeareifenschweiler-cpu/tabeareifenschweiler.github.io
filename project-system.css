@@ -98,22 +98,23 @@ body.proj-open { overflow: hidden; }
 .pv-body {
   position: absolute; inset: var(--band-h) 0 0 0;
   background: #fff;                      /* Kontur kommt aus .pv-tab__line */
-  /* Das Blatt wird mit Inhalt aus dem Stapel gezogen: kommt von unten hoch
-     (is-tucked = noch im Stapel), 520 ms, weich auslaufend. Zurück (is-closing)
-     rutscht es in 300 ms in den Ordner, der Inhalt blendet vorher aus. */
-  transition: transform 520ms cubic-bezier(.2, .7, .2, 1);
+  /* Das weiße Blatt (Korpus + Reiter, mit Inhalt) wird aus dem Stapel gezogen:
+     kommt von unten hoch (is-tucked = noch im Stapel), 600 ms, weich
+     auslaufend. Zurück (is-closing) rutscht es in 300 ms in den Ordner,
+     der Inhalt blendet vorher aus. */
+  transition: transform 600ms cubic-bezier(.2, .7, .2, 1);
 }
+.pv-tab { transition: transform 600ms cubic-bezier(.2, .7, .2, 1); }
 .proj--v2.is-tucked .pv-body { transform: translateY(100%); }
-.proj--v2.is-closing .pv-body { transition-duration: 300ms; transition-timing-function: cubic-bezier(.5, 0, .7, .4); }
+.proj--v2.is-tucked .pv-tab  { transform: translateY(calc(100vh - var(--band-h))); }   /* derselbe Weg wie der Korpus */
+.proj--v2.is-closing .pv-body, .proj--v2.is-closing .pv-tab { transition-duration: 300ms; transition-timing-function: cubic-bezier(.4, 0, .8, .6); }
 .pv-sheet { transition: opacity 120ms ease; }
 .proj--v2.is-closing .pv-sheet { opacity: 0; }
-/* Solange das Blatt fährt, ist das Panel durchsichtig: oben bleibt der
-   hochgestiegene Ordner der Bühne sichtbar (gleiche Farbe, gleicher Reiter).
-   Erst wenn das Blatt steht, blenden Grund und weißer Reiter darüber ein. */
-.proj--v2 { transition: background-color 200ms ease 520ms; }
+/* Solange das Blatt fährt, ist das Panel durchsichtig: oben bleibt die Fläche
+   des hochgestiegenen Ordners der Bühne sichtbar (das Band). Steht das Blatt,
+   übernimmt der Panelgrund in derselben Farbe. */
+.proj--v2 { transition: background-color 1ms linear 600ms; }
 .proj--v2.is-tucked { background-color: transparent; transition-delay: 0ms; }
-.pv-tab { transition: opacity 200ms ease 520ms; }
-.proj--v2.is-tucked .pv-tab { opacity: 0; transition-delay: 0ms; }
 .pv-sheet {
   position: absolute; top: 0; left: 50%; translate: -50% 0;
   width: var(--sheet-w); height: calc(var(--u) * 953.62);
