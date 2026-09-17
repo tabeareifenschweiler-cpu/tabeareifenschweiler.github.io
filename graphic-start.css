@@ -80,6 +80,9 @@ body { -webkit-font-smoothing: antialiased; }
   opacity: 0; transition: opacity 160ms ease;
 }
 .hot.nav, .hot.brand { color: #05141d; }
+.hot.switch { padding: 0; border: 0; background: none; cursor: grab; touch-action: none; }
+.hot.switch:active { cursor: grabbing; }
+.hot.switch:focus-visible { outline: 2px solid #05141d; outline-offset: -2px; }
 .hot.foot { color: #fff; }
 .hot.nav:hover::after, .hot.nav:focus-visible::after,
 .hot.brand:hover::after, .hot.brand:focus-visible::after,
@@ -146,12 +149,20 @@ body { -webkit-font-smoothing: antialiased; }
    nach oben, Fußzeile nach unten. Rückweg: dieselben Übergänge.
    ------------------------------------------------------------- */
 .folder { translate: 0 0; transition: transform 520ms cubic-bezier(.22, 1, .36, 1), filter 380ms ease, translate 600ms cubic-bezier(.5, 0, .3, 1) var(--exit-delay, 0ms); }
-.stage.is-open .folder:not(.is-active) { translate: 0 var(--exit-y, 1280px); filter: none; }
+/* Der Stapel öffnet sich am angeklickten Ordner (graphic-start.js setzt
+   is-behind/is-front und --exit-delay): dahinter nach oben raus, davor nach
+   unten raus; der angeklickte bleibt oben hängen (Morph). Zurück kommt jeder
+   von dort, wohin er ging. */
+.stage.is-open .folder.is-behind { translate: 0 calc(-1 * var(--exit-y, 1280px)); filter: none; }
+.stage.is-open .folder.is-front  { translate: 0 var(--exit-y, 1280px); filter: none; }
 .stage.is-open .folder.is-active { filter: none; }
-.chrome-top, .chrome-bottom { translate: 0 0; transition: translate 500ms cubic-bezier(.5, 0, .3, 1); }
+.chrome-top { translate: 0 0; transition: translate 500ms cubic-bezier(.5, 0, .3, 1); }
+.chrome-bottom { opacity: 1; transition: opacity 250ms ease; }
 .stage.is-open .chrome-top    { translate: 0 -220px; }
-.stage.is-open .chrome-bottom { translate: 0  220px; }
-.stage.is-open .hot, .stage.is-open .lang--stage { pointer-events: none; }
+.stage.is-open .chrome-bottom { opacity: 0; }
+.stage.is-open .hot, .stage.is-open .lang--stage, .stage.is-open .folder { pointer-events: none; }
+/* Beim Laden mit ?p=… steht alles sofort, ohne Übergang */
+.stage.no-anim .folder, .stage.no-anim .chrome-top, .stage.no-anim .chrome-bottom { transition: none !important; }
 
 .folder--proj { cursor: pointer; }
 
@@ -239,7 +250,8 @@ html[lang="de"] [data-lang-block="de"] { display: revert; }
 
 .svg-i18n, [data-lang-hot] { display: none; }
 html[lang="en"] [data-lang-svg="en"], html[lang="de"] [data-lang-svg="de"] { display: inline; }
-html[lang="en"] a.hot[data-lang-hot="en"], html[lang="de"] a.hot[data-lang-hot="de"] { display: block; }
+html[lang="en"] a.hot[data-lang-hot="en"], html[lang="de"] a.hot[data-lang-hot="de"],
+html[lang="en"] button.hot[data-lang-hot="en"], html[lang="de"] button.hot[data-lang-hot="de"] { display: block; }
 html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de"] { display: contents; }
 .stage .lang--stage {
   /* Der Marker (schwarzer Kasten + weißer Buchstabe) wird vom SVG selbst
@@ -286,7 +298,7 @@ html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de
      Sprachregeln liegen (html[lang] …), sonst gewinnen die. */
   html[lang] .svg-i18n { display: none; }
   html[lang] .stage .lang--stage { display: none; }
-  html[lang] a.hot[data-lang-hot] { display: none; }
+  html[lang] a.hot[data-lang-hot], html[lang] button.hot[data-lang-hot] { display: none; }
 
   .m-brand {
     display: block; position: absolute; z-index: 7;

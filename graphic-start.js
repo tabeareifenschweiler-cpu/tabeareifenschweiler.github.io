@@ -17,11 +17,11 @@
 (() => {
   'use strict';
 
-  const OPEN_MS   = 600;          /* Ordner steigt (Morph) */
-  const SHEET_MS  = 350;          /* Blatt wird herausgezogen – muss zu .pv-body in project-system.css passen */
-  const TUCK_MS   = 300;          /* Blatt zurück in den Ordner */
-  const CLOSE_MS  = 420;          /* Ordner sinkt zurück in den Stapel */
-  const EXPAND_MS = SHEET_MS;
+  const OPEN_MS    = 600;         /* Ordner steigt (Morph), Stapel wird nach oben gezogen */
+  const SHEET_LAG  = 200;         /* Blatt setzt verzögert an … */
+  const SHEET_MS   = 520;         /* … und wird in 520 ms herausgezogen (muss zu .pv-body in project-system.css passen) */
+  const TUCK_MS    = 300;         /* Blatt zurück in den Ordner */
+  const CLOSE_MS   = 420;         /* Ordner sinkt zurück in den Stapel */
 
   /* Ordner mit eigener Projektseite. Die Zielform wird nicht mehr als
      Delta hinterlegt, sondern beim Öffnen aus der aktuellen Form
@@ -101,11 +101,7 @@
      und Burger – deshalb hier kein Abbruch mehr; alle Schleifen unten
      laufen mit leerer Map einfach leer. */
 
-  /* Staffelung beim Absinken (hinten zuerst) und Kopf-/Fußzeile markieren */
-  ['garden', 'smears', 'modola', 'essperten', 'designschau', 'stelldirvor', 'front'].forEach((k, i) => {
-    const g = stage.querySelector(`.folder[data-folder="${k}"]`);
-    if (g) g.style.setProperty('--exit-delay', (i * 40) + 'ms');
-  });
+  /* Kopf-/Fußzeile markieren (Staffelung des Stapels wird je Klick gesetzt) */
   /* (aus den Attributen gelesen, nicht per getBBox – die ausgeblendete
      Sprachgruppe hat keine Layoutbox) */
   const yOf = el => {
@@ -122,6 +118,7 @@
   /* ---------- Morph ---------- */
   const easeOutBack = t => { const s = 0.8, u = t - 1; return 1 + u * u * ((s + 1) * u + s); };
   const easeInCubic = t => t * t * t;
+  const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
 
   function paint(f, t) {
     const pts = new Array(f.from.length);
@@ -130,8 +127,9 @@
     }
     const s = pts.join(' ');
     for (const p of f.polys) p.setAttribute('points', s);
-    /* Das Logo sitzt im Reiter und muss dessen Weg mitgehen. */
-    if (f.logo) f.logo.style.transform = `translateY(${(f.logoShift * t).toFixed(2)}px)`;
+    /* Das Logo sitzt im Reiter und muss dessen Weg mitgehen – zusätzlich zum
+       Versatz aus dem Bühnenlayout (data-logo-shift, gesetzt in layoutFit/Mobile). */
+    if (f.logo) f.logo.style.transform = `translateY(${(+(f.g.dataset.logoShift || 0) + f.logoShift * t).toFixed(2)}px)`;
   }
 
   let raf = 0, rafGuard = 0;
@@ -186,6 +184,18 @@
         : Math.abs(v - 1920) < .01 || Math.abs(v - 1873.22) < .01 ? 1920 : v));
     f.logoShift = 55.81 - yTab;
 
+    /* Der Stapel öffnet sich am angeklickten Ordner: was dahinter liegt, wird
+       nach oben gezogen, was davor liegt, nach unten – so läuft nichts über
+       den Ordner, der nach oben steigt. Staffelung jeweils vom angeklickten
+       Ordner weg (40 ms je Ordner). */
+    const order = ORDER.filter(k => stage.querySelector(`.folder[data-folder="${k}"]`));
+    const ai = order.indexOf(key);
+    order.forEach((k, i) => {
+      const g = stage.querySelector(`.folder[data-folder="${k}"]`);
+      g.classList.toggle('is-behind', i < ai);
+      g.classList.toggle('is-front', i > ai);
+      g.style.setProperty('--exit-delay', (Math.abs(i - ai) - 1) * 40 + 'ms');
+    });
     stage.classList.add('is-open');
     f.g.classList.add('is-active');
     document.body.classList.add('proj-open');
@@ -193,29 +203,33 @@
     f.panel.setAttribute('aria-hidden', 'false');
 
     if (!animated || reduced.matches) {
+      stage.classList.add('no-anim');
       paint(f, 1);
-      f.panel.classList.remove('is-tucked');
+      f.panel.classList.remove('is-tucked', 'is-closing');
       f.panel.classList.add('is-expanded');
       if (f.panel.__pv) f.panel.__pv.reset();
+      setTimeout(() => stage.classList.remove('no-anim'), 80);
       return;
     }
 
-    /* 1. Ordner steigt, der Rest sinkt, Kopfzeile fährt raus (CSS über
-          stage.is-open). Das Panel bleibt so lange unsichtbar. */
+    /* Der Stapel wird nach oben gezogen (CSS über stage.is-open), der
+       angeklickte Ordner bleibt oben hängen (Morph, ohne Überschwingen).
+       Kurz danach kommt das Blatt mit Inhalt von unten aus dem Stapel;
+       das Panel ist dabei durchsichtig, der Ordner der Bühne bleibt sichtbar. */
     f.panel.hidden = true;
     f.panel.classList.add('is-tucked');
-    f.panel.classList.remove('is-expanded');
-    animate(f, 0, 1, OPEN_MS, easeOutBack, () => {
-      /* 2. Blatt aus dem Ordner ziehen: Panel durchsichtig einblenden
-            (der Ordner der Bühne bleibt sichtbar), dann Blatt hochfahren. */
+    f.panel.classList.remove('is-expanded', 'is-closing');
+    animate(f, 0, 1, OPEN_MS, easeOutCubic, null);
+    timer = setTimeout(() => {
+      if (current !== key) return;
       clipToStage(f.panel);
       f.panel.hidden = false;
-      if (f.panel.__pv) f.panel.__pv.reset();    /* misst den Pfeil – erst jetzt, sichtbar */
+      if (f.panel.__pv) f.panel.__pv.reset();    /* setzt den Pfeil – jetzt, wo das Panel Layout hat */
       void f.panel.offsetHeight;                 /* Reflow, damit die Transition greift */
       f.panel.classList.add('is-expanded');
       f.panel.classList.remove('is-tucked');
-      timer = setTimeout(() => f.panel.focus({ preventScroll: true }), SHEET_MS + 250);
-    });
+      timer = setTimeout(() => f.panel.focus({ preventScroll: true }), SHEET_MS + 100);
+    }, SHEET_LAG);
   }
 
   function close({ animated = true } = {}) {
@@ -240,11 +254,11 @@
     /* Rückweg: Blatt zurück in den Ordner, dann sinkt der Ordner in den
        Stapel, während der Rest hochkommt und die Kopfzeile zurückfährt. */
     clipToStage(f.panel);
-    f.panel.classList.add('is-tucked');
+    f.panel.classList.add('is-tucked', 'is-closing');
     timer = setTimeout(() => {
       f.panel.hidden = true;
-      f.panel.classList.remove('is-expanded');
-      stage.classList.remove('is-open');
+      f.panel.classList.remove('is-expanded', 'is-closing');
+      stage.classList.remove('is-open');       /* der Rest kommt zurück, wohin er ging */
       animate(f, 1, 0, CLOSE_MS, easeInCubic, () => {
         f.g.classList.remove('is-active'); f.panel.hidden = true; f.g.focus?.();
         applyLayout();                          /* Fenster wurde evtl. bei offenem Projekt verändert */
@@ -271,7 +285,7 @@
 
     const go = e => {
       e.preventDefault();
-      if (current === key) return;
+      if (current) return;                     /* schon ein Projekt offen (oder gerade im Aufklappen) */
       const u = new URL(location.href);
       u.searchParams.set('p', key);
       history.pushState({ p: key }, '', u);
@@ -365,7 +379,8 @@
       /* Logo wandert mit dem Reiter. Beim Deckel ist die Gruppe das Foto samt
          Clip – der Clip ist schon über die Polygone umgerechnet, das Foto
          wird unten eigens gesetzt; die Gruppe darf nicht zusätzlich wandern. */
-      if (f.logo && f.key !== 'front') f.logo.style.transform = `translateY(${(tabTop - yTab).toFixed(2)}px)`;
+      f.g.dataset.logoShift = (tabTop - yTab).toFixed(2);
+      if (f.logo && f.key !== 'front') f.logo.style.transform = `translateY(${f.g.dataset.logoShift}px)`;
     });
   }
 
@@ -410,7 +425,8 @@
       /* Logo wandert mit dem Reiter. Beim Deckel ist die Gruppe das Foto samt
          Clip – der Clip ist schon über die Polygone umgerechnet, das Foto
          wird unten eigens gesetzt; die Gruppe darf nicht zusätzlich wandern. */
-      if (f.logo && f.key !== 'front') f.logo.style.transform = `translateY(${(tabTop - yTab).toFixed(2)}px)`;
+      f.g.dataset.logoShift = (tabTop - yTab).toFixed(2);
+      if (f.logo && f.key !== 'front') f.logo.style.transform = `translateY(${f.g.dataset.logoShift}px)`;
     });
     /* Deckelfoto: Oberkante auf den Deckelreiter, Parallax-Drehpunkt in die Mitte */
     if (coverImg) {
@@ -453,6 +469,66 @@
      ein Tipp öffnet direkt. Das erledigt der bestehende click-Handler. */
   addEventListener('resize', applyLayout);
   applyLayout();
+
+  /* ---------- Schalter Produkt ↔ Grafik in der Kopfzeile ----------
+     Der schwarze Kasten mit dem weißen Knopf zwischen PRODUCTDESIGN und
+     GRAPHICDESIGN ist ein Schieber: Knopf links = Produkt, rechts = Grafik.
+     Klick auf den Kasten wechselt die Seite; der Knopf lässt sich auch mit
+     der Maus ziehen und rastet beim Loslassen auf der näheren Seite ein.
+     Je Sprache eine Klickfläche (die SVG-Fassungen liegen an anderer x). */
+  const KNOB = 11.94, TRACK = 33.16, INSET = 2.32;              /* Einheiten aus der Vorlage */
+  const PAGE = (document.body.dataset.page === 'produkt' ? 'product' : document.body.dataset.page) || 'graphic';
+  const isProduct = PAGE === 'product';
+  for (const grp of stage.querySelectorAll('.svg-i18n')) {
+    const lang = grp.dataset.langSvg;
+    const track = [...grp.querySelectorAll('rect')].find(r => Math.abs(+r.getAttribute('width') - TRACK) < .1);
+    const knob  = [...grp.querySelectorAll('rect')].find(r => Math.abs(+r.getAttribute('width') - KNOB) < .1 && Math.abs(+r.getAttribute('y') - 62.93) < .1);
+    if (!track || !knob) continue;
+    const x0 = +track.getAttribute('x'), y0 = +track.getAttribute('y');
+    const travel = TRACK - KNOB - 2 * INSET;                     /* 16.58 */
+    const rest = +knob.getAttribute('x') - (x0 + INSET);         /* 0 (links/Produkt) oder travel (rechts/Grafik) */
+    const hot = document.createElement('button');
+    hot.type = 'button'; hot.className = 'hot switch'; hot.dataset.langHot = lang;
+    hot.setAttribute('aria-label', isProduct ? 'Graphic Design' : 'Product Design');
+    hot.style.cssText = `left:calc(var(--u) * ${x0 - 4});top:calc(var(--u) * ${y0 - 6});width:calc(var(--u) * ${TRACK + 8});height:calc(var(--u) * ${16.58 + 12})`;
+    stage.appendChild(hot);
+    knob.style.transition = 'transform 160ms ease';
+    let drag = null;
+    const setKnob = dx => { knob.style.transform = `translateX(${dx.toFixed(2)}px)`; };
+    const go = toProduct => {
+      const u = new URL(toProduct ? 'product.html' : './', location.href);
+      u.searchParams.set('lang', document.documentElement.lang || 'en');
+      location.href = u;
+    };
+    hot.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      drag = { x: e.clientX, moved: false }; hot.setPointerCapture(e.pointerId);
+      knob.style.transition = 'none';
+    });
+    hot.addEventListener('pointermove', e => {
+      if (!drag) return;
+      const u = innerWidth / 1920;
+      let dx = (e.clientX - drag.x) / u;                          /* in Einheiten */
+      if (Math.abs(dx) > 1) drag.moved = true;
+      dx = Math.max(-rest, Math.min(travel - rest, dx));          /* im Kasten bleiben */
+      setKnob(dx);
+    });
+    const release = e => {
+      if (!drag) return;
+      const u = innerWidth / 1920;
+      const dx = Math.max(-rest, Math.min(travel - rest, (e.clientX - drag.x) / u));
+      const wasDrag = drag.moved; drag = null;
+      knob.style.transition = 'transform 160ms ease';
+      const pos = rest + dx;                                      /* 0 … travel */
+      const target = wasDrag ? (pos > travel / 2 ? 'graphic' : 'product') : (isProduct ? 'graphic' : 'product');
+      const changes = target !== PAGE;                             /* auf Who/Impressum führt auch "Grafik" weg */
+      setKnob(target === 'product' ? -rest : travel - rest);
+      if (changes) setTimeout(() => go(target === 'product'), 170);
+    };
+    hot.addEventListener('pointerup', release);
+    hot.addEventListener('pointercancel', () => { if (drag) { drag = null; setKnob(0); knob.style.transition = 'transform 160ms ease'; } });
+    hot.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(!isProduct); } });
+  }
 
   /* ---------- Deckel-Foto: Parallax mit der Maus ----------
      Kleine, gegenläufige Verschiebung in SVG-Einheiten. Die Position
@@ -577,8 +653,9 @@
         f.classList.toggle('is-top', i === step);
       });
       vidFigs.forEach(vf => { if (+vf.dataset.i !== step) stopVideo(vf); });
-      /* Text blendet 140 ms verzögert ein – danach messen */
-      setTimeout(placeArrow, 180);
+      /* Pfeil sofort setzen: die Sichtbarkeit der Abschnitte ist reine Opacity,
+         das Layout steht in diesem Moment schon fest. */
+      placeArrow();
     }
 
     function go(d) {
@@ -634,7 +711,7 @@
     addEventListener('resize', () => { if (!panel.hidden) placeArrow(); });
 
     panel.__pv = {
-      reset() { step = 0; lock = 0; figs.forEach(f => f.classList.remove('is-out', 'is-back')); stopVideo(); render(0); setTimeout(placeArrow, 400); },
+      reset() { step = 0; lock = 0; figs.forEach(f => f.classList.remove('is-out', 'is-back')); stopVideo(); render(0); },
       stop()  { stopVideo(); }
     };
     /* Eigenständige Seite ohne Ordnerstapel (Who I am): sofort aufbauen */

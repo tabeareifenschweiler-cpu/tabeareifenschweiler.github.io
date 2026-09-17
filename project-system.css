@@ -98,19 +98,21 @@ body.proj-open { overflow: hidden; }
 .pv-body {
   position: absolute; inset: var(--band-h) 0 0 0;
   background: #fff;                      /* Kontur kommt aus .pv-tab__line */
-  /* Das Blatt wird aus dem Ordner gezogen: kommt von unten hoch (is-tucked
-     = noch im Ordner), der Inhalt erscheint erst, wenn es steht. */
-  transition: transform 350ms cubic-bezier(.2, .7, .2, 1);
+  /* Das Blatt wird mit Inhalt aus dem Stapel gezogen: kommt von unten hoch
+     (is-tucked = noch im Stapel), 520 ms, weich auslaufend. Zurück (is-closing)
+     rutscht es in 300 ms in den Ordner, der Inhalt blendet vorher aus. */
+  transition: transform 520ms cubic-bezier(.2, .7, .2, 1);
 }
-.proj--v2.is-tucked .pv-body { transform: translateY(100%); transition-duration: 300ms; transition-timing-function: cubic-bezier(.5, 0, .7, .4); }
-.pv-sheet { transition: opacity 220ms ease 300ms; }
-.proj--v2.is-tucked .pv-sheet { opacity: 0; transition-delay: 0ms; transition-duration: 120ms; }
+.proj--v2.is-tucked .pv-body { transform: translateY(100%); }
+.proj--v2.is-closing .pv-body { transition-duration: 300ms; transition-timing-function: cubic-bezier(.5, 0, .7, .4); }
+.pv-sheet { transition: opacity 120ms ease; }
+.proj--v2.is-closing .pv-sheet { opacity: 0; }
 /* Solange das Blatt fährt, ist das Panel durchsichtig: oben bleibt der
    hochgestiegene Ordner der Bühne sichtbar (gleiche Farbe, gleicher Reiter).
    Erst wenn das Blatt steht, blenden Grund und weißer Reiter darüber ein. */
-.proj--v2 { transition: background-color 200ms ease 300ms; }
+.proj--v2 { transition: background-color 200ms ease 520ms; }
 .proj--v2.is-tucked { background-color: transparent; transition-delay: 0ms; }
-.pv-tab { transition: opacity 200ms ease 300ms; }
+.pv-tab { transition: opacity 200ms ease 520ms; }
 .proj--v2.is-tucked .pv-tab { opacity: 0; transition-delay: 0ms; }
 .pv-sheet {
   position: absolute; top: 0; left: 50%; translate: -50% 0;
@@ -241,7 +243,7 @@ body.proj-open { overflow: hidden; }
      gemessen – die Bilder sind je Projekt unterschiedlich hoch) */
   left: calc(var(--u) * 161.75); top: var(--arrow-top, 0px);
   height: calc(var(--arrow-tip, calc(var(--u) * 787.05)) - var(--arrow-top, 0px));
-  transition: opacity 260ms ease, height 420ms cubic-bezier(.22,1,.36,1), top 420ms cubic-bezier(.22,1,.36,1);
+  transition: opacity 260ms ease;                /* Position wird gesetzt, nicht animiert */
   width: calc(var(--u) * 15.69);
 }
 .pv-arrow__line {
