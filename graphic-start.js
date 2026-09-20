@@ -35,6 +35,8 @@
   if (!stage) return;
   const svg = stage.querySelector('svg');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  /* Mobil = schmaler als 900 px oder flacher als 520 px (Handy quer) – muss zur Media-Query in graphic-start.css passen */
+  const isMobile = () => innerWidth < 900 || innerHeight < 520;
 
   /* ---------- Sprache ---------- */
   const LANGS = ['en', 'de'];
@@ -129,7 +131,7 @@
     for (const p of f.polys) p.setAttribute('points', s);
     /* Das Logo sitzt im Reiter und muss dessen Weg mitgehen – zusätzlich zum
        Versatz aus dem Bühnenlayout (data-logo-shift, gesetzt in layoutFit/Mobile). */
-    if (f.logo) f.logo.style.transform = `translateY(${(+(f.g.dataset.logoShift || 0) + f.logoShift * t).toFixed(2)}px)`;
+    if (f.logo) f.logo.style.transform = `translate(${f.g.dataset.logoShiftX || 0}px, ${(+(f.g.dataset.logoShift || 0) + f.logoShift * t).toFixed(2)}px)`;
   }
 
   let raf = 0, rafGuard = 0;
@@ -161,6 +163,33 @@
     panel.style.setProperty('--clip-b', Math.max(0, innerHeight - r.bottom) + 'px');
   }
 
+  /* Reiter im Band der Projektansicht auf die Bühnenform legen: am Desktop
+     die Vorlagenkoordinaten, mobil die umgerechneten (viewBox 504, Reiter
+     rechts/links). Die Logo-Pfade des Reiters werden dafür einmal in eine
+     Gruppe gefasst und mit dem Reiter verschoben. */
+  function syncPanelTab(f) {
+    const tab = f.panel.querySelector('.pv-tab'); if (!tab) return;
+    const shape = tab.querySelector('.pv-tab__shape'), line = tab.querySelector('.pv-tab__line');
+    if (!tab.dataset.shape0) { tab.dataset.shape0 = shape.getAttribute('points'); tab.dataset.line0 = line.getAttribute('points'); tab.dataset.vb0 = tab.getAttribute('viewBox'); }
+    let logo = tab.querySelector('.pv-tab__logo');
+    if (!logo) {
+      logo = document.createElementNS('http://www.w3.org/2000/svg', 'g'); logo.setAttribute('class', 'pv-tab__logo');
+      const rest = [...tab.children].filter(el => el !== shape && el !== line);
+      tab.appendChild(logo); rest.forEach(el => logo.appendChild(el));
+    }
+    const dx = +(f.g.dataset.logoShiftX || 0);
+    if (!dx) {
+      tab.setAttribute('viewBox', tab.dataset.vb0); shape.setAttribute('points', tab.dataset.shape0); line.setAttribute('points', tab.dataset.line0);
+      logo.removeAttribute('transform'); return;
+    }
+    const xs = [...new Set(f.from.filter((_, n) => n % 2 === 0))].filter(x => x > 0 && x < 1920).sort((a, b) => a - b);
+    const [x1, x2, x3, x4] = xs;
+    tab.setAttribute('viewBox', `0 0 ${MOB_W} 126.38`);
+    shape.setAttribute('points', `${x1} 127.5 ${x2} 55.81 ${x3} 55.81 ${x4} 127.5`);
+    line.setAttribute('points', `-6000 126.38 ${x1} 126.38 ${x2} 55.81 ${x3} 55.81 ${x4} 126.38 8000 126.38`);
+    logo.setAttribute('transform', `translate(${dx} 0)`);
+  }
+
   /* ---------- Zustand ---------- */
   let current = null;
   let timer = 0;
@@ -188,6 +217,7 @@
       : (Math.abs(v) < .01 || Math.abs(v - 46.78) < .01 ? 0
         : Math.abs(v - 1920) < .01 || Math.abs(v - 1873.22) < .01 ? 1920 : v));
     f.logoShift = TAB_TOP - yTab;
+    syncPanelTab(f);
 
     /* Der restliche Stapel geht nach unten aus dem Bild, gestaffelt vom
        angeklickten Ordner weg (40 ms je Ordner); die Kopfzeile nach oben. */
@@ -352,36 +382,47 @@
     };
   }).filter(Boolean);
 
+  /* ---------- Mobil: Bühne hochkant, viewBox 504 × vbH ----------
+     Vorlage Mobil_Startseite.svg: erster Reiter bei 35 % der Höhe,
+     Registerschritt 4,06 % der Höhe, Reiter abwechselnd rechts/links
+     (Deckel immer rechts), Reiterform und -maße wie am Desktop. Der
+     Korpus läuft randlos über die 504 Einheiten. Das Deckelfoto wird als
+     Ausschnitt (slice) in den Korpus gelegt. */
+  const MOB_W = 504, MOB_MARGIN = 36;
   function layoutMobile(vbH) {
-    /* Kopfzeile oben frei lassen, unten etwas Luft für den Deckel. */
-    const top = 280, tail = 0.16 * vbH;   /* 280: Abstand zur Kopfzeile */
-    const slot = (vbH - tail - top - TAB_H) / (stack.length - 1);
-
+    const top = 0.352 * vbH, slot = 0.0406 * vbH;
+    const projs = stack.filter(f => f.key !== 'front');
     stack.forEach((f, i) => {
-      const v = f.base;
-      const ys = v.filter((_, n) => n % 2);
+      const v = f.base, ys = v.filter((_, n) => n % 2), xs = v.filter((_, n) => n % 2 === 0);
       const yTab = Math.min(...ys), yBody = [...new Set(ys)].sort((a, b) => a - b)[1];
-      const tabTop = top + i * slot;
-      const bodyTop = tabTop + TAB_H;
-
+      const tabTop = top + i * slot, bodyTop = tabTop + (yBody - yTab);
+      /* Reiter: vier x-Werte zwischen den Korpuskanten (-2 / 1922) */
+      const inner = [...new Set(xs)].filter(x => x > 0 && x < 1920).sort((a, b) => a - b);
+      const baseL = inner[0], baseW = inner[inner.length - 1] - inner[0];
+      const right = f.key === 'front' ? true : projs.indexOf(f) % 2 === 0;
+      const newL = right ? MOB_W - MOB_MARGIN - baseW : MOB_MARGIN;
       const pts = new Array(v.length);
       for (let n = 0; n < v.length; n += 2) {
-        pts[n]     = v[n];                                   /* x unverändert */
-        pts[n + 1] = v[n + 1] === yTab  ? tabTop
-                   : v[n + 1] === yBody ? bodyTop
-                   : vbH;                                    /* Unterkante */
+        const x = v[n], y = v[n + 1];
+        pts[n] = x <= 0 ? x : x >= 1920 ? MOB_W + (x - 1920) : newL + (x - baseL);
+        pts[n + 1] = y === yTab ? tabTop : y === yBody ? bodyTop : vbH + 1;
       }
-      const str = pts.join(' ');
+      const str = pts.map(x => +x.toFixed(2)).join(' ');
       for (const p of f.polys) p.setAttribute('points', str);
       if (f.key === 'front' && coverImg) {
-        coverImg.setAttribute('transform', `translate(-1 ${tabTop.toFixed(2)}) scale(1.0562)`);
-        cover.style.transformOrigin = `960px ${((tabTop + vbH) / 2).toFixed(1)}px`;
+        coverImg.setAttribute('transform', '');
+        coverImg.setAttribute('x', 0); coverImg.setAttribute('y', tabTop.toFixed(2));
+        coverImg.setAttribute('width', MOB_W); coverImg.setAttribute('height', (vbH - tabTop + 1).toFixed(2));
+        coverImg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+        cover.style.transformOrigin = `${MOB_W / 2}px ${((tabTop + vbH) / 2).toFixed(1)}px`;
       }
-      /* Logo wandert mit dem Reiter. Beim Deckel ist die Gruppe das Foto samt
-         Clip – der Clip ist schon über die Polygone umgerechnet, das Foto
-         wird unten eigens gesetzt; die Gruppe darf nicht zusätzlich wandern. */
-      f.g.dataset.logoShift = (tabTop - yTab).toFixed(2);
-      if (f.logo && f.key !== 'front') f.logo.style.transform = `translateY(${f.g.dataset.logoShift}px)`;
+      /* Logo wandert mit seinem Reiter (x) und sitzt mittig im sichtbaren
+         Streifen (slot), nicht wie am Desktop 26 unter der Reiterkante */
+      if (f.logo && !f.logoBox) { try { const b = f.logo.getBBox(); if (b.height) f.logoBox = { y: b.y, h: b.height }; } catch (e) {} }
+      const ly = f.logoBox ? (tabTop + (slot - f.logoBox.h) / 2) - f.logoBox.y : tabTop - yTab;
+      f.g.dataset.logoShift = ly.toFixed(2);
+      f.g.dataset.logoShiftX = (newL - baseL).toFixed(2);
+      if (f.logo && f.key !== 'front') f.logo.style.transform = `translate(${f.g.dataset.logoShiftX}px, ${f.g.dataset.logoShift}px)`;
     });
   }
 
@@ -426,11 +467,14 @@
       /* Logo wandert mit dem Reiter. Beim Deckel ist die Gruppe das Foto samt
          Clip – der Clip ist schon über die Polygone umgerechnet, das Foto
          wird unten eigens gesetzt; die Gruppe darf nicht zusätzlich wandern. */
-      f.g.dataset.logoShift = (tabTop - yTab).toFixed(2);
+      f.g.dataset.logoShift = (tabTop - yTab).toFixed(2); delete f.g.dataset.logoShiftX;
       if (f.logo && f.key !== 'front') f.logo.style.transform = `translateY(${f.g.dataset.logoShift}px)`;
     });
     /* Deckelfoto: Oberkante auf den Deckelreiter, Parallax-Drehpunkt in die Mitte */
     if (coverImg) {
+      coverImg.removeAttribute('x'); coverImg.removeAttribute('y');
+      coverImg.setAttribute('width', 3000); coverImg.setAttribute('height', 750);
+      coverImg.setAttribute('preserveAspectRatio', 'none');
       coverImg.setAttribute('transform', `translate(-1 ${frontTop.toFixed(2)}) scale(1.0562)`);
       cover.style.transformOrigin = `960px ${((frontTop + vbH) / 2).toFixed(1)}px`;
     }
@@ -456,14 +500,17 @@
        rechnen – sonst landet NaN im viewBox und in allen Polygonen. */
     if (!(innerWidth > 0 && innerHeight > 0)) return;
     if (!stack.length) return;                 /* Seiten ohne Stapel (Impressum) */
-    const vbH = Math.round(1920 * innerHeight / innerWidth);
-    const mobile = innerWidth <= 767;
-    const key = (mobile ? 'm' : 'd') + vbH;
+    /* Hochkant (Handy): eigener Stapel auf 504 Einheiten. Quer (Handy
+       liegend) und Desktop: Vorlagenstapel, an die Höhe angepasst. */
+    const portrait = isMobile() && innerHeight >= innerWidth;
+    const vbW = portrait ? MOB_W : 1920;
+    const vbH = Math.round(vbW * innerHeight / innerWidth);
+    const key = (portrait ? 'm' : 'd') + vbH;
     if (key === lastVbH) return;
     lastVbH = key;
-    svg.setAttribute('viewBox', `0 0 1920 ${vbH}`);
+    svg.setAttribute('viewBox', `0 0 ${vbW} ${vbH}`);
     stage.style.setProperty('--exit-y', (vbH + 200) + 'px');   /* Absinkweg des Stapels */
-    if (mobile) layoutMobile(vbH); else layoutFit(vbH);
+    if (portrait) layoutMobile(vbH); else layoutFit(vbH);
   }
 
   /* Auf Mobil ist der Stapel die Navigation – Hover gibt es dort nicht,
@@ -555,18 +602,19 @@
     stage.addEventListener('mouseleave', () => { tx = 0; ty = 0; kick(); });
   }
 
-  /* ---------- Burgermenü ---------- */
-  const burger = document.querySelector('.m-burger');
+  /* ---------- Mobilmenü (MENU-Kasten wird zum X) ---------- */
+  const burger = document.querySelector('.m-menu');
   const mnav = document.querySelector('.m-nav');
   if (burger && mnav) {
     const setMenu = open => {
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'Close menu' : 'Menu');
       mnav.hidden = !open;
     };
     burger.addEventListener('click', () => setMenu(mnav.hidden));
     mnav.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
     addEventListener('keydown', e => { if (e.key === 'Escape' && !mnav.hidden) setMenu(false); });
-    addEventListener('resize', () => { if (innerWidth > 767) setMenu(false); });
+    addEventListener('resize', () => { if (!isMobile()) setMenu(false); });
   }
 
 
@@ -597,6 +645,7 @@
     const u = () => Math.min(innerWidth / 1920, innerHeight / 1080);
 
     function placeArrow() {
+      if (isMobile()) return;                          /* mobil steht der Pfeil im Fluss */
       const txt = panel.querySelector(step === 0 ? '.pv-text--1' : '.pv-text--2');
       const block = txt && [...txt.children].find(c => getComputedStyle(c).display !== 'none');
       if (!block) return;
@@ -672,19 +721,20 @@
     }
 
     panel.addEventListener('wheel', e => {
-      if (panel.hidden) return;
+      if (panel.hidden || isMobile()) return;         /* mobil scrollt das Blatt selbst */
       e.preventDefault();
       if (Math.abs(e.deltaY) < 8) return;
       go(e.deltaY > 0 ? 1 : -1);
     }, { passive: false });
     panel.addEventListener('keydown', e => {
+      if (isMobile()) return;
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(1); }
       if (e.key === 'ArrowUp'   || e.key === 'PageUp')                    { e.preventDefault(); go(-1); }
     });
     let ty = null;
     panel.addEventListener('touchstart', e => { ty = e.touches[0].clientY; }, { passive: true });
     panel.addEventListener('touchend',   e => {
-      if (ty === null) return;
+      if (ty === null || isMobile()) return;
       const dy = ty - e.changedTouches[0].clientY; ty = null;
       if (Math.abs(dy) > 40) go(dy > 0 ? 1 : -1);
     });
@@ -711,9 +761,70 @@
 
     addEventListener('resize', () => { if (!panel.hidden) placeArrow(); });
 
+    /* ---- Mobil: Scroll-Modus ----
+       Das Blatt scrollt normal; das Bild klebt unter dem Band und wechselt,
+       sobald der nächste Abschnitt oben am Bild ankommt. Bilder ohne eigenen
+       Abschnitt werden einmalig als Inline-Bilder in den Text kopiert
+       (je Sprachblock, weil die Texte doppelt vorliegen). */
+    const stack = panel.querySelector('.pv-stack');
+    let inlined = false;
+    function ratioOf(fig) { const w = +(fig.style.getPropertyValue('--fw') || 1120), h = +(fig.style.getPropertyValue('--fh') || 630); return `${w} / ${h}`; }
+    function inlineFig(fig) {
+      const el = document.createElement('figure');
+      const card = fig.classList.contains('pv-fig--wide') || fig.classList.contains('pv-fig--card');
+      el.className = 'pv-inline' + (card ? ' pv-inline--card' : '');
+      el.style.setProperty('--ratio', ratioOf(fig));
+      const bg = fig.style.getPropertyValue('--card-bg'); if (bg) el.style.setProperty('--card-bg', bg);
+      const v = fig.querySelector('video');
+      if (v) {
+        const vv = document.createElement('video'); vv.controls = true; vv.playsInline = true; vv.preload = 'none';
+        vv.poster = v.getAttribute('poster') || ''; vv.src = v.querySelector('source').getAttribute('src'); el.appendChild(vv);
+      } else {
+        const img = document.createElement('img'); img.src = fig.querySelector('img').getAttribute('src'); img.alt = ''; img.loading = 'lazy'; el.appendChild(img);
+      }
+      return el;
+    }
+    function inlineExtras() {
+      if (inlined || !stack) return; inlined = true;
+      stack.style.setProperty('--ratio', ratioOf(figs.find(f => +f.dataset.i === 0) || figs[0]));
+      for (const block of panel.querySelectorAll('.pv-text--2 > [data-lang-block]')) {
+        const secs = [...block.querySelectorAll('.pv-sec')];
+        const used = new Set([0]);
+        for (const s of secs) {
+          const a = +s.dataset.sec, b = +(s.dataset.until || s.dataset.sec);
+          used.add(a);
+          for (let i = a + 1; i <= b; i++) { const f = figs.find(x => +x.dataset.i === i); if (f) { s.appendChild(inlineFig(f)); used.add(i); } }
+        }
+        const last = secs[secs.length - 1];
+        figs.filter(f => !used.has(+f.dataset.i)).sort((p, q) => +p.dataset.i - +q.dataset.i).forEach(f => last.appendChild(inlineFig(f)));
+      }
+    }
+    let mobStep = -1;
+    function showFig(i) {
+      if (i === mobStep) return; mobStep = i;
+      figs.forEach(f => f.classList.toggle('is-cur', +f.dataset.i === i));
+      vidFigs.forEach(vf => { if (+vf.dataset.i !== i) stopVideo(vf); });
+    }
+    function onScroll() {
+      if (!isMobile() || panel.hidden || !stack) return;
+      const block = [...panel.querySelectorAll('.pv-text--2 > [data-lang-block]')].find(b => getComputedStyle(b).display !== 'none');
+      if (!block) return;
+      const edge = stack.getBoundingClientRect().bottom + 24;
+      let i = 0;
+      for (const s of block.querySelectorAll('.pv-sec')) if (s.getBoundingClientRect().top < edge) i = +s.dataset.sec;
+      showFig(i);
+    }
+    panel.addEventListener('scroll', onScroll, { passive: true });
+    let poll = 0;   /* Sicherheitsnetz: Scroll-Ereignisse kommen bei Trägheits-Scrollen nicht immer sofort */
+
     panel.__pv = {
-      reset() { step = 0; lock = 0; figs.forEach(f => f.classList.remove('is-out', 'is-back')); stopVideo(); render(0); },
-      stop()  { stopVideo(); }
+      reset() {
+        step = 0; lock = 0; figs.forEach(f => f.classList.remove('is-out', 'is-back')); stopVideo();
+        clearInterval(poll); poll = 0;
+        if (isMobile() && stack) { inlineExtras(); panel.scrollTop = 0; mobStep = -1; showFig(0); poll = setInterval(onScroll, 250); }
+        else render(0);
+      },
+      stop()  { stopVideo(); clearInterval(poll); poll = 0; }
     };
     /* Eigenständige Seite ohne Ordnerstapel (Who I am): sofort aufbauen */
     if (!panel.hidden) { panel.__pv.reset(); addEventListener('load', placeArrow); }

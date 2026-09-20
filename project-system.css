@@ -308,3 +308,76 @@ body.proj-open { overflow: hidden; }
 .who .cv + h2 { margin-top: calc(var(--u) * 31.6); }
 /* Stell dir vor: sehr helle Fotos auf Weiß – Schatten noch zurückhaltender */
 #proj-stelldirvor .pv-fig { box-shadow: 0 1px 4px rgba(0, 0, 0, .04); }
+
+/* =============================================================
+   Projektansicht mobil (Vorlage: Anwendungsbeispiele/Mobil_Projektansicht.svg)
+   Ein normal scrollendes Blatt: Band mit Reiter und X bleibt oben stehen,
+   darunter klebt das Bild (sticky), der Text läuft darunter durch. Sobald
+   ein Abschnitt oben am Bild ankommt, wechselt das Bild zu diesem Schritt
+   (graphic-start.js, Scroll-Modus). Bilder ohne eigenen Abschnitt liegen
+   als Inline-Bilder im Text. Einheit: 100vw / 504.
+   ============================================================= */
+@media (max-width: 899px), (max-height: 519px) {
+  .proj--v2 {
+    --uw: calc(100vw / 504); --u: var(--uw);
+    --band-h: calc(var(--uw) * 126.38);
+    overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .proj--v2::-webkit-scrollbar { display: none; }
+  .proj--v2.is-tucked, .proj--v2.is-closing { overflow: hidden; }
+
+  /* Band + Reiter bleiben oben (sticky), X links im Band */
+  .pv-band { position: sticky; inset: auto; top: 0; height: var(--band-h); cursor: pointer; z-index: 4; background: var(--proj-color); }
+  .pv-back { display: none !important; }
+  .pv-band::before, .pv-band::after {
+    content: ""; position: absolute; left: calc(var(--uw) * 36); top: calc(var(--band-h) / 2 - 1px);
+    width: calc(var(--uw) * 16); height: 2px; background: var(--back-ink, #05141d); transform: rotate(45deg); transform-origin: center;
+  }
+  .pv-band::after { transform: rotate(-45deg); }
+  .pv-tab { position: sticky; top: 0; display: block; left: 0; width: 100vw; height: var(--band-h); margin-top: calc(-1 * var(--band-h)); z-index: 5; }
+
+  .pv-body { position: relative; inset: auto; min-height: calc(100dvh - var(--band-h)); }
+  .pv-sheet {
+    position: relative; left: 0; translate: none; width: auto; height: auto;
+    display: flex; flex-direction: column;
+    padding: 0 calc(var(--uw) * 36) calc(var(--uw) * 80);
+  }
+  .pv-sheet > * { position: static; }
+
+  /* Bild klebt unter dem Band; alle Bilder liegen übereinander, is-cur ist sichtbar */
+  .pv-stack {
+    order: 0; position: sticky; top: var(--band-h); z-index: 2;
+    left: auto; width: 100%; height: auto; aspect-ratio: var(--ratio, 16 / 9);
+    margin: calc(var(--uw) * 32) 0 0; background: #fff;
+    box-shadow: 0 calc(var(--uw) * -32) 0 #fff;        /* weißer Saum nach oben: deckt den Spalt zum Band, der Text taucht erst unter dem Bild auf */
+  }
+  .pv-fig { position: absolute; inset: 0; left: 0; top: 0; width: 100%; height: 100%; transform: none !important; opacity: 0; transition: opacity 260ms ease; pointer-events: none; }
+  .pv-fig.is-cur { opacity: 1; pointer-events: auto; }
+  .pv-play { width: 56px; height: 70px; }
+
+  .pv-text { position: static; width: auto; font-size: clamp(16px, calc(var(--uw) * 20), 19px); opacity: 1 !important; visibility: visible !important; }
+  .pv-text--1 { order: 1; margin-top: calc(var(--uw) * 48); }
+  .pv-arrow  { order: 2; position: relative; left: 0; top: auto; height: calc(var(--uw) * 150); width: calc(var(--uw) * 15.69); margin: calc(var(--uw) * 60) 0 calc(var(--uw) * 80); opacity: 1 !important; }
+  .pv-text--2 { order: 3; }
+  .pv-text h2 { font-size: clamp(14px, calc(var(--uw) * 18), 17px); margin: calc(var(--uw) * 40) 0 calc(var(--uw) * 10); }
+  .pv-text h3 { font-size: clamp(13px, calc(var(--uw) * 16), 16px); }
+  .pv-sec, .pv-sub, .pv-sec.is-off { display: block !important; opacity: 1 !important; }
+  .pv-sec:first-child h2 { margin-top: 0; }
+  .pv-meta { grid-template-columns: calc(var(--uw) * 150) 1fr; margin-top: calc(var(--uw) * 32); }
+  .pv-meta dt { font-size: clamp(13px, calc(var(--uw) * 16), 16px); }
+  .pv-more { font-size: clamp(14px, calc(var(--uw) * 18), 17px); }
+
+  /* Bilder ohne eigenen Abschnitt liegen im Text */
+  .pv-inline { position: relative; width: 100%; margin: calc(var(--uw) * 24) 0; aspect-ratio: var(--ratio, 16 / 9); background: var(--card-bg, #e9e9e7); overflow: hidden; }
+  .pv-inline img, .pv-inline video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .pv-inline--card img, .pv-inline--card video { object-fit: contain; }
+  .pv-inline video { background: #000; }
+}
+/* Handy quer: Band und Reiter in Vorlagen-Einheiten (Stapel läuft dort auf 1920) */
+@media (max-height: 519px) and (orientation: landscape) {
+  .proj--v2 { --uw: calc(100vw / 1920); --u: calc(100vw / 1100); }
+  .pv-band::before, .pv-band::after { left: calc(var(--u) * 36); top: calc(var(--band-h) / 2 - 1px); width: 14px; }
+  .pv-sheet { padding: 0 calc(var(--u) * 36) calc(var(--u) * 60); }
+  .pv-stack { margin-top: calc(var(--u) * 24); box-shadow: 0 calc(var(--u) * -24) 0 #fff; }
+}

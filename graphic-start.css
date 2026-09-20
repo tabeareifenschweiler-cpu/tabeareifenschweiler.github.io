@@ -274,80 +274,101 @@ html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de
 .stage .lang--stage .lang__btn:focus-visible { outline: 2px solid #05141d; outline-offset: 2px; }
 
 /* =============================================================
-   Mobilfassung der Startseite (< 768px)
+   Mobilfassung (schmaler als 900 px oder flacher als 520 px)
 
-   Statt der 16:9-Bühne, die auf dem Handy zu einem Streifen von
-   wenigen Zentimetern schrumpft, wird die Bühne hochkant: sie füllt
-   den Viewport, und graphic-start.js rechnet die Ordnerpolygone auf
-   die neue Höhe um (gleiche Reiterformen, größere Registerschritte).
-   Die Navigation aus dem SVG wird ausgeblendet und durch ein
-   ausklappbares Burgermenü ersetzt.
+   Vorlage: Anwendungsbeispiele/Mobil_Startseite.svg, Mobil_Menü.svg
+   (504 × 1093). Die Bühne wird hochkant, viewBox 504 × H; eine Einheit
+   ist dann 100vw/504. graphic-start.js setzt den Stapel neu: Reiter
+   abwechselnd rechts/links, gleiche Reiterform wie am Desktop.
+   Kopfzeile (Name + MENU-Kasten) und Fußzeile sind HTML, das SVG-Chrome
+   entfällt. Das Menü ist ein weißer Kasten mit schwarzer Kontur über
+   dem freien Raum oberhalb des Stapels; der MENU-Kasten wird zum X.
    ============================================================= */
-.m-brand, .m-burger, .m-nav { display: none; }
+.m-brand, .m-menu, .m-nav, .m-foot { display: none; }
 
-@media (max-width: 767px) {
+@media (max-width: 899px), (max-height: 519px) {
   .screen { align-items: stretch; }
-  /* Bühne füllt den Viewport; das Seitenverhältnis setzt das JS über
-     den viewBox-Wert, deshalb hier keine aspect-ratio mehr. */
-  .stage { width: 100vw; height: 100dvh; --u: calc(100vw / 1920); }
+  .stage { width: 100vw; height: 100dvh; --u: calc(100vw / 504); }
   .chrome { height: 100%; }
 
-  /* Kopf- und Fußzeile aus dem SVG samt Klickflächen entfallen –
-     dafür greifen Marke, Burger und Menü. Spezifität muss über den
-     Sprachregeln liegen (html[lang] …), sonst gewinnen die. */
+  /* SVG-Chrome samt Klickflächen aus – Spezifität über den Sprachregeln */
   html[lang] .svg-i18n { display: none; }
   html[lang] .stage .lang--stage { display: none; }
   html[lang] a.hot[data-lang-hot], html[lang] button.hot[data-lang-hot] { display: none; }
+  .hot.brand { display: none; }
 
   .m-brand {
     display: block; position: absolute; z-index: 7;
-    left: calc(var(--u) * 46.78); top: calc(var(--u) * 46);
+    left: calc(var(--u) * 36); top: calc(var(--u) * 32);
     font-family: 'IBM Plex Mono', ui-monospace, monospace;
-    font-size: max(13px, calc(var(--u) * 46));
+    font-size: clamp(14px, calc(var(--u) * 27), 24px); line-height: 1;
     letter-spacing: .01em; text-transform: uppercase;
-    color: #05141d; text-decoration: none;
+    color: #05141d; text-decoration: none; white-space: nowrap;
   }
-
-  .m-burger {
-    display: flex; position: absolute; z-index: 9;
-    right: calc(var(--u) * 46.78); top: calc(var(--u) * 40);
-    flex-direction: column; justify-content: center; gap: 5px;
-    width: 44px; height: 44px;                 /* volle Trefferfläche */
-    padding: 0; border: 0; background: none; cursor: pointer;
+  /* MENU: schwarzer Kasten, weiße Versalien (wie der Sprachmarker);
+     offen wird er zum quadratischen X aus zwei Strichen */
+  .m-menu {
+    display: flex; position: absolute; z-index: 9; align-items: center; justify-content: center;
+    right: calc(var(--u) * 36); top: calc(var(--u) * 30);
+    min-width: calc(var(--u) * 52); height: calc(var(--u) * 24); padding: 0 calc(var(--u) * 5);
+    border: 0; background: #000; color: #fff; cursor: pointer;
+    font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: calc(var(--u) * 16); line-height: 1;
+    letter-spacing: .02em; text-transform: uppercase;
   }
-  .m-burger span {
-    display: block; height: 2px; width: 26px; margin-inline-start: auto;
-    background: #05141d;
-    transition: transform 240ms ease, opacity 160ms ease;
+  .m-menu[aria-expanded="true"] { min-width: 0; width: calc(var(--u) * 24); padding: 0; font-size: 0; position: absolute; }
+  .m-menu[aria-expanded="true"]::before, .m-menu[aria-expanded="true"]::after {
+    content: ""; position: absolute; left: 20%; right: 20%; top: 50%; height: 2px; background: #fff; transform: rotate(45deg);
   }
-  .m-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .m-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-  .m-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .m-menu[aria-expanded="true"]::after { transform: rotate(-45deg); }
 
   .m-nav {
-    display: flex; position: absolute; inset: 0; z-index: 8;
-    flex-direction: column; justify-content: center; gap: 4vh;
-    padding: 0 calc(var(--u) * 46.78);
-    background: #f8f8f7;
-    font-family: 'IBM Plex Mono', ui-monospace, monospace;
-    text-transform: uppercase;
+    display: flex; position: absolute; z-index: 8;
+    left: calc(var(--u) * 36); right: calc(var(--u) * 36); top: calc(var(--u) * 30);
+    flex-direction: column; gap: calc(var(--u) * 14);
+    padding: calc(var(--u) * 52) calc(var(--u) * 34) calc(var(--u) * 34);
+    box-sizing: border-box; background: #fff; border: 2px solid #000;
+    font-family: 'IBM Plex Mono', ui-monospace, monospace; text-transform: uppercase;
   }
   .m-nav[hidden] { display: none; }
+  .m-nav span[data-lang-hot] { display: none; flex-direction: column; gap: calc(var(--u) * 14); }
+  html[lang="en"] .m-nav span[data-lang-hot="en"], html[lang="de"] .m-nav span[data-lang-hot="de"] { display: flex; }
   .m-nav a {
-    font-size: clamp(22px, 7vw, 34px);
-    text-transform: uppercase; letter-spacing: .01em;
-    color: #05141d; text-decoration: none;
+    font-size: calc(var(--u) * 18); line-height: 1.2; letter-spacing: .02em;
+    color: #05141d; text-decoration: none; padding-left: 1.6em; position: relative;
   }
-  .m-nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: .28em; }
-  .m-nav .lang { margin-top: 2vh; font-size: clamp(16px, 5vw, 22px); gap: .6em; }
+  /* aktuelle Seite: Unterstrich als Marker (Cursor) vor dem Eintrag */
+  .m-nav a[aria-current="page"]::before { content: "_"; position: absolute; left: 0; }
+  .m-nav .lang { margin-top: calc(var(--u) * 16); font-size: calc(var(--u) * 16); gap: .7em; }
+  .m-nav .lang__btn[aria-current="true"] { background: #000; color: #fff; padding: .1em .35em; }
+
+  /* Fußzeile: LINKEDIN links, Impressum rechts (zweizeilig, rechtsbündig) */
+  .m-foot {
+    display: flex; position: absolute; z-index: 7; justify-content: space-between; align-items: flex-end;
+    left: calc(var(--u) * 36); right: calc(var(--u) * 36); bottom: calc(var(--u) * 34);
+    font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: calc(var(--u) * 16); line-height: 1.25;
+    letter-spacing: .02em; text-transform: uppercase;
+  }
+  .m-foot a { color: #05141d; text-decoration: none; }
+  .m-foot a + a { text-align: right; }
+  .m-foot span[data-lang-hot] { display: none; }
+  html[lang="en"] .m-foot span[data-lang-hot="en"], html[lang="de"] .m-foot span[data-lang-hot="de"] { display: inline; }
 }
 
-/* Sobald ein Projekt offen ist, gehört die Kopfzeile der Projektseite.
-   Marke und Burger der Startseite liegen darunter und werden abgeschaltet –
-   sonst überlagern sie (z-index 7/9) das Panel (z-index 8). */
+/* Handy quer: Stapel wie am Desktop (viewBox 1920, gestaucht), Kopf- und
+   Fußzeile bleiben HTML; Einheit so, dass Name und Kasten lesbar bleiben */
+@media (max-height: 519px) and (orientation: landscape) {
+  .stage, .stage--head { --u: calc(100vw / 1100); }
+  .m-brand { top: calc(var(--u) * 24); }
+  .m-menu { top: calc(var(--u) * 22); }
+  .m-nav { top: calc(var(--u) * 22); padding-top: calc(var(--u) * 44); }
+  .m-foot { bottom: calc(var(--u) * 20); }
+}
+
+/* Sobald ein Projekt offen ist, gehört der Bildschirm der Projektseite. */
 body.proj-open .m-brand,
-body.proj-open .m-burger,
-body.proj-open .m-nav { display: none; }
+body.proj-open .m-menu,
+body.proj-open .m-nav,
+body.proj-open .m-foot { display: none; }
 
 /* =============================================================
    Textseiten (Impressum & Datenschutz)
@@ -401,9 +422,9 @@ html[lang="de"] #datenschutz { grid-column: 7 / span 5; }
 .imprint a  { color: inherit; text-decoration: underline; text-underline-offset: .18em; }
 .imprint a:hover { text-decoration-thickness: 2px; }
 
-@media (max-width: 767px) {
-  /* Der Kopfstreifen darf nicht die 100dvh der Stapel-Bühne erben */
-  .stage--head { height: auto; min-height: 64px; aspect-ratio: auto; }
+@media (max-width: 899px), (max-height: 519px) {
+  /* Kopfstreifen der Textseiten: eigene Einheit wie die Bühne (504), feste Höhe für Name + MENU */
+  .stage--head { --u: calc(100vw / 504); height: calc(var(--u) * 90); min-height: 0; aspect-ratio: auto; }
   .imprint {
     display: block;
     margin-inline: 0;
@@ -461,6 +482,6 @@ html[lang="de"] #datenschutz { grid-column: 7 / span 5; }
 }
 .consent__btn--yes { background: #000; color: #fff; }
 .consent__btn:hover, .consent__btn:focus-visible { background: #05141d; color: #fff; outline: none; }
-@media (max-width: 767px) {
+@media (max-width: 899px), (max-height: 519px) {
   .consent { left: 16px; right: 16px; bottom: 16px; width: auto; padding: 18px 18px; }
 }
