@@ -762,41 +762,25 @@
     addEventListener('resize', () => { if (!panel.hidden) placeArrow(); });
 
     /* ---- Mobil: Scroll-Modus ----
-       Das Blatt scrollt normal; das Bild klebt unter dem Band und wechselt,
-       sobald der nächste Abschnitt oben am Bild ankommt. Bilder ohne eigenen
-       Abschnitt werden einmalig als Inline-Bilder in den Text kopiert
-       (je Sprachblock, weil die Texte doppelt vorliegen). */
+       Das Blatt scrollt normal; die Bilder liegen als Stapel fest unter dem
+       Band und werden nur getauscht: Maßgeblich ist der Abschnitt, der oben
+       unter dem Bild steht. Deckt ein Abschnitt mehrere Bilder ab (Stell dir
+       vor: data-until; der letzte Abschnitt: alle restlichen Bilder), wird
+       seine Scrollstrecke gleichmäßig auf die Bilder verteilt. */
     const stack = panel.querySelector('.pv-stack');
-    let inlined = false;
+    const sheet = panel.querySelector('.pv-sheet');
+    let mobPrepared = false;
     function ratioOf(fig) { const w = +(fig.style.getPropertyValue('--fw') || 1120), h = +(fig.style.getPropertyValue('--fh') || 630); return `${w} / ${h}`; }
-    function inlineFig(fig) {
-      const el = document.createElement('figure');
-      const card = fig.classList.contains('pv-fig--wide') || fig.classList.contains('pv-fig--card');
-      el.className = 'pv-inline' + (card ? ' pv-inline--card' : '');
-      el.style.setProperty('--ratio', ratioOf(fig));
-      const bg = fig.style.getPropertyValue('--card-bg'); if (bg) el.style.setProperty('--card-bg', bg);
-      const v = fig.querySelector('video');
-      if (v) {
-        const vv = document.createElement('video'); vv.controls = true; vv.playsInline = true; vv.preload = 'none';
-        vv.poster = v.getAttribute('poster') || ''; vv.src = v.querySelector('source').getAttribute('src'); el.appendChild(vv);
-      } else {
-        const img = document.createElement('img'); img.src = fig.querySelector('img').getAttribute('src'); img.alt = ''; img.loading = 'lazy'; el.appendChild(img);
-      }
-      return el;
-    }
-    function inlineExtras() {
-      if (inlined || !stack) return; inlined = true;
+    function prepareMobile() {
+      if (mobPrepared || !stack) return; mobPrepared = true;
       stack.style.setProperty('--ratio', ratioOf(figs.find(f => +f.dataset.i === 0) || figs[0]));
+      /* Scrollreserve am Ende, damit auch die Bilder des letzten Abschnitts
+         erreichbar sind (je weiterem Bild ein halber Bildschirm) */
       for (const block of panel.querySelectorAll('.pv-text--2 > [data-lang-block]')) {
-        const secs = [...block.querySelectorAll('.pv-sec')];
-        const used = new Set([0]);
-        for (const s of secs) {
-          const a = +s.dataset.sec, b = +(s.dataset.until || s.dataset.sec);
-          used.add(a);
-          for (let i = a + 1; i <= b; i++) { const f = figs.find(x => +x.dataset.i === i); if (f) { s.appendChild(inlineFig(f)); used.add(i); } }
-        }
+        const secs = [...block.querySelectorAll('.pv-sec')]; if (!secs.length) continue;
         const last = secs[secs.length - 1];
-        figs.filter(f => !used.has(+f.dataset.i)).sort((p, q) => +p.dataset.i - +q.dataset.i).forEach(f => last.appendChild(inlineFig(f)));
+        const extra = (N - 1) - +last.dataset.sec;
+        if (extra > 0) last.style.paddingBottom = (extra * 50) + 'vh';
       }
     }
     let mobStep = -1;
@@ -809,10 +793,26 @@
       if (!isMobile() || panel.hidden || !stack) return;
       const block = [...panel.querySelectorAll('.pv-text--2 > [data-lang-block]')].find(b => getComputedStyle(b).display !== 'none');
       if (!block) return;
+      const secs = [...block.querySelectorAll('.pv-sec')];
       const edge = stack.getBoundingClientRect().bottom + 24;
-      let i = 0;
-      for (const s of block.querySelectorAll('.pv-sec')) if (s.getBoundingClientRect().top < edge) i = +s.dataset.sec;
-      showFig(i);
+      let k = -1;
+      secs.forEach((s, n) => { if (s.getBoundingClientRect().top < edge) k = n; });
+      if (k < 0) { showFig(0); return; }
+      const cur = secs[k], last = k === secs.length - 1;
+      const a = +cur.dataset.sec, b = last ? N - 1 : +(cur.dataset.until || cur.dataset.sec);
+      const count = b - a + 1;
+      if (count <= 1) { showFig(a); return; }
+      const top = cur.getBoundingClientRect().top;
+      let progress;
+      if (last) {
+        /* letzter Abschnitt: seine Strecke reicht bis zum Scrollende */
+        const s0 = panel.scrollTop + top - edge, sEnd = panel.scrollHeight - panel.clientHeight;
+        progress = (panel.scrollTop - s0) / Math.max(1, sEnd - s0);
+      } else {
+        progress = (edge - top) / Math.max(1, secs[k + 1].getBoundingClientRect().top - top);
+      }
+      progress = Math.max(0, Math.min(.999, progress));
+      showFig(a + Math.floor(progress * count));
     }
     panel.addEventListener('scroll', onScroll, { passive: true });
     let poll = 0;   /* Sicherheitsnetz: Scroll-Ereignisse kommen bei Trägheits-Scrollen nicht immer sofort */
@@ -821,7 +821,7 @@
       reset() {
         step = 0; lock = 0; figs.forEach(f => f.classList.remove('is-out', 'is-back')); stopVideo();
         clearInterval(poll); poll = 0;
-        if (isMobile() && stack) { inlineExtras(); panel.scrollTop = 0; mobStep = -1; showFig(0); poll = setInterval(onScroll, 250); }
+        if (isMobile() && stack) { prepareMobile(); panel.scrollTop = 0; mobStep = -1; showFig(0); poll = setInterval(onScroll, 250); }
         else render(0);
       },
       stop()  { stopVideo(); clearInterval(poll); poll = 0; }

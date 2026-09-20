@@ -345,34 +345,33 @@ body.proj-open { overflow: hidden; }
   }
   .pv-sheet > * { position: static; }
 
-  /* Bild klebt unter dem Band; alle Bilder liegen übereinander, is-cur ist sichtbar */
+  /* Bildstapel fest unter dem Band: sticky mit top = eigener Ausgangslage,
+     dadurch bewegt er sich nie; alle Bilder liegen übereinander, is-cur ist sichtbar */
   .pv-stack {
-    order: 0; position: sticky; top: var(--band-h); z-index: 2;
+    order: 0; position: sticky; top: calc(var(--band-h) + var(--uw) * 32); z-index: 2;
     left: auto; width: 100%; height: auto; aspect-ratio: var(--ratio, 16 / 9);
     margin: calc(var(--uw) * 32) 0 0; background: #fff;
-    box-shadow: 0 calc(var(--uw) * -32) 0 #fff;        /* weißer Saum nach oben: deckt den Spalt zum Band, der Text taucht erst unter dem Bild auf */
+    box-shadow: 0 calc(var(--uw) * -32) 0 #fff;        /* weißer Saum nach oben: der Text taucht erst unter dem Bild auf */
   }
   .pv-fig { position: absolute; inset: 0; left: 0; top: 0; width: 100%; height: 100%; transform: none !important; opacity: 0; transition: opacity 260ms ease; pointer-events: none; }
   .pv-fig.is-cur { opacity: 1; pointer-events: auto; }
   .pv-play { width: 56px; height: 70px; }
 
+  /* Text: Intro + Metadaten, dann die Abschnitte mit einheitlichem Abstand (48 Einheiten); kein Pfeil */
+  .proj--v2 { --sec-gap: calc(var(--uw) * 48); }
   .pv-text { position: static; width: auto; font-size: clamp(16px, calc(var(--uw) * 20), 19px); opacity: 1 !important; visibility: visible !important; }
-  .pv-text--1 { order: 1; margin-top: calc(var(--uw) * 48); }
-  .pv-arrow  { order: 2; position: relative; left: 0; top: auto; height: calc(var(--uw) * 150); width: calc(var(--uw) * 15.69); margin: calc(var(--uw) * 60) 0 calc(var(--uw) * 80); opacity: 1 !important; }
-  .pv-text--2 { order: 3; }
-  .pv-text h2 { font-size: clamp(14px, calc(var(--uw) * 18), 17px); margin: calc(var(--uw) * 40) 0 calc(var(--uw) * 10); }
-  .pv-text h3 { font-size: clamp(13px, calc(var(--uw) * 16), 16px); }
+  .pv-text--1 { order: 1; margin-top: var(--sec-gap); }
+  .pv-text--2 { order: 2; }
+  .pv-arrow { display: none; }
+  .pv-text p { margin: 0 0 calc(var(--uw) * 20); }
+  .pv-text p:last-child { margin-bottom: 0; }
+  .pv-text h2 { font-size: clamp(14px, calc(var(--uw) * 18), 17px); margin: 0 0 calc(var(--uw) * 10); }
+  .pv-text h3 { font-size: clamp(13px, calc(var(--uw) * 16), 16px); margin: calc(var(--uw) * 24) 0 calc(var(--uw) * 8); }
   .pv-sec, .pv-sub, .pv-sec.is-off { display: block !important; opacity: 1 !important; }
-  .pv-sec:first-child h2 { margin-top: 0; }
-  .pv-meta { grid-template-columns: calc(var(--uw) * 150) 1fr; margin-top: calc(var(--uw) * 32); }
+  .pv-sec { margin-top: var(--sec-gap); }
+  .pv-sec h2, .proj--v2[data-mode="swap"] .pv-sec h2 { margin-top: 0; }
+  .pv-meta { grid-template-columns: calc(var(--uw) * 150) 1fr; margin-top: calc(var(--uw) * 32); row-gap: calc(var(--uw) * 6); }
   .pv-meta dt { font-size: clamp(13px, calc(var(--uw) * 16), 16px); }
-  .pv-more { font-size: clamp(14px, calc(var(--uw) * 18), 17px); }
-
-  /* Bilder ohne eigenen Abschnitt liegen im Text */
-  .pv-inline { position: relative; width: 100%; margin: calc(var(--uw) * 24) 0; aspect-ratio: var(--ratio, 16 / 9); background: var(--card-bg, #e9e9e7); overflow: hidden; }
-  .pv-inline img, .pv-inline video { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .pv-inline--card img, .pv-inline--card video { object-fit: contain; }
-  .pv-inline video { background: #000; }
 }
 /* Handy quer: Band und Reiter in Vorlagen-Einheiten (Stapel läuft dort auf 1920) */
 @media (max-height: 519px) and (orientation: landscape) {
