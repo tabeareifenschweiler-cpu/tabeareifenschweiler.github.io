@@ -326,6 +326,9 @@ body.proj-open { overflow: hidden; }
   }
   .proj--v2::-webkit-scrollbar { display: none; }
   .proj--v2.is-tucked, .proj--v2.is-closing, .proj--v2.is-moving { overflow: hidden; }
+  /* Blatt und Reiter fahren denselben Weg (der Korpus ist im Fluss und höher
+     als der Viewport – 100 % wäre zu weit, dann klaffte das Band dazwischen) */
+  .proj--v2.is-tucked .pv-body { transform: translateY(calc(100vh - var(--band-h))); }
   .proj--v2.is-tucked .pv-stack, .proj--v2.is-moving .pv-stack { position: relative; top: auto; }
 
   /* Band + Reiter bleiben oben (sticky). Zurück = Kasten mit Pfeil wie der
@@ -333,20 +336,19 @@ body.proj-open { overflow: hidden; }
   .pv-band { position: sticky; inset: auto; top: 0; height: var(--band-h); cursor: pointer; z-index: 4; background: var(--proj-color); }
   .pv-back { display: none !important; }
   .pv-band::before {
-    content: ""; position: absolute; top: calc(var(--band-h) / 2 - var(--uw) * 12);
+    content: ""; position: absolute; top: calc(var(--band-h) / 2 - var(--uw) * 13.5);
     left: var(--close-left, calc(var(--uw) * 36)); right: var(--close-right, auto);
-    width: calc(var(--uw) * 24); height: calc(var(--uw) * 24); background: var(--close-box, #fff);
-    background-image: var(--close-arrow); background-repeat: no-repeat; background-position: center; background-size: 60% auto;
-    transform: var(--close-flip, none);
+    width: calc(var(--uw) * 27); height: calc(var(--uw) * 27); background: var(--close-box, #fff);   /* wie der MENU-Kasten */
+    background-image: var(--close-arrow); background-repeat: no-repeat; background-position: center; background-size: 50% auto;
   }
   .pv-band::after { content: none; }
   /* Standard: weißer Kasten, dunkler Pfeil nach links (Garden, Essperten, Design Schau, Modola).
      Smears: schwarzer Kasten rechts, Pfeil nach rechts. Stell dir vor: schwarzer Kasten links. */
-  .proj--v2 { --close-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'%3E%3Cpath d='M5 1 1 5l4 4M1 5h14' fill='none' stroke='%2305141d' stroke-width='1.6'/%3E%3C/svg%3E"); }
-  #proj-smears { --close-box: #000; }
-  #proj-smears .pv-band::before, #proj-stelldirvor .pv-band::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'%3E%3Cpath d='M5 1 1 5l4 4M1 5h14' fill='none' stroke='%23fff' stroke-width='1.6'/%3E%3C/svg%3E"); }
-  #proj-stelldirvor { --close-box: #000; }
-  #proj-smears { --close-left: auto; --close-right: calc(var(--uw) * 36); --close-flip: scaleX(-1); }
+  /* Standard: weißer Kasten, dunkles X (Garden, Essperten, Design Schau, Modola).
+     Smears: schwarzer Kasten rechts. Stell dir vor: schwarzer Kasten links. */
+  .proj--v2 { --close-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1 1l8 8M9 1L1 9' stroke='%2305141d' stroke-width='1.6'/%3E%3C/svg%3E"); }
+  #proj-smears, #proj-stelldirvor { --close-box: #000; --close-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1 1l8 8M9 1L1 9' stroke='%23fff' stroke-width='1.6'/%3E%3C/svg%3E"); }
+  #proj-smears { --close-left: auto; --close-right: calc(var(--uw) * 36); }
   .pv-tab { position: sticky; top: 0; display: block; left: 0; width: 100vw; height: var(--band-h); margin-top: calc(-1 * var(--band-h)); z-index: 5; }
 
   .pv-body { position: relative; inset: auto; min-height: calc(100dvh - var(--band-h)); }

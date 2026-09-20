@@ -167,7 +167,8 @@ body { -webkit-font-smoothing: antialiased; }
 
 /* Herausziehen: schneller, mit minimalem Überschwingen. */
 .folder--proj:hover,
-.folder--proj:focus-visible {
+.folder--proj:focus-visible,
+.folder--proj.is-hover {
   transform: translateY(calc(-1 * var(--lift))) rotate(var(--tilt));
   filter: drop-shadow(0 -7px 11px rgba(18, 22, 30, .34));
   transition:
@@ -178,28 +179,33 @@ body { -webkit-font-smoothing: antialiased; }
 
 /* Volle Sättigung – Originalfarbwerte, kein Filter-Näherungswert. */
 .folder--proj:hover .fdr-tex,
-.folder--proj:focus-visible .fdr-tex {
+.folder--proj:focus-visible .fdr-tex,
+.folder--proj.is-hover .fdr-tex {
   opacity: 1;
   transition: opacity 200ms ease;
 }
 
 /* Nachbarn dahinter (im DOM davor) ziehen gedämpft mit. */
 .folder:has(+ .folder--proj:hover),
-.folder:has(+ .folder--proj:focus-visible) {
+.folder:has(+ .folder--proj:focus-visible),
+.folder:has(+ .folder--proj.is-hover) {
   transform: translateY(calc(-1 * var(--lift-back-1)));
 }
 .folder:has(+ .folder + .folder--proj:hover),
-.folder:has(+ .folder + .folder--proj:focus-visible) {
+.folder:has(+ .folder + .folder--proj:focus-visible),
+.folder:has(+ .folder + .folder--proj.is-hover) {
   transform: translateY(calc(-1 * var(--lift-back-2)));
 }
 
 /* Folder davor (im DOM danach) weichen nach unten aus und geben Blick frei. */
 .folder--proj:hover + .folder,
-.folder--proj:focus-visible + .folder {
+.folder--proj:focus-visible + .folder,
+.folder--proj.is-hover + .folder {
   transform: translateY(var(--push-fore-1));
 }
 .folder--proj:hover + .folder + .folder,
-.folder--proj:focus-visible + .folder + .folder {
+.folder--proj:focus-visible + .folder + .folder,
+.folder--proj.is-hover + .folder + .folder {
   transform: translateY(var(--push-fore-2));
 }
 
@@ -309,13 +315,13 @@ html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de
      offen wird er zum quadratischen X aus zwei Strichen */
   .m-menu {
     display: flex; position: absolute; z-index: 9; align-items: center; justify-content: center;
-    right: calc(var(--u) * 36); top: calc(var(--u) * 30);
-    min-width: calc(var(--u) * 52); height: calc(var(--u) * 24); padding: 0 calc(var(--u) * 5);
+    right: calc(var(--u) * 36); top: calc(var(--u) * 32);
+    min-width: calc(var(--u) * 66); height: calc(var(--u) * 27); padding: 0 calc(var(--u) * 7);   /* so hoch wie der Name (27) */
     border: 0; background: #000; color: #fff; cursor: pointer;
-    font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: calc(var(--u) * 16); line-height: 1;
+    font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: calc(var(--u) * 18); line-height: 1;
     letter-spacing: .02em; text-transform: uppercase;
   }
-  .m-menu[aria-expanded="true"] { min-width: 0; width: calc(var(--u) * 24); padding: 0; font-size: 0; position: absolute; }
+  .m-menu[aria-expanded="true"] { min-width: 0; width: calc(var(--u) * 27); padding: 0; font-size: 0; position: absolute; }
   .m-menu[aria-expanded="true"]::before, .m-menu[aria-expanded="true"]::after {
     content: ""; position: absolute; left: 20%; right: 20%; top: 50%; height: 2px; background: #fff; transform: rotate(45deg);
   }
@@ -323,7 +329,7 @@ html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de
 
   .m-nav {
     display: flex; position: absolute; z-index: 8;
-    left: calc(var(--u) * 36); right: calc(var(--u) * 36); top: calc(var(--u) * 30);
+    left: calc(var(--u) * 36); right: calc(var(--u) * 36); top: calc(var(--u) * 32);
     flex-direction: column; gap: calc(var(--u) * 20);
     padding: calc(var(--u) * 52) calc(var(--u) * 34) calc(var(--u) * 36);
     box-sizing: border-box; background: #fff; border: 2px solid #000;

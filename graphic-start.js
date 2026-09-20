@@ -519,6 +519,22 @@
   addEventListener('resize', applyLayout);
   applyLayout();
 
+  /* ---------- Touch: Ordner fächern unter dem Finger wie unter der Maus ----------
+     :hover gibt es auf dem Handy nicht; beim Streichen über den Stapel bekommt
+     der Ordner unter dem Finger is-hover (dieselben Regeln wie :hover in
+     graphic-start.css). Ein kurzes Tippen ohne Bewegung öffnet wie gehabt. */
+  let hovered = null;
+  const setHover = g => {
+    if (g === hovered) return;
+    hovered && hovered.classList.remove('is-hover');
+    hovered = g; g && g.classList.add('is-hover');
+  };
+  const folderAt = (x, y) => { const el = document.elementFromPoint(x, y); return el && el.closest ? el.closest('.folder--proj') : null; };
+  stage.addEventListener('touchstart', e => { if (!current) setHover(folderAt(e.touches[0].clientX, e.touches[0].clientY)); }, { passive: true });
+  stage.addEventListener('touchmove',  e => { if (!current) setHover(folderAt(e.touches[0].clientX, e.touches[0].clientY)); }, { passive: true });
+  stage.addEventListener('touchend',   () => setTimeout(() => setHover(null), 350), { passive: true });
+  stage.addEventListener('touchcancel', () => setHover(null), { passive: true });
+
   /* ---------- Schalter Produkt ↔ Grafik in der Kopfzeile ----------
      Der schwarze Kasten mit dem weißen Knopf zwischen PRODUCTDESIGN und
      GRAPHICDESIGN ist ein Schieber: Knopf links = Produkt, rechts = Grafik.
