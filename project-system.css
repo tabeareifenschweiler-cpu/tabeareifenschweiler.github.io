@@ -325,16 +325,28 @@ body.proj-open { overflow: hidden; }
     scrollbar-width: none;
   }
   .proj--v2::-webkit-scrollbar { display: none; }
-  .proj--v2.is-tucked, .proj--v2.is-closing { overflow: hidden; }
+  .proj--v2.is-tucked, .proj--v2.is-closing, .proj--v2.is-moving { overflow: hidden; }
+  .proj--v2.is-tucked .pv-stack, .proj--v2.is-moving .pv-stack { position: relative; top: auto; }
 
-  /* Band + Reiter bleiben oben (sticky), X links im Band */
+  /* Band + Reiter bleiben oben (sticky). Zurück = Kasten mit Pfeil wie der
+     MENU-Kasten: Seite und Farbe je Projekt (--close-side, --close-box) */
   .pv-band { position: sticky; inset: auto; top: 0; height: var(--band-h); cursor: pointer; z-index: 4; background: var(--proj-color); }
   .pv-back { display: none !important; }
-  .pv-band::before, .pv-band::after {
-    content: ""; position: absolute; left: calc(var(--uw) * 36); top: calc(var(--band-h) / 2 - 1px);
-    width: calc(var(--uw) * 16); height: 2px; background: var(--back-ink, #05141d); transform: rotate(45deg); transform-origin: center;
+  .pv-band::before {
+    content: ""; position: absolute; top: calc(var(--band-h) / 2 - var(--uw) * 12);
+    left: var(--close-left, calc(var(--uw) * 36)); right: var(--close-right, auto);
+    width: calc(var(--uw) * 24); height: calc(var(--uw) * 24); background: var(--close-box, #fff);
+    background-image: var(--close-arrow); background-repeat: no-repeat; background-position: center; background-size: 60% auto;
+    transform: var(--close-flip, none);
   }
-  .pv-band::after { transform: rotate(-45deg); }
+  .pv-band::after { content: none; }
+  /* Standard: weißer Kasten, dunkler Pfeil nach links (Garden, Essperten, Design Schau, Modola).
+     Smears: schwarzer Kasten rechts, Pfeil nach rechts. Stell dir vor: schwarzer Kasten links. */
+  .proj--v2 { --close-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'%3E%3Cpath d='M5 1 1 5l4 4M1 5h14' fill='none' stroke='%2305141d' stroke-width='1.6'/%3E%3C/svg%3E"); }
+  #proj-smears { --close-box: #000; }
+  #proj-smears .pv-band::before, #proj-stelldirvor .pv-band::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'%3E%3Cpath d='M5 1 1 5l4 4M1 5h14' fill='none' stroke='%23fff' stroke-width='1.6'/%3E%3C/svg%3E"); }
+  #proj-stelldirvor { --close-box: #000; }
+  #proj-smears { --close-left: auto; --close-right: calc(var(--uw) * 36); --close-flip: scaleX(-1); }
   .pv-tab { position: sticky; top: 0; display: block; left: 0; width: 100vw; height: var(--band-h); margin-top: calc(-1 * var(--band-h)); z-index: 5; }
 
   .pv-body { position: relative; inset: auto; min-height: calc(100dvh - var(--band-h)); }
@@ -361,8 +373,9 @@ body.proj-open { overflow: hidden; }
   .proj--v2 { --sec-gap: calc(var(--uw) * 48); }
   .pv-text { position: static; width: auto; font-size: clamp(16px, calc(var(--uw) * 20), 19px); opacity: 1 !important; visibility: visible !important; }
   .pv-text--1 { order: 1; margin-top: var(--sec-gap); }
-  .pv-text--2 { order: 2; }
-  .pv-arrow { display: none; }
+  .pv-arrow  { order: 2; position: relative; left: 0; top: auto; width: calc(var(--uw) * 15.69); height: calc(var(--uw) * 120); margin: var(--sec-gap) 0 0; opacity: 1 !important; }
+  .pv-more   { font-size: clamp(14px, calc(var(--uw) * 18), 17px); }
+  .pv-text--2 { order: 3; }
   .pv-text p { margin: 0 0 calc(var(--uw) * 20); }
   .pv-text p:last-child { margin-bottom: 0; }
   .pv-text h2 { font-size: clamp(14px, calc(var(--uw) * 18), 17px); margin: 0 0 calc(var(--uw) * 10); }
@@ -376,7 +389,7 @@ body.proj-open { overflow: hidden; }
 /* Handy quer: Band und Reiter in Vorlagen-Einheiten (Stapel läuft dort auf 1920) */
 @media (max-height: 519px) and (orientation: landscape) {
   .proj--v2 { --uw: calc(100vw / 1920); --u: calc(100vw / 1100); }
-  .pv-band::before, .pv-band::after { left: calc(var(--u) * 36); top: calc(var(--band-h) / 2 - 1px); width: 14px; }
+  .pv-band::before { width: 22px; height: 22px; top: calc(var(--band-h) / 2 - 11px); }
   .pv-sheet { padding: 0 calc(var(--u) * 36) calc(var(--u) * 60); }
   .pv-stack { margin-top: calc(var(--u) * 24); box-shadow: 0 calc(var(--u) * -24) 0 #fff; }
 }

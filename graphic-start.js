@@ -257,9 +257,9 @@
       f.panel.hidden = false;
       if (f.panel.__pv) f.panel.__pv.reset();    /* setzt den Pfeil – jetzt, wo das Panel Layout hat */
       void f.panel.offsetHeight;                 /* Reflow, damit die Transition greift */
-      f.panel.classList.add('is-expanded');
+      f.panel.classList.add('is-expanded', 'is-moving');
       f.panel.classList.remove('is-tucked');
-      timer = setTimeout(() => f.panel.focus({ preventScroll: true }), SHEET_MS + 100);
+      timer = setTimeout(() => { f.panel.classList.remove('is-moving'); f.panel.focus({ preventScroll: true }); }, SHEET_MS + 60);
     }, SHEET_LAG);
   }
 
@@ -285,10 +285,10 @@
     /* Rückweg: Blatt zurück in den Ordner, dann sinkt der Ordner in den
        Stapel, während der Rest hochkommt und die Kopfzeile zurückfährt. */
     clipToStage(f.panel);
-    f.panel.classList.add('is-tucked', 'is-closing');
+    f.panel.classList.add('is-tucked', 'is-closing', 'is-moving');
     timer = setTimeout(() => {
       f.panel.hidden = true;
-      f.panel.classList.remove('is-expanded', 'is-closing');
+      f.panel.classList.remove('is-expanded', 'is-closing', 'is-moving');
       stage.classList.remove('is-open');       /* der Rest kommt zurück, wohin er ging */
       animate(f, 1, 0, CLOSE_MS, easeInCubic, () => {
         f.g.classList.remove('is-active'); f.panel.hidden = true; f.g.focus?.();
@@ -389,9 +389,12 @@
      Korpus läuft randlos über die 504 Einheiten. Das Deckelfoto wird als
      Ausschnitt (slice) in den Korpus gelegt. */
   const MOB_W = 504, MOB_MARGIN = 36;
+  const MOB_SLOT = 78;                 /* Registerschritt: Reiter (70.57) bleibt ganz sichtbar */
   function layoutMobile(vbH) {
-    const top = 0.352 * vbH, slot = 0.0406 * vbH;
     const projs = stack.filter(f => f.key !== 'front');
+    const slot = MOB_SLOT;
+    /* Stapel hängt unten: Deckelkorpus ~24 % der Höhe, darüber die Register */
+    const top = Math.max(0.2 * vbH, vbH - ((stack.length - 1) * slot + 70.57 + 0.24 * vbH));
     stack.forEach((f, i) => {
       const v = f.base, ys = v.filter((_, n) => n % 2), xs = v.filter((_, n) => n % 2 === 0);
       const yTab = Math.min(...ys), yBody = [...new Set(ys)].sort((a, b) => a - b)[1];
@@ -416,11 +419,9 @@
         coverImg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
         cover.style.transformOrigin = `${MOB_W / 2}px ${((tabTop + vbH) / 2).toFixed(1)}px`;
       }
-      /* Logo wandert mit seinem Reiter (x) und sitzt mittig im sichtbaren
-         Streifen (slot), nicht wie am Desktop 26 unter der Reiterkante */
-      if (f.logo && !f.logoBox) { try { const b = f.logo.getBBox(); if (b.height) f.logoBox = { y: b.y, h: b.height }; } catch (e) {} }
-      const ly = f.logoBox ? (tabTop + (slot - f.logoBox.h) / 2) - f.logoBox.y : tabTop - yTab;
-      f.g.dataset.logoShift = ly.toFixed(2);
+      /* Logo wandert mit seinem Reiter (x und y) – gleiche Lage im Reiter wie
+         am Desktop und wie im Band der Projektansicht */
+      f.g.dataset.logoShift = (tabTop - yTab).toFixed(2);
       f.g.dataset.logoShiftX = (newL - baseL).toFixed(2);
       if (f.logo && f.key !== 'front') f.logo.style.transform = `translate(${f.g.dataset.logoShiftX}px, ${f.g.dataset.logoShift}px)`;
     });
@@ -645,7 +646,16 @@
     const u = () => Math.min(innerWidth / 1920, innerHeight / 1080);
 
     function placeArrow() {
-      if (isMobile()) return;                          /* mobil steht der Pfeil im Fluss */
+      if (isMobile()) {
+        /* mobil steht der Pfeil im Fluss nach den Metadaten und reicht bis
+           kurz über den unteren Rand des ersten Bildschirms */
+        if (!arrow || panel.hidden) return;
+        const u = innerWidth / 504;
+        const top = arrow.getBoundingClientRect().top + panel.scrollTop;
+        const h = innerHeight - 40 * u - top;
+        arrow.style.height = Math.max(120 * u, h) + 'px';
+        return;
+      }
       const txt = panel.querySelector(step === 0 ? '.pv-text--1' : '.pv-text--2');
       const block = txt && [...txt.children].find(c => getComputedStyle(c).display !== 'none');
       if (!block) return;
@@ -821,7 +831,7 @@
       reset() {
         step = 0; lock = 0; figs.forEach(f => f.classList.remove('is-out', 'is-back')); stopVideo();
         clearInterval(poll); poll = 0;
-        if (isMobile() && stack) { prepareMobile(); panel.scrollTop = 0; mobStep = -1; showFig(0); poll = setInterval(onScroll, 250); }
+        if (isMobile() && stack) { prepareMobile(); panel.scrollTop = 0; mobStep = -1; showFig(0); placeArrow(); setTimeout(placeArrow, 700); poll = setInterval(onScroll, 250); }
         else render(0);
       },
       stop()  { stopVideo(); clearInterval(poll); poll = 0; }

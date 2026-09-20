@@ -324,21 +324,21 @@ html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de
   .m-nav {
     display: flex; position: absolute; z-index: 8;
     left: calc(var(--u) * 36); right: calc(var(--u) * 36); top: calc(var(--u) * 30);
-    flex-direction: column; gap: calc(var(--u) * 14);
-    padding: calc(var(--u) * 52) calc(var(--u) * 34) calc(var(--u) * 34);
+    flex-direction: column; gap: calc(var(--u) * 20);
+    padding: calc(var(--u) * 52) calc(var(--u) * 34) calc(var(--u) * 36);
     box-sizing: border-box; background: #fff; border: 2px solid #000;
     font-family: 'IBM Plex Mono', ui-monospace, monospace; text-transform: uppercase;
   }
   .m-nav[hidden] { display: none; }
-  .m-nav span[data-lang-hot] { display: none; flex-direction: column; gap: calc(var(--u) * 14); }
+  .m-nav span[data-lang-hot] { display: none; flex-direction: column; gap: calc(var(--u) * 20); }
   html[lang="en"] .m-nav span[data-lang-hot="en"], html[lang="de"] .m-nav span[data-lang-hot="de"] { display: flex; }
   .m-nav a {
     font-size: calc(var(--u) * 18); line-height: 1.2; letter-spacing: .02em;
-    color: #05141d; text-decoration: none; padding-left: 1.6em; position: relative;
+    color: #05141d; text-decoration: none;
   }
-  /* aktuelle Seite: Unterstrich als Marker (Cursor) vor dem Eintrag */
-  .m-nav a[aria-current="page"]::before { content: "_"; position: absolute; left: 0; }
-  .m-nav .lang { margin-top: calc(var(--u) * 16); font-size: calc(var(--u) * 16); gap: .7em; }
+  /* aktuelle Seite unterstrichen */
+  .m-nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: .28em; text-decoration-thickness: 1.5px; }
+  .m-nav .lang { margin-top: calc(var(--u) * 34); font-size: calc(var(--u) * 16); gap: .8em; }
   .m-nav .lang__btn[aria-current="true"] { background: #000; color: #fff; padding: .1em .35em; }
 
   /* Fußzeile: LINKEDIN links, Impressum rechts (zweizeilig, rechtsbündig) */
