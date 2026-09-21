@@ -544,20 +544,19 @@
   for (const fig of document.querySelectorAll('.who-parallax')) {
     if (!matchMedia('(hover: hover)').matches || reduced.matches) continue;
     const img = fig.querySelector('img');
-    let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
-    const AMP = 14;                                        /* px, hält sich im Rahmen (scale 1.08) */
+    let ty = 0, cy = 0, raf = 0;
+    /* nur senkrecht: maximal 7 % der Rahmenhöhe, das Bild hat 8 % Reserve je Seite */
     function tick() {
-      cx += (tx - cx) * .1; cy += (ty - cy) * .1;
-      img.style.setProperty('--px', cx.toFixed(2) + 'px'); img.style.setProperty('--py', cy.toFixed(2) + 'px');
-      raf = (Math.abs(tx - cx) > .05 || Math.abs(ty - cy) > .05) ? requestAnimationFrame(tick) : 0;
+      cy += (ty - cy) * .1;
+      img.style.setProperty('--py', cy.toFixed(2) + 'px');
+      raf = Math.abs(ty - cy) > .05 ? requestAnimationFrame(tick) : 0;
     }
     const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
     fig.addEventListener('mousemove', e => {
       const r = fig.getBoundingClientRect();
-      tx = -((e.clientX - r.left) / r.width - .5) * 2 * AMP;
-      ty = -((e.clientY - r.top) / r.height - .5) * 2 * AMP; kick();
+      ty = -((e.clientY - r.top) / r.height - .5) * 2 * (0.07 * r.height); kick();
     });
-    fig.addEventListener('mouseleave', () => { tx = 0; ty = 0; kick(); });
+    fig.addEventListener('mouseleave', () => { ty = 0; kick(); });
   }
 
   /* ---------- Schalter Produkt ↔ Grafik in der Kopfzeile ----------

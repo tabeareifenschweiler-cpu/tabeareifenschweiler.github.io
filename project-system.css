@@ -282,7 +282,9 @@ body.proj-open { overflow: hidden; }
 .who .pv-fig img { position: absolute; inset: 0; }
 /* Porträt folgt leicht dem Mauszeiger im Rahmen (graphic-start.js setzt --px/--py) */
 .who .who-parallax { overflow: hidden; }
-.who .who-parallax img { transform: scale(1.08) translate(var(--px, 0), var(--py, 0)); will-change: transform; }
+/* Bild ist 16 % höher als der Rahmen (Reserve oben und unten), keine Skalierung;
+   es bewegt sich nur senkrecht, leicht, gegenläufig zur Maus */
+.who .who-parallax img { inset: auto 0; height: 116%; top: -8%; transform: translateY(var(--py, 0)); will-change: transform; }
 .who-hint {
   left: calc(var(--u) * 970.5); top: calc(var(--u) * (881 - 126.38));
   font-size: calc(var(--u) * 20); line-height: 1.2; white-space: nowrap;
@@ -406,7 +408,7 @@ body.proj-open { overflow: hidden; }
   .who .pv-text, .who .pv-text--2 { width: auto; left: auto; top: auto; }
   .who .pv-stack { position: relative; top: auto; margin-top: 0; aspect-ratio: 1 / 1; box-shadow: none; }
   .who .pv-fig { opacity: 1 !important; pointer-events: auto; }
-  .who .who-parallax img { transform: none; }
+  .who .who-parallax img { height: 100%; top: 0; transform: none; object-position: center 45%; }
   .who .pv-arrow { display: none; }
   .who .pv-text--2 { margin-bottom: calc(var(--uw) * 40); }
   .who .cv .cv-row { display: block; }
