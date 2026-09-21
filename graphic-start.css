@@ -293,8 +293,13 @@ html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de
 .m-brand, .m-menu, .m-nav, .m-foot { display: none; }
 
 @media (max-width: 899px), (max-height: 519px) {
+  /* Die Startseite scrollt nicht und darf sich unter dem Finger nicht
+     bewegen (kein Gummiband, kein Pull-to-Refresh) – sonst kollidiert das
+     mit dem Fächern der Ordner beim Streichen */
+  html, body { overscroll-behavior: none; }
+  body:not(.page--doc):not(.page--who) { position: fixed; inset: 0; overflow: hidden; }
   .screen { align-items: stretch; }
-  .stage { width: 100vw; height: 100dvh; --u: calc(100vw / 504); }
+  .stage { width: 100vw; height: 100dvh; --u: calc(100vw / 504); touch-action: none; overscroll-behavior: none; }
   .chrome { height: 100%; }
 
   /* SVG-Chrome samt Klickflächen aus – Spezifität über den Sprachregeln */

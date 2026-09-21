@@ -531,7 +531,11 @@
   };
   const folderAt = (x, y) => { const el = document.elementFromPoint(x, y); return el && el.closest ? el.closest('.folder--proj') : null; };
   stage.addEventListener('touchstart', e => { if (!current) setHover(folderAt(e.touches[0].clientX, e.touches[0].clientY)); }, { passive: true });
-  stage.addEventListener('touchmove',  e => { if (!current) setHover(folderAt(e.touches[0].clientX, e.touches[0].clientY)); }, { passive: true });
+  stage.addEventListener('touchmove',  e => {
+    if (current) return;
+    if (e.cancelable) e.preventDefault();      /* Seite bleibt stehen: kein Gummiband, kein Neuladen durch Runterziehen */
+    setHover(folderAt(e.touches[0].clientX, e.touches[0].clientY));
+  }, { passive: false });
   stage.addEventListener('touchend',   () => setTimeout(() => setHover(null), 350), { passive: true });
   stage.addEventListener('touchcancel', () => setHover(null), { passive: true });
 
