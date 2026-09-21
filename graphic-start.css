@@ -320,9 +320,10 @@ html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de
      offen wird er zum quadratischen X aus zwei Strichen */
   .m-menu {
     display: flex; position: absolute; z-index: 9; align-items: center; justify-content: center;
-    right: calc(var(--u) * 36); top: calc(var(--u) * 32);
-    min-width: calc(var(--u) * 66); height: calc(var(--u) * 27); padding: 0 calc(var(--u) * 7);   /* so hoch wie der Name (27) */
-    border: 0; background: #000; color: #fff; cursor: pointer;
+    right: calc(var(--u) * 36 - 12px); top: calc(var(--u) * 32 - 12px);
+    min-width: calc(var(--u) * 52); height: calc(var(--u) * 27); padding: 0 calc(var(--u) * 7);   /* so hoch wie der Name (27) */
+    box-sizing: content-box; border: 12px solid transparent; background: #000; background-clip: padding-box;   /* Rand = unsichtbare Trefferfläche */
+    color: #fff; cursor: pointer;
     font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: calc(var(--u) * 18); line-height: 1;
     letter-spacing: .02em; text-transform: uppercase;
   }
@@ -350,6 +351,7 @@ html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de
   /* aktuelle Seite unterstrichen */
   .m-nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: .28em; text-decoration-thickness: 1.5px; }
   .m-nav .lang { margin-top: calc(var(--u) * 34); font-size: calc(var(--u) * 16); gap: .8em; }
+  .m-nav .lang__btn { border: 10px solid transparent; background-clip: padding-box; margin: -10px; }
   .m-nav .lang__btn[aria-current="true"] { background: #000; color: #fff; padding: .1em .35em; }
 
   /* Fußzeile: LINKEDIN links, Impressum rechts (zweizeilig, rechtsbündig) */
@@ -498,5 +500,5 @@ html[lang="de"] #datenschutz { grid-column: 7 / span 5; }
 .consent__btn--yes { background: #000; color: #fff; }
 .consent__btn:hover, .consent__btn:focus-visible { background: #05141d; color: #fff; outline: none; }
 @media (max-width: 899px), (max-height: 519px) {
-  .consent { left: 16px; right: 16px; bottom: 16px; width: auto; padding: 18px 18px; }
+  .consent { left: 16px; right: 16px; bottom: 96px; width: auto; padding: 18px 18px; }   /* über der Fußzeile */
 }

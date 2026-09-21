@@ -226,6 +226,8 @@
     order.forEach((k, i) => {
       stage.querySelector(`.folder[data-folder="${k}"]`).style.setProperty('--exit-delay', Math.max(0, Math.abs(i - ai) - 1) * 40 + 'ms');
     });
+    if (!document.__title0) document.__title0 = document.title;
+    document.title = (f.panel.dataset.title || key) + ' · Tabea Reifenschweiler';
     stage.classList.add('is-open');
     f.g.classList.add('is-active');
     document.body.classList.add('proj-open');
@@ -270,6 +272,7 @@
     clearTimeout(timer);
 
     document.body.classList.remove('proj-open');
+    if (document.__title0) document.title = document.__title0;
     f.panel.setAttribute('aria-hidden', 'true');
 
     if (f.panel.__pv) f.panel.__pv.stop();
@@ -415,9 +418,11 @@
       for (const p of f.polys) p.setAttribute('points', str);
       if (f.key === 'front' && coverImg) {
         /* Ausschnitt um ein Viertel vergrößert (Foto wirkt näher), mittig */
-        const zoom = 1.25, bw = MOB_W * zoom, bh = (vbH - tabTop + 1) * zoom;
+        /* Ausschnitt links oben aus dem Foto (blauer Himmel mit wenig Wolken),
+           deutlich näher heran: die Fußzeile liegt auf Blau, nicht auf Wolken */
+        const bw = MOB_W * 2.2, bh = bw * 2 / 3;                     /* Foto ist 3:2 */
         coverImg.setAttribute('transform', '');
-        coverImg.setAttribute('x', (-(bw - MOB_W) / 2).toFixed(2)); coverImg.setAttribute('y', (tabTop - (bh - (vbH - tabTop + 1)) / 2).toFixed(2));
+        coverImg.setAttribute('x', 0); coverImg.setAttribute('y', (tabTop - 0.15 * bh).toFixed(2));
         coverImg.setAttribute('width', bw.toFixed(2)); coverImg.setAttribute('height', bh.toFixed(2));
         coverImg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
         cover.style.transformOrigin = `${MOB_W / 2}px ${((tabTop + vbH) / 2).toFixed(1)}px`;
@@ -656,6 +661,10 @@
     };
     burger.addEventListener('click', () => setMenu(mnav.hidden));
     mnav.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+    document.addEventListener('pointerdown', e => {
+      const el = e.target instanceof Element ? e.target : null;
+      if (!mnav.hidden && !(el && el.closest('.m-nav, .m-menu'))) setMenu(false);   /* Tipp außerhalb schließt */
+    });
     addEventListener('keydown', e => { if (e.key === 'Escape' && !mnav.hidden) setMenu(false); });
     addEventListener('resize', () => { if (!isMobile()) setMenu(false); });
   }
@@ -730,6 +739,9 @@
     function render(dir) {
       panel.dataset.step = step;
       panel.classList.toggle('is-last', step >= N - 1);
+      /* ab Schritt 1 zeigt die Pfeilzeile den Stand: 02/12 (Schritt / Scrolls) */
+      const cnt = panel.querySelector('.pv-count');
+      if (cnt) cnt.textContent = String(step).padStart(2, '0') + '/' + String(N - 1).padStart(2, '0');
       /* Screen 2 stufenweise: Schritt 1 -> Abschnitt 1, 2 -> 1+2, ab 3 alle.
          Im swap-Modus steht nur der Abschnitt des aktuellen Schritts; er wird
          erst aus dem Fluss genommen (is-off) und nach einem erzwungenen
@@ -764,7 +776,7 @@
       const next = Math.max(0, Math.min(N - 1, step + d));
       if (next === step || lock) return;
       lock = 1; step = next; render(d);
-      setTimeout(() => { lock = 0; }, 760);
+      setTimeout(() => { lock = 0; }, 500);
     }
 
     function stopVideo(vf) {
@@ -775,7 +787,7 @@
     panel.addEventListener('wheel', e => {
       if (panel.hidden || isMobile()) return;         /* mobil scrollt das Blatt selbst */
       e.preventDefault();
-      if (Math.abs(e.deltaY) < 8) return;
+      if (Math.abs(e.deltaY) < 25) return;           /* nur bei deutlichem Ausschlag (Trackpad-Schwung) */
       go(e.deltaY > 0 ? 1 : -1);
     }, { passive: false });
     panel.addEventListener('keydown', e => {

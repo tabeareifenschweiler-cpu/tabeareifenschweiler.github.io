@@ -209,8 +209,9 @@ body.proj-open { overflow: hidden; }
 /* Video-Karte (Essperten): hellblaue Fläche in Bildgröße, das Hochformat-Video
    sitzt mittig darauf und ist immer sichtbar (Poster bis zum Play). */
 .pv-fig--card { background: var(--card-bg, #bce0f6); }
+.pv-fig--card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .pv-fig--card video {
-  display: block; inset: auto;
+  display: none; inset: auto;
   left: 50%; top: 0; height: 100%; width: auto; translate: -50% 0;
   background: transparent; object-fit: contain;
 }
@@ -256,7 +257,12 @@ body.proj-open { overflow: hidden; }
   position: absolute; left: calc(var(--u) * (193.74 - 161.75)); bottom: calc(var(--u) * 2.25);
   font-style: italic; font-size: calc(var(--u) * 18); line-height: 1; white-space: nowrap;
 }
-.proj--v2.is-last .pv-arrow { opacity: 0; pointer-events: none; }
+.pv-count { display: none; font-family: var(--ff-head); font-style: normal; text-transform: uppercase; letter-spacing: .02em; }
+.proj--v2:not([data-step="0"]) .pv-more__hint { display: none; }
+.proj--v2:not([data-step="0"]) .pv-count { display: inline; }
+/* letzter Schritt: Linie und Spitze weg, der Zähler (12/12) bleibt stehen */
+.proj--v2.is-last .pv-arrow__line, .proj--v2.is-last .pv-arrow__head { opacity: 0; transition: opacity 260ms ease; }
+.proj--v2.is-last .pv-arrow { pointer-events: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .pv-fig, .pv-text { transition-duration: 1ms; }
@@ -350,8 +356,8 @@ body.proj-open { overflow: hidden; }
   /* Standard: weißer Kasten, dunkles X (Garden, Essperten, Design Schau, Modola).
      Smears: schwarzer Kasten rechts. Stell dir vor: schwarzer Kasten links. */
   .proj--v2 { --close-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1 1l8 8M9 1L1 9' stroke='%2305141d' stroke-width='1.6'/%3E%3C/svg%3E"); }
+  .proj--v2 { --close-left: auto; --close-right: calc(var(--uw) * 36); }   /* Kasten rechts, auf allen Projekten */
   #proj-smears, #proj-stelldirvor { --close-box: #000; --close-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1 1l8 8M9 1L1 9' stroke='%23fff' stroke-width='1.6'/%3E%3C/svg%3E"); }
-  #proj-smears { --close-left: auto; --close-right: calc(var(--uw) * 36); }
   .pv-tab { position: sticky; top: 0; display: block; left: 0; width: 100vw; height: var(--band-h); margin-top: calc(-1 * var(--band-h)); z-index: 5; }
 
   .pv-body { position: relative; inset: auto; min-height: calc(100dvh - var(--band-h)); }
