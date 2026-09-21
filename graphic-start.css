@@ -52,6 +52,10 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; background: #f8f8f7; }  /* Papier-Grundton */
 body { -webkit-font-smoothing: antialiased; }
+/* Start- und Product-Seite scrollen nicht: fest im Viewport, kein Gummiband
+   an den Rändern (Desktop wie Handy) */
+html, body { overscroll-behavior: none; }
+body:not(.page--doc):not(.page--who) { position: fixed; inset: 0; overflow: hidden; }
 
 .screen {
   width: 100vw; height: 100vh;
@@ -296,8 +300,6 @@ html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de
   /* Die Startseite scrollt nicht und darf sich unter dem Finger nicht
      bewegen (kein Gummiband, kein Pull-to-Refresh) – sonst kollidiert das
      mit dem Fächern der Ordner beim Streichen */
-  html, body { overscroll-behavior: none; }
-  body:not(.page--doc):not(.page--who) { position: fixed; inset: 0; overflow: hidden; }
   .screen { align-items: stretch; }
   .stage { width: 100vw; height: 100dvh; --u: calc(100vw / 504); touch-action: none; overscroll-behavior: none; }
   .chrome { height: 100%; }
