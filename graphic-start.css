@@ -375,6 +375,10 @@ html[lang="en"] span[data-lang-hot="en"], html[lang="de"] span[data-lang-hot="de
   .m-foot { bottom: calc(var(--u) * 20); }
 }
 
+@media (max-width: 899px), (max-height: 519px) {
+  .page--who .m-foot { position: static; margin: calc(var(--u) * 24) calc(var(--u) * 36) calc(var(--u) * 40); }
+}
+
 /* Sobald ein Projekt offen ist, gehört der Bildschirm der Projektseite. */
 body.proj-open .m-brand,
 body.proj-open .m-menu,

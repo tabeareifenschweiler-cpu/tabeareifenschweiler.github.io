@@ -280,8 +280,9 @@ body.proj-open { overflow: hidden; }
 .who .pv-more { left: calc(var(--u) * (193.74 - 161.75)); }
 .who .pv-fig { box-shadow: none; background: #fff; }
 .who .pv-fig img { position: absolute; inset: 0; }
-.who .pv-fig .who-hover { opacity: 0; transition: opacity 180ms ease; }
-.who .pv-fig:hover .who-hover { opacity: 1; }
+/* Porträt folgt leicht dem Mauszeiger im Rahmen (graphic-start.js setzt --px/--py) */
+.who .who-parallax { overflow: hidden; }
+.who .who-parallax img { transform: scale(1.08) translate(var(--px, 0), var(--py, 0)); will-change: transform; }
 .who-hint {
   left: calc(var(--u) * 970.5); top: calc(var(--u) * (881 - 126.38));
   font-size: calc(var(--u) * 20); line-height: 1.2; white-space: nowrap;
@@ -292,7 +293,7 @@ body.proj-open { overflow: hidden; }
 .cv { margin: 0 0 calc(var(--u) * 21.6); padding: 0; list-style: none; }
 .cv li { margin: 0 0 calc(var(--u) * 12); }
 .cv li:last-child { margin: 0; }
-.cv strong { display: block; font-weight: 700; }
+.cv strong { display: block; font-weight: 400; font-style: italic; }   /* Einrichtung/Unternehmen: kursiv statt fett */
 .cv .cv-row { display: grid; grid-template-columns: calc(var(--u) * 432.5) 1fr; }
 .who .pv-text h2:first-child { margin-top: 0; }
 /* Footer: Mono 22.96 in Versalien, Grundlinie 1018.19 wie auf der Startseite,
@@ -394,4 +395,22 @@ body.proj-open { overflow: hidden; }
   .pv-band::before { width: 22px; height: 22px; top: calc(var(--band-h) / 2 - 11px); }
   .pv-sheet { padding: 0 calc(var(--u) * 36) calc(var(--u) * 60); }
   .pv-stack { margin-top: calc(var(--u) * 24); box-shadow: 0 calc(var(--u) * -24) 0 #fff; }
+}
+
+/* ---- Who I am mobil: Blatt mit Porträt in voller Breite, darunter Text und Lebenslauf ---- */
+@media (max-width: 899px), (max-height: 519px) {
+  .page--who, .page--who body { height: auto; overflow: auto; }
+  .who { position: static; inset: auto; height: auto; overflow: visible; clip-path: none; }
+  .who .pv-body { min-height: 0; }
+  .who .pv-sheet { padding-top: calc(var(--uw) * 8); }
+  .who .pv-text, .who .pv-text--2 { width: auto; left: auto; top: auto; }
+  .who .pv-stack { position: relative; top: auto; margin-top: 0; aspect-ratio: 1 / 1; box-shadow: none; }
+  .who .pv-fig { opacity: 1 !important; pointer-events: auto; }
+  .who .who-parallax img { transform: none; }
+  .who .pv-arrow { display: none; }
+  .who .pv-text--2 { margin-bottom: calc(var(--uw) * 40); }
+  .who .cv .cv-row { display: block; }
+  .who .cv .cv-row span + span { display: block; color: #5b6b76; }
+  .who .cv li { margin-bottom: calc(var(--uw) * 16); }
+  .who-foot { display: none; }           /* mobil steht die Fußzeile im Kopfbereich (.m-foot) */
 }

@@ -412,9 +412,11 @@
       const str = pts.map(x => +x.toFixed(2)).join(' ');
       for (const p of f.polys) p.setAttribute('points', str);
       if (f.key === 'front' && coverImg) {
+        /* Ausschnitt um ein Viertel vergrößert (Foto wirkt näher), mittig */
+        const zoom = 1.25, bw = MOB_W * zoom, bh = (vbH - tabTop + 1) * zoom;
         coverImg.setAttribute('transform', '');
-        coverImg.setAttribute('x', 0); coverImg.setAttribute('y', tabTop.toFixed(2));
-        coverImg.setAttribute('width', MOB_W); coverImg.setAttribute('height', (vbH - tabTop + 1).toFixed(2));
+        coverImg.setAttribute('x', (-(bw - MOB_W) / 2).toFixed(2)); coverImg.setAttribute('y', (tabTop - (bh - (vbH - tabTop + 1)) / 2).toFixed(2));
+        coverImg.setAttribute('width', bw.toFixed(2)); coverImg.setAttribute('height', bh.toFixed(2));
         coverImg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
         cover.style.transformOrigin = `${MOB_W / 2}px ${((tabTop + vbH) / 2).toFixed(1)}px`;
       }
@@ -537,6 +539,26 @@
   }, { passive: false });
   stage.addEventListener('touchend',   () => setTimeout(() => setHover(null), 350), { passive: true });
   stage.addEventListener('touchcancel', () => setHover(null), { passive: true });
+
+  /* ---------- Who: Porträt folgt dem Mauszeiger im Rahmen ---------- */
+  for (const fig of document.querySelectorAll('.who-parallax')) {
+    if (!matchMedia('(hover: hover)').matches || reduced.matches) continue;
+    const img = fig.querySelector('img');
+    let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+    const AMP = 14;                                        /* px, hält sich im Rahmen (scale 1.08) */
+    function tick() {
+      cx += (tx - cx) * .1; cy += (ty - cy) * .1;
+      img.style.setProperty('--px', cx.toFixed(2) + 'px'); img.style.setProperty('--py', cy.toFixed(2) + 'px');
+      raf = (Math.abs(tx - cx) > .05 || Math.abs(ty - cy) > .05) ? requestAnimationFrame(tick) : 0;
+    }
+    const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    fig.addEventListener('mousemove', e => {
+      const r = fig.getBoundingClientRect();
+      tx = -((e.clientX - r.left) / r.width - .5) * 2 * AMP;
+      ty = -((e.clientY - r.top) / r.height - .5) * 2 * AMP; kick();
+    });
+    fig.addEventListener('mouseleave', () => { tx = 0; ty = 0; kick(); });
+  }
 
   /* ---------- Schalter Produkt ↔ Grafik in der Kopfzeile ----------
      Der schwarze Kasten mit dem weißen Knopf zwischen PRODUCTDESIGN und
