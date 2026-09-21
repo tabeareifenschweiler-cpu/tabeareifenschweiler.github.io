@@ -389,12 +389,11 @@
      Korpus läuft randlos über die 504 Einheiten. Das Deckelfoto wird als
      Ausschnitt (slice) in den Korpus gelegt. */
   const MOB_W = 504, MOB_MARGIN = 36;
-  const MOB_SLOT = 78;                 /* Registerschritt: Reiter (70.57) bleibt ganz sichtbar */
+  const MOB_SLOT = 96;                 /* Registerschritt: Reiter (70.57) ganz sichtbar plus Luft */
   function layoutMobile(vbH) {
-    const projs = stack.filter(f => f.key !== 'front');
     const slot = MOB_SLOT;
-    /* Stapel hängt unten: Deckelkorpus ~24 % der Höhe, darüber die Register */
-    const top = Math.max(0.2 * vbH, vbH - ((stack.length - 1) * slot + 70.57 + 0.24 * vbH));
+    /* Stapel hängt unten: Deckelkorpus ~22 % der Höhe, darüber die Register */
+    const top = Math.max(0.18 * vbH, vbH - ((stack.length - 1) * slot + 70.57 + 0.22 * vbH));
     stack.forEach((f, i) => {
       const v = f.base, ys = v.filter((_, n) => n % 2), xs = v.filter((_, n) => n % 2 === 0);
       const yTab = Math.min(...ys), yBody = [...new Set(ys)].sort((a, b) => a - b)[1];
@@ -402,8 +401,8 @@
       /* Reiter: vier x-Werte zwischen den Korpuskanten (-2 / 1922) */
       const inner = [...new Set(xs)].filter(x => x > 0 && x < 1920).sort((a, b) => a - b);
       const baseL = inner[0], baseW = inner[inner.length - 1] - inner[0];
-      const right = f.key === 'front' ? true : projs.indexOf(f) % 2 === 0;
-      const newL = right ? MOB_W - MOB_MARGIN - baseW : MOB_MARGIN;
+      /* Reiter mittig auf der Seite; Form und Logo-Lage im Reiter bleiben (Gruppe) */
+      const newL = (MOB_W - baseW) / 2;
       const pts = new Array(v.length);
       for (let n = 0; n < v.length; n += 2) {
         const x = v[n], y = v[n + 1];
@@ -473,10 +472,10 @@
     });
     /* Deckelfoto: Oberkante auf den Deckelreiter, Parallax-Drehpunkt in die Mitte */
     if (coverImg) {
-      coverImg.removeAttribute('x'); coverImg.removeAttribute('y');
-      coverImg.setAttribute('width', 3000); coverImg.setAttribute('height', 750);
-      coverImg.setAttribute('preserveAspectRatio', 'none');
-      coverImg.setAttribute('transform', `translate(-1 ${frontTop.toFixed(2)}) scale(1.0562)`);
+      coverImg.removeAttribute('transform');
+      coverImg.setAttribute('x', -1); coverImg.setAttribute('y', frontTop.toFixed(2));
+      coverImg.setAttribute('width', 1922); coverImg.setAttribute('height', (vbH - frontTop + 2).toFixed(2));
+      coverImg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
       cover.style.transformOrigin = `960px ${((frontTop + vbH) / 2).toFixed(1)}px`;
     }
     /* Fußzeile: Vektortext und Klickflächen um (vbH − 1080) versetzen */
@@ -804,14 +803,7 @@
     function prepareMobile() {
       if (mobPrepared || !stack) return; mobPrepared = true;
       stack.style.setProperty('--ratio', ratioOf(figs.find(f => +f.dataset.i === 0) || figs[0]));
-      /* Scrollreserve am Ende, damit auch die Bilder des letzten Abschnitts
-         erreichbar sind (je weiterem Bild ein halber Bildschirm) */
-      for (const block of panel.querySelectorAll('.pv-text--2 > [data-lang-block]')) {
-        const secs = [...block.querySelectorAll('.pv-sec')]; if (!secs.length) continue;
-        const last = secs[secs.length - 1];
-        const extra = (N - 1) - +last.dataset.sec;
-        if (extra > 0) last.style.paddingBottom = (extra * 50) + 'vh';
-      }
+
     }
     let mobStep = -1;
     function showFig(i) {
@@ -823,25 +815,26 @@
       if (!isMobile() || panel.hidden || !stack) return;
       const block = [...panel.querySelectorAll('.pv-text--2 > [data-lang-block]')].find(b => getComputedStyle(b).display !== 'none');
       if (!block) return;
-      const secs = [...block.querySelectorAll('.pv-sec')];
-      const edge = stack.getBoundingClientRect().bottom + 24;
+      const secs = [...block.querySelectorAll('.pv-sec')]; if (!secs.length) { showFig(0); return; }
+      const edge = stack.getBoundingClientRect().bottom + 24, st = panel.scrollTop;
+      /* Scrollposition, bei der jeder Abschnitt oben an der Bildunterkante ankommt */
+      const starts = secs.map(s => st + s.getBoundingClientRect().top - edge);
+      const lastR = secs[secs.length - 1].getBoundingClientRect();
+      const end = starts[starts.length - 1] + lastR.height;
+      /* Ist das Blatt kürzer als diese Strecke (kurze Projekte), wird sie auf
+         den tatsächlichen Scrollweg gestaucht: die Bilder wechseln dann
+         entsprechend früher, alle bleiben erreichbar, kein Leerraum nötig */
+      const max = Math.max(1, panel.scrollHeight - panel.clientHeight);
+      const eff = end > max ? st * (end / max) : st;
       let k = -1;
-      secs.forEach((s, n) => { if (s.getBoundingClientRect().top < edge) k = n; });
+      starts.forEach((s0, n) => { if (eff >= s0) k = n; });
       if (k < 0) { showFig(0); return; }
       const cur = secs[k], last = k === secs.length - 1;
       const a = +cur.dataset.sec, b = last ? N - 1 : +(cur.dataset.until || cur.dataset.sec);
       const count = b - a + 1;
       if (count <= 1) { showFig(a); return; }
-      const top = cur.getBoundingClientRect().top;
-      let progress;
-      if (last) {
-        /* letzter Abschnitt: seine Strecke reicht bis zum Scrollende */
-        const s0 = panel.scrollTop + top - edge, sEnd = panel.scrollHeight - panel.clientHeight;
-        progress = (panel.scrollTop - s0) / Math.max(1, sEnd - s0);
-      } else {
-        progress = (edge - top) / Math.max(1, secs[k + 1].getBoundingClientRect().top - top);
-      }
-      progress = Math.max(0, Math.min(.999, progress));
+      const len = last ? lastR.height : starts[k + 1] - starts[k];
+      const progress = Math.max(0, Math.min(.999, (eff - starts[k]) / Math.max(1, len)));
       showFig(a + Math.floor(progress * count));
     }
     panel.addEventListener('scroll', onScroll, { passive: true });

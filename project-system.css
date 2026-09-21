@@ -355,7 +355,7 @@ body.proj-open { overflow: hidden; }
   .pv-sheet {
     position: relative; left: 0; translate: none; width: auto; height: auto;
     display: flex; flex-direction: column;
-    padding: 0 calc(var(--uw) * 36) calc(var(--uw) * 80);
+    padding: 0 calc(var(--uw) * 36) calc(var(--uw) * 56);
   }
   .pv-sheet > * { position: static; }
 
@@ -380,13 +380,13 @@ body.proj-open { overflow: hidden; }
   .pv-text--2 { order: 3; }
   .pv-text p { margin: 0 0 calc(var(--uw) * 20); }
   .pv-text p:last-child { margin-bottom: 0; }
-  .pv-text h2 { font-size: clamp(14px, calc(var(--uw) * 18), 17px); margin: 0 0 calc(var(--uw) * 10); }
-  .pv-text h3 { font-size: clamp(13px, calc(var(--uw) * 16), 16px); margin: calc(var(--uw) * 24) 0 calc(var(--uw) * 8); }
+  .pv-text h2 { font-size: clamp(17px, calc(var(--uw) * 23), 22px); margin: 0 0 calc(var(--uw) * 12); }
+  .pv-text h3 { font-size: clamp(15px, calc(var(--uw) * 19), 18px); margin: calc(var(--uw) * 24) 0 calc(var(--uw) * 8); }
   .pv-sec, .pv-sub, .pv-sec.is-off { display: block !important; opacity: 1 !important; }
   .pv-sec { margin-top: var(--sec-gap); }
   .pv-sec h2, .proj--v2[data-mode="swap"] .pv-sec h2 { margin-top: 0; }
-  .pv-meta { grid-template-columns: calc(var(--uw) * 150) 1fr; margin-top: calc(var(--uw) * 32); row-gap: calc(var(--uw) * 6); }
-  .pv-meta dt { font-size: clamp(13px, calc(var(--uw) * 16), 16px); }
+  .pv-meta { grid-template-columns: calc(var(--uw) * 170) 1fr; margin-top: calc(var(--uw) * 32); row-gap: calc(var(--uw) * 8); }
+  .pv-meta dt { font-size: clamp(15px, calc(var(--uw) * 19), 18px); }
 }
 /* Handy quer: Band und Reiter in Vorlagen-Einheiten (Stapel läuft dort auf 1920) */
 @media (max-height: 519px) and (orientation: landscape) {
