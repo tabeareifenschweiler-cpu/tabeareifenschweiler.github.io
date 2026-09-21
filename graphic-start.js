@@ -401,8 +401,10 @@
       /* Reiter: vier x-Werte zwischen den Korpuskanten (-2 / 1922) */
       const inner = [...new Set(xs)].filter(x => x > 0 && x < 1920).sort((a, b) => a - b);
       const baseL = inner[0], baseW = inner[inner.length - 1] - inner[0];
-      /* Reiter mittig auf der Seite; Form und Logo-Lage im Reiter bleiben (Gruppe) */
-      const newL = (MOB_W - baseW) / 2;
+      /* Reiter linksbündig auf dem Seitenrand (36, wie Name und CONTACT):
+         der linke Fußpunkt des Trapezes liegt auf dieser Linie; Form und
+         Logo-Lage im Reiter bleiben (Gruppe) */
+      const newL = MOB_MARGIN;
       const pts = new Array(v.length);
       for (let n = 0; n < v.length; n += 2) {
         const x = v[n], y = v[n + 1];
