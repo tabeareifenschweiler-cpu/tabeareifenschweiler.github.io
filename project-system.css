@@ -245,14 +245,15 @@ body.proj-open { overflow: hidden; }
      gemessen – die Bilder sind je Projekt unterschiedlich hoch) */
   left: calc(var(--u) * 161.75); top: var(--arrow-top, 0px);
   height: calc(var(--arrow-tip, calc(var(--u) * 787.05)) - var(--arrow-top, 0px));
-  transition: opacity 260ms ease;                /* Position wird gesetzt, nicht animiert */
+  /* Länge und Lage ändern sich weich an Ort und Stelle – der Pfeil wächst
+     oder schrumpft, statt zu springen oder zu verschwinden */
+  transition: opacity 260ms ease, top 300ms cubic-bezier(.4,0,.2,1), height 300ms cubic-bezier(.4,0,.2,1);
   width: calc(var(--u) * 15.69);
 }
 .pv-arrow__line {
   position: absolute; left: calc(var(--u) * 6.81); top: 0; bottom: calc(var(--u) * 4);
   width: calc(var(--u) * 2.07); background: #05141d;
 }
-.pv-arrow.is-quiet { opacity: 0; transition: opacity 140ms ease; }
 .pv-arrow__head { position: absolute; left: 0; bottom: 0; width: 100%; height: calc(var(--u) * 9.32); fill: #05141d; display: block; }
 .pv-more {
   position: absolute; left: calc(var(--u) * (193.74 - 161.75)); bottom: calc(var(--u) * 2.25);

@@ -697,7 +697,7 @@
     const u = () => Math.min(innerWidth / 1920, innerHeight / 1080);
 
     let arrowTimer = 0;
-    function placeArrow(smooth) {
+    function placeArrow(smooth, glide, tries) {
       if (isMobile()) {
         /* mobil steht der Pfeil im Fluss nach den Metadaten und reicht bis
            kurz über den unteren Rand des ersten Bildschirms */
@@ -741,22 +741,36 @@
         const figBottom = (stack ? stack.offsetTop : 0) + top.offsetTop + top.offsetHeight;
         aTip = Math.max(figBottom, aTop + 40 * u());
       }
-      const apply = () => {
+      /* Sofort heißt: ohne Übergang an den neuen Platz – dort ist der Weg
+         dorthin noch mit Text belegt, ein Gleiten würde ihn kreuzen.
+         Verzögert (zurück) darf er weich wachsen, der Platz ist dann frei. */
+      const apply = glide => {
+        if (arrow && !glide) arrow.style.transition = 'opacity 260ms ease';
         panel.style.setProperty('--arrow-top', aTop + 'px');
         if (aTip !== null) panel.style.setProperty('--arrow-tip', aTip + 'px');
-        if (arrow) arrow.classList.remove('is-quiet');
+        if (arrow && !glide) setTimeout(() => { arrow.style.transition = ''; }, 0);
       };
-      /* Zurück (oder kürzerer Abschnitt): der Pfeil wird wieder länger und
-         liefe dabei durch Text, der gerade aus- oder einblendet. Also blendet
-         er kurz weg, wird nach dem Textwechsel (320 ms + 140 ms) an seinen
-         neuen Platz gesetzt und kommt dort wieder – keine Wanderung, keine
-         Überschneidung. Nach unten sitzt er sofort richtig. */
-      const cur = parseFloat(panel.style.getPropertyValue('--arrow-top'));
+      /* Der Pfeil wächst und schrumpft an Ort und Stelle (weicher Übergang in
+         der CSS). Er darf aber erst dorthin, wenn der Platz frei ist: beim
+         Wechsel von Screen 1 zu 2 und beim Zurückscrollen steht der alte Text
+         noch da und blendet aus (320 ms + 140 ms). Läge der neue Pfeil in
+         diesem Text, wartet er, bis er weg ist – sonst kreuzt die Linie ihn. */
+      const blocked = [...panel.querySelectorAll('.pv-text p, .pv-text h2, .pv-text h3, .pv-text li, .pv-meta dt, .pv-meta dd')]
+        .some(n => {
+          const r = n.getBoundingClientRect();
+          if (!r.width || r.bottom - sheet.top <= aTop) return false;
+          for (let e = n; e && e !== panel; e = e.parentElement) {
+            const cs = getComputedStyle(e);
+            if (cs.display === 'none' || parseFloat(cs.opacity) <= 0.02) return false;
+          }
+          return true;
+        });
       clearTimeout(arrowTimer);
-      if (smooth && !isNaN(cur) && aTop < cur - 1) {
-        if (arrow) arrow.classList.add('is-quiet');
-        arrowTimer = setTimeout(apply, 470);
-      } else apply();
+      /* Steht der Text wider Erwarten noch (langsames Gerät, verzögerte
+         Schrift), wird noch einmal gewartet – aber höchstens dreimal. */
+      const again = (tries || 0) < 3;
+      if (blocked && (smooth || (glide && again))) arrowTimer = setTimeout(() => placeArrow(false, true, (tries || 0) + 1), 470);
+      else apply(glide);
     }
 
     function render(dir) {
@@ -764,7 +778,7 @@
       panel.classList.toggle('is-last', step >= N - 1);
       /* ab Schritt 1 zeigt die Pfeilzeile den Stand: 02/12 (Schritt / Scrolls) */
       const cnt = panel.querySelector('.pv-count');
-      if (cnt) cnt.textContent = String(step).padStart(2, '0') + '/' + String(N - 1).padStart(2, '0');
+      if (cnt) cnt.textContent = '(' + String(step).padStart(2, '0') + '/' + String(N - 1).padStart(2, '0') + ')';
       /* Screen 2 stufenweise: Schritt 1 -> Abschnitt 1, 2 -> 1+2, ab 3 alle.
          Im swap-Modus steht nur der Abschnitt des aktuellen Schritts; er wird
          erst aus dem Fluss genommen (is-off) und nach einem erzwungenen
@@ -801,7 +815,7 @@
       const next = Math.max(0, Math.min(N - 1, step + d));
       if (next === step || lock) return;
       lock = 1; step = next; render(d);
-      setTimeout(() => { lock = 0; }, 350);
+      setTimeout(() => { lock = 0; }, 200);
     }
 
     function stopVideo(vf) {
@@ -814,17 +828,29 @@
        Ausschläge werden addiert, beim Überschreiten der Schwelle geht es einen
        Schritt weiter, und erst wenn 160 ms lang nichts mehr kommt (Schwung
        ausgelaufen), zählt der nächste Wisch. So ist ein Wisch ein Bild. */
-    let wAcc = 0, wIdle = 0, wArmed = true;
+    let wAcc = 0, wIdle = 0, wArmed = true, wMin = Infinity, wFired = 0, wLast = 0;
     panel.addEventListener('wheel', e => {
       if (panel.hidden || isMobile()) return;         /* mobil scrollt das Blatt selbst */
       e.preventDefault();
+      const a = Math.abs(e.deltaY);
       clearTimeout(wIdle);
-      wIdle = setTimeout(() => { wArmed = true; wAcc = 0; }, 160);
-      if (!wArmed) return;                            /* noch derselbe Wisch */
+      wIdle = setTimeout(() => { wArmed = true; wAcc = 0; wMin = Infinity; }, 90);
+      const now = performance.now(), gap = now - wLast;
+      wLast = now;
+      if (!wArmed) {
+        /* Ein Wisch auf dem Trackpad läuft dicht (alle ~16 ms) und immer
+           schwächer nach. Zwei Zeichen für einen neuen Schub: eine Lücke
+           (Mausrad-Raste, neuer Wisch) oder wieder ansteigende Ausschläge.
+           Beides zählt sofort, damit man zügig durchblättern kann. */
+        wMin = Math.min(wMin, a);
+        const fresh = gap > 60 || (now - wFired > 120 && a > Math.max(wMin * 1.6, 10));
+        if (!fresh) return;
+        wArmed = true; wAcc = 0; wMin = Infinity;
+      }
       if (wAcc && Math.sign(e.deltaY) !== Math.sign(wAcc)) wAcc = 0;   /* Richtungswechsel */
       wAcc += e.deltaY;
       if (Math.abs(wAcc) < 40) return;
-      wArmed = false; wAcc = 0;
+      wArmed = false; wAcc = 0; wMin = a; wFired = now;
       go(e.deltaY > 0 ? 1 : -1);
     }, { passive: false });
     panel.addEventListener('keydown', e => {
