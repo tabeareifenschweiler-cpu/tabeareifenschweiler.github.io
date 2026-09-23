@@ -252,12 +252,15 @@ body.proj-open { overflow: hidden; }
   position: absolute; left: calc(var(--u) * 6.81); top: 0; bottom: calc(var(--u) * 4);
   width: calc(var(--u) * 2.07); background: #05141d;
 }
+.pv-arrow.is-quiet { opacity: 0; transition: opacity 140ms ease; }
 .pv-arrow__head { position: absolute; left: 0; bottom: 0; width: 100%; height: calc(var(--u) * 9.32); fill: #05141d; display: block; }
 .pv-more {
   position: absolute; left: calc(var(--u) * (193.74 - 161.75)); bottom: calc(var(--u) * 2.25);
   font-style: italic; font-size: calc(var(--u) * 18); line-height: 1; white-space: nowrap;
 }
-.pv-count { display: none; font-family: var(--ff-head); font-style: normal; text-transform: uppercase; letter-spacing: .02em; }
+/* Der Zähler steht in derselben Zeile wie der Hinweis und in derselben
+   Schrift, Größe und Lage – er erbt alles von .pv-more */
+.pv-count { display: none; }
 .proj--v2:not([data-step="0"]) .pv-more__hint { display: none; }
 .proj--v2:not([data-step="0"]) .pv-count { display: inline; }
 /* letzter Schritt: Linie und Spitze weg, der Zähler (12/12) bleibt stehen */

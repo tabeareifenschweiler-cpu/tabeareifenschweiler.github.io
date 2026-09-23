@@ -696,7 +696,8 @@
 
     const u = () => Math.min(innerWidth / 1920, innerHeight / 1080);
 
-    function placeArrow() {
+    let arrowTimer = 0;
+    function placeArrow(smooth) {
       if (isMobile()) {
         /* mobil steht der Pfeil im Fluss nach den Metadaten und reicht bis
            kurz über den unteren Rand des ersten Bildschirms */
@@ -713,30 +714,51 @@
       const sheet = panel.querySelector('.pv-sheet').getBoundingClientRect();
       /* Screen 2: bis zum letzten eingeblendeten Abschnitt messen */
       const shown = [...block.querySelectorAll('.pv-sec.is-shown')];
-      let ref = shown.length ? shown[shown.length - 1] : block;
-      /* noch unsichtbarer Unterabschnitt: nur bis zum Element davor messen */
-      const hiddenSub = ref.querySelector('.pv-sub:not(.is-shown)');
-      if (hiddenSub && hiddenSub.previousElementSibling) ref = hiddenSub.previousElementSibling;
-      const bottom = ref.getBoundingClientRect().bottom - sheet.top;
+      const ref = shown.length ? shown[shown.length - 1] : block;
+      /* Unterkante des letzten sichtbaren Absatzes: noch nicht eingeblendete
+         Unterabschnitte zählen nicht, alles danach aber schon – sonst säße der
+         Pfeil mitten im Text (Stell dir vor, Abschnitte mit Unterabschnitt). */
+      let bottom = -Infinity;
+      for (const el of ref.children) {
+        if (el.classList.contains('pv-sub') && !el.classList.contains('is-shown')) continue;
+        const r = el.getBoundingClientRect();
+        if (r.height) bottom = Math.max(bottom, r.bottom - sheet.top);
+      }
+      if (bottom === -Infinity) bottom = ref.getBoundingClientRect().bottom - sheet.top;
       /* Grundlinie der letzten Zeile ≈ Unterkante minus Unterlänge (~0.2em) */
       const baseline = bottom - 0.2 * 18 * u();
-      panel.style.setProperty('--arrow-top', (baseline + 51 * u()) + 'px');
+      const aTop = baseline + 51 * u();
       /* Spitze auf der Unterkante des obersten noch liegenden Bildes.
          Ist das Bild kürzer als der Text (Designschau), bleibt eine
          Mindestlänge von 40 Einheiten – sonst zeigte der Pfeil nach oben. */
       const top = figs.filter(f => +f.dataset.i >= step).sort((a, b) => +a.dataset.i - +b.dataset.i)[0];
+      let aTip = null;
       if (top) {
-        const arrowTop = baseline + 51 * u();
         /* Layoutbox statt getBoundingClientRect: die enthält beim Zurückholen
            noch die Wurf-Transformation (verschoben, gedreht) und lieferte eine
            andere Unterkante als beim Runterscrollen. offset* ignoriert Transforms. */
         const stack = top.offsetParent;
-        const bottom = (stack ? stack.offsetTop : 0) + top.offsetTop + top.offsetHeight;
-        panel.style.setProperty('--arrow-tip', Math.max(bottom, arrowTop + 40 * u()) + 'px');
+        const figBottom = (stack ? stack.offsetTop : 0) + top.offsetTop + top.offsetHeight;
+        aTip = Math.max(figBottom, aTop + 40 * u());
       }
+      const apply = () => {
+        panel.style.setProperty('--arrow-top', aTop + 'px');
+        if (aTip !== null) panel.style.setProperty('--arrow-tip', aTip + 'px');
+        if (arrow) arrow.classList.remove('is-quiet');
+      };
+      /* Zurück (oder kürzerer Abschnitt): der Pfeil wird wieder länger und
+         liefe dabei durch Text, der gerade aus- oder einblendet. Also blendet
+         er kurz weg, wird nach dem Textwechsel (320 ms + 140 ms) an seinen
+         neuen Platz gesetzt und kommt dort wieder – keine Wanderung, keine
+         Überschneidung. Nach unten sitzt er sofort richtig. */
+      const cur = parseFloat(panel.style.getPropertyValue('--arrow-top'));
+      clearTimeout(arrowTimer);
+      if (smooth && !isNaN(cur) && aTop < cur - 1) {
+        if (arrow) arrow.classList.add('is-quiet');
+        arrowTimer = setTimeout(apply, 470);
+      } else apply();
     }
 
-    let arrowTimer = 0;
     function render(dir) {
       panel.dataset.step = step;
       panel.classList.toggle('is-last', step >= N - 1);
@@ -772,16 +794,14 @@
          mitrücken. Beim Zurückgehen blendet der letzte Abschnitt erst aus
          (320 ms + 140 ms Verzögerung) – würde der Pfeil sofort wieder länger,
          liefe er durch den noch sichtbaren Text. Also erst danach setzen. */
-      clearTimeout(arrowTimer);
-      if (dir < 0 && !isMobile()) arrowTimer = setTimeout(placeArrow, 470);
-      else placeArrow();
+      placeArrow(true);
     }
 
     function go(d) {
       const next = Math.max(0, Math.min(N - 1, step + d));
       if (next === step || lock) return;
       lock = 1; step = next; render(d);
-      setTimeout(() => { lock = 0; }, 500);
+      setTimeout(() => { lock = 0; }, 350);
     }
 
     function stopVideo(vf) {
@@ -789,10 +809,22 @@
       vf.querySelector('video').pause(); vf.classList.remove('is-playing');
     }
 
+    /* Ein Wisch auf dem Trackpad sendet eine ganze Serie von Ereignissen und
+       läuft danach noch nach. Darum zählt nicht das einzelne Ereignis: die
+       Ausschläge werden addiert, beim Überschreiten der Schwelle geht es einen
+       Schritt weiter, und erst wenn 160 ms lang nichts mehr kommt (Schwung
+       ausgelaufen), zählt der nächste Wisch. So ist ein Wisch ein Bild. */
+    let wAcc = 0, wIdle = 0, wArmed = true;
     panel.addEventListener('wheel', e => {
       if (panel.hidden || isMobile()) return;         /* mobil scrollt das Blatt selbst */
       e.preventDefault();
-      if (Math.abs(e.deltaY) < 25) return;           /* nur bei deutlichem Ausschlag (Trackpad-Schwung) */
+      clearTimeout(wIdle);
+      wIdle = setTimeout(() => { wArmed = true; wAcc = 0; }, 160);
+      if (!wArmed) return;                            /* noch derselbe Wisch */
+      if (wAcc && Math.sign(e.deltaY) !== Math.sign(wAcc)) wAcc = 0;   /* Richtungswechsel */
+      wAcc += e.deltaY;
+      if (Math.abs(wAcc) < 40) return;
+      wArmed = false; wAcc = 0;
       go(e.deltaY > 0 ? 1 : -1);
     }, { passive: false });
     panel.addEventListener('keydown', e => {
