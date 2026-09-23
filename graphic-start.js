@@ -736,6 +736,7 @@
       }
     }
 
+    let arrowTimer = 0;
     function render(dir) {
       panel.dataset.step = step;
       panel.classList.toggle('is-last', step >= N - 1);
@@ -767,9 +768,13 @@
         f.classList.toggle('is-top', i === step);
       });
       vidFigs.forEach(vf => { if (+vf.dataset.i !== step) stopVideo(vf); });
-      /* Pfeil sofort setzen: die Sichtbarkeit der Abschnitte ist reine Opacity,
-         das Layout steht in diesem Moment schon fest. */
-      placeArrow();
+      /* Beim Vorwärtsgehen wächst der Text nach unten: der Pfeil darf sofort
+         mitrücken. Beim Zurückgehen blendet der letzte Abschnitt erst aus
+         (320 ms + 140 ms Verzögerung) – würde der Pfeil sofort wieder länger,
+         liefe er durch den noch sichtbaren Text. Also erst danach setzen. */
+      clearTimeout(arrowTimer);
+      if (dir < 0 && !isMobile()) arrowTimer = setTimeout(placeArrow, 470);
+      else placeArrow();
     }
 
     function go(d) {
