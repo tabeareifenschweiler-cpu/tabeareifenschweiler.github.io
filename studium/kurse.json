@@ -1,0 +1,642 @@
+{
+ "meta": {
+  "semester": "WiSe 2026/27",
+  "studiengang": "Strategische Gestaltung, SG1",
+  "hochschule": "HfG Schwäbisch Gmünd",
+  "stand": "2026-10-15",
+  "hinweis": "Abgaben mit \"geschaetzt\": true sind abgeleitet, nicht offiziell bestätigt. Termine kommen aus termine.json (tools/studium_termine.py, Quelle: Outlook-Webansicht). \"praesentationen\": Datumsangaben, an denen die Kurssitzung als Präsentation vormarkiert wird (Abschlusspräsentationen aus dem Kalender sind es automatisch). Abgaben können \"typ\": \"praes\" haben."
+ },
+ "kurse": [
+  {
+   "id": "sgp",
+   "titel": "Strategisches Gestaltungsprojekt – Methoden und Prozesse",
+   "kurz": "Gestaltungsprojekt",
+   "art": "pflicht",
+   "lehrende": [
+    "Prof. Gabriele N. Reichert",
+    "Prof. Dr. Susanne Schade",
+    "laut Kalender Gruppe B: Vertr. Prof. Mark Meyer"
+   ],
+   "ects": 8,
+   "sws": 5,
+   "format": "Präsenz",
+   "rhythmus": "Di 9:30–13:00",
+   "bewertung": "benotet",
+   "kursbeschreibung": "https://docs.google.com/document/d/1_7FadN7AOAT9LFu7LJjmwCjwAyu_Me_3/edit",
+   "zusammenfassung": [
+    "Semesterthema „Transhuman – Being human in the Age of AI“: Wie verändert KI unser Verständnis vom Menschsein, und wo liegen (bzw. sollten liegen) die Grenzen des Fortschritts?",
+    "Interdisziplinäre Teams starten mit einer Recherche zu technologischen Feldern der KI – sie sind Material, nicht das Projekt selbst.",
+    "Daraus entsteht eine eigene strategische Designlösung: Organisation, Prozess, Service oder Produkt – mit klarer Haltung, was sie im Verhältnis Mensch/Maschine befürwortet, verweigert oder verschiebt.",
+    "Methoden: Umfeld-/Makroanalyse, Design Thinking, Szenarioanalyse, Delphi, Personas, User Journey, iterative und agile Verfahren.",
+    "Am Ende zählt auch die Form: Prototyp, Sprache, Medien, Präsentation, Ausstellung."
+   ],
+   "leistungsnachweis": [
+    "Themenbereichsanalyse, Problemerkennung, Gestaltungsstrategie",
+    "Designentwicklung und -lösung, Projektvisualisierung",
+    "Präsentation, Dokumentation (inkl. Film), Ausstellung / Website",
+    "Regelmäßige Teilnahme wird vorausgesetzt"
+   ],
+   "abgaben": [
+    {
+     "titel": "Clusterrecherche (analog) präsentieren + Material mit Quellen teilen",
+     "datum": null,
+     "typ": "praes",
+     "hinweis": "Kick-off, Termin im Kurs"
+    },
+    {
+     "titel": "Projektteaserfilm (max. 2 min)",
+     "datum": "2027-02-02",
+     "geschaetzt": true,
+     "hinweis": "Teil des Relevanzpitchs"
+    },
+    {
+     "titel": "PDF der Präsentation + digitale Doku",
+     "datum": "2027-02-02",
+     "geschaetzt": true
+    },
+    {
+     "titel": "Ausstellung + Webauftritt",
+     "datum": null,
+     "hinweis": "Termin folgt"
+    }
+   ],
+   "todos": [
+    "Klären, ob ich in Gruppe A oder B bin",
+    "Teaserfilm mit dem Video-Kurs (9.–11.11.) verbinden?"
+   ],
+   "literatur": [],
+   "abschnitte": [
+    {
+     "titel": "Ablauf (Sprints)",
+     "punkte": [
+      "1 Clusterrecherche – Themenbereichsanalyse, Problemerkennung",
+      "2 Fokusrecherche – Umfeld- und Relevanzanalyse, Problemeingrenzung",
+      "3 Zieldefinition – Problemdifferenzierung, Konkretisierung",
+      "4 Ideation – Kreativ-, Design-Thinking-, Evaluationsmethoden",
+      "5 Lösungsmodelle – Usability-Szenarien, Testing, Varianten",
+      "6 Finale Lösung – Ausarbeitung, mediale Umsetzung, Kommunikationsstrategie",
+      "7 Relevanzpitch – 12 min Beamer + live, inkl. max. 2 min Teaserfilm",
+      "8 Dokumentation – Problem, Prozess, Methoden, Ergebnis (digital)",
+      "9 Ausstellung + Webauftritt"
+     ]
+    },
+    {
+     "titel": "Kick-off: Clusterrecherche",
+     "punkte": [
+      "Analoge Präsentation der Top-Interest-Recherche – plastisch, lebendig, merkfähig; „lieber markant als perfekt“.",
+      "Pro Feld ein Fazit mit den wichtigsten Erkenntnissen.",
+      "Präsentation + gesichtetes Material mit Quellen geordnet für alle bereitstellen."
+     ]
+    },
+    {
+     "titel": "Beurteilung",
+     "punkte": [
+      "Inhaltlich: Relevanz, Innovation, strategische Klarheit, Stringenz, Zielgruppe",
+      "Gestalterisch: Usability, Ästhetik, Stimmigkeit, Prägnanz",
+      "Experimentell: Ideenvielfalt, Varianten, Methodeneinsatz, Motivation",
+      "Technisch: Skizzen, Entwürfe, Sprache, Medien, Mockups, Prototypen"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sm",
+   "titel": "Strategisches Management",
+   "kurz": "Strat. Management",
+   "art": "pflicht",
+   "lehrende": [
+    "Thomas Schönweitz"
+   ],
+   "ects": 6,
+   "sws": 4,
+   "format": "hybrid: Präsenz + Zoom, Videotrainings im Selbststudium",
+   "rhythmus": "Mi, meist 9:30–16:30, ab 18.11.",
+   "bewertung": "benotet; mehr als 70 % Anwesenheit nötig",
+   "kursbeschreibung": "https://docs.google.com/document/d/1mLT5Ex0mDYKgmg-HyfL4NKwo2_Tl3H10/edit",
+   "zusammenfassung": [
+    "Vom Gestalter zum Unternehmer: Tools und Frameworks, um aus Projekten oder Start-ups Geschäftskonzepte mit Umsatz- und Skalierungspotenzial zu machen.",
+    "Projekt: Exposés zu echten Beratungsprojekten mit realen Kunden – unabhängig vom Gestaltungsprojekt SG1.",
+    "Lernen im Multi-Mode: Diskussion, kurze Videos selbstgesteuert, Reflexionsübungen; die gemeinsame Zeit geht ans Projekt.",
+    "Ziele: Start-ups kluge Fragen stellen können; Zahlen kennen und einordnen (Was kostet ein Mitarbeiter? Was ist eine sinnvolle Conversion Rate?); eine Doku, die als Referenz taugt.",
+    "KI ist erlaubt und erwünscht – alle KI-Ergebnisse mit vollständigen Prompts angeben."
+   ],
+   "leistungsnachweis": [
+    "Drei Teilabgaben im Lauf des Semesters, gewichtet 2 : 3 : 5",
+    "1. Team und Vision (20 %)",
+    "2. Problem-Solution-Fit und Product-Market-Fit (30 %)",
+    "3. Business-Model-Fit, Finanzen und Pitch (50 %)"
+   ],
+   "abgaben": [
+    {
+     "titel": "Teil 1: Team und Vision (20 %)",
+     "datum": null,
+     "hinweis": "Termin im Kurs erfragen"
+    },
+    {
+     "titel": "Teil 2: Problem-Solution-Fit + Product-Market-Fit (30 %)",
+     "datum": null,
+     "hinweis": "Termin im Kurs erfragen"
+    },
+    {
+     "titel": "Teil 3: Business-Model-Fit, Finanzen + Pitch-Deck (50 %)",
+     "datum": "2027-02-03",
+     "geschaetzt": true,
+     "hinweis": "zum Abschlusspitch"
+    }
+   ],
+   "todos": [
+    "Bei KI-Nutzung alle Prompts mitdokumentieren"
+   ],
+   "literatur": [
+    "Literaturliste des Kurses (Google Doc): https://docs.google.com/document/d/1pB0INUA6wElPanX0x-PfGHIxl4l17XnVEYScPsFRCpU/edit"
+   ],
+   "abschnitte": [
+    {
+     "titel": "Abgabeformat",
+     "punkte": [
+      "Dokumentation als PDF, Einzelseiten, Text/Bild",
+      "Pro Phase die relevanten Finanzmodelle als XLS/XLSX",
+      "Miro-Boards als hochaufgelöster PDF-Export",
+      "Pitch-Präsentation mit Seitenzahlen",
+      "Abgabe als Link zum Google-Drive-Ordner per Slack oder E-Mail"
+     ]
+    },
+    {
+     "titel": "Bewertungskriterien",
+     "punkte": [
+      "Tools und Fachbegriffe verstehen und anwenden",
+      "Ökosystem: Nutzer, Stakeholder, Partner, Wettbewerb, Technologie, User Journey",
+      "Produktkonzept: Hypothese, Prototyp, Test",
+      "USP: SWOT, Positionierung, Risikobewertung",
+      "Geschäftsmodell: Roadmap, Value Proposition Canvas, Business Model Canvas, Kundenaussagen",
+      "KPIs verstehen, verfolgen, beeinflussen",
+      "Skalierung: Markteintritt, Produktlebenszyklus, Zukunftsvision, ggf. Exit",
+      "Finanzierung: Quellen kennen, Bedarf berechnen",
+      "Business Case: logisch, verständlich, glaubwürdig",
+      "Abschluss: Pitch, Dokumentation, Präsentation"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "wm",
+   "titel": "Wissenschaftliche Methoden",
+   "kurz": "Wiss. Methoden",
+   "art": "pflicht",
+   "lehrende": [
+    "Prof. Dr. Dagmar Rinker"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "Präsenz",
+   "rhythmus": "Di 14:00–16:00",
+   "bewertung": "benotet",
+   "kursbeschreibung": "https://docs.google.com/document/d/1rajPgc30EDedMubB_yoVO5q296FN_k5U/edit",
+   "zusammenfassung": [
+    "Handwerkszeug fürs wissenschaftliche Arbeiten: Textformate wie Abstract, Exposé, Paper, Master-Thesis und Grundbegriffe des Wissenschaftsbetriebs.",
+    "Forschungsmethoden im Überblick, quantitative vs. qualitative empirische Sozialforschung, Gütekriterien.",
+    "Eigenen schlüssigen Forschungsaufbau zu Designthemen entwickeln und passende qualitative Methoden wählen.",
+    "Wissenschaftliches und verständliches Schreiben."
+   ],
+   "leistungsnachweis": [
+    "Schriftliches kleines Gutachten",
+    "Gruppenreferat zu einer Forschungsmethode"
+   ],
+   "abgaben": [
+    {
+     "titel": "Gruppenreferat zu einer Forschungsmethode",
+     "datum": null,
+     "typ": "praes",
+     "hinweis": "Termin im Kurs klären"
+    },
+    {
+     "titel": "Kleines Gutachten (schriftlich)",
+     "datum": null,
+     "hinweis": "Termin im Kurs klären"
+    }
+   ],
+   "todos": [
+    "Gruppe und Methode fürs Referat finden"
+   ],
+   "literatur": [
+    "Atteslander (2010): Methoden der empirischen Sozialforschung, 13. Aufl.",
+    "Bortz & Döring (2006): Forschungsmethoden und Evaluation, 4. Aufl.",
+    "Diekmann (2012): Empirische Sozialforschung, 23. Aufl."
+   ]
+  },
+  {
+   "id": "vt",
+   "titel": "Visual Thinking",
+   "kurz": "Visual Thinking",
+   "art": "pflicht",
+   "lehrende": [
+    "Prof. Daniel Utz"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "Präsenz",
+   "rhythmus": "Mo 13:00–15:00",
+   "bewertung": "unbenotet (bestanden / nicht bestanden)",
+   "kursbeschreibung": "https://docs.google.com/document/d/1KsqR0BV3widSZMDyWWRQ64p6ztQT67vw/edit",
+   "zusammenfassung": [
+    "Praxis: Sketchnotes – Themen in der Gruppe live visualisieren und diskutieren; aus Skizzen entstehen Präsentationen und Dialoge.",
+    "Theorie: visuelle Modelle und Ordnungsprinzipien von klassischer Informationsgestaltung und Wissenschaftskommunikation bis zu digitalen Medien.",
+    "Visual Thinking als systemisches Denken: mentale Modelle als Denkwerkzeuge, komplexe Strukturen und Prozesse sichtbar machen – auch als Werkzeug fürs Team."
+   ],
+   "leistungsnachweis": [
+    "Referat",
+    "Dokumentation"
+   ],
+   "abgaben": [
+    {
+     "titel": "Referat",
+     "datum": null,
+     "typ": "praes",
+     "hinweis": "Termin im Kurs klären"
+    },
+    {
+     "titel": "Dokumentation",
+     "datum": null,
+     "hinweis": "Termin im Kurs klären"
+    }
+   ],
+   "todos": [],
+   "literatur": [
+    "Martin Haussmann: UZMO – Denken mit dem Stift (Buch)",
+    "Scott McCloud: Comics richtig lesen (Buch)",
+    "Aicher & Krampen: Zeichensysteme der visuellen Kommunikation (Buch)",
+    "Poarangan & Bergerhausen: decodeunicode (Buch)",
+    "Data Viz Project (Website)",
+    "The World’s Writing Systems (Website)",
+    "Bret Victor: Magic Ink (Essay)"
+   ]
+  },
+  {
+   "id": "ds1",
+   "titel": "Design Studies 1",
+   "kurz": "Design Studies",
+   "art": "pflicht",
+   "lehrende": [
+    "Prof. Carmen Hartmann-Menzel"
+   ],
+   "ects": 3,
+   "sws": 2,
+   "format": "teilremote",
+   "rhythmus": "Do 13:00–15:00",
+   "bewertung": "",
+   "kursbeschreibung": "https://docs.google.com/document/d/1dDoqXKJSqYsl9sZWjCow2sw26naW8NaZ/edit",
+   "zusammenfassung": [],
+   "leistungsnachweis": [],
+   "abgaben": [],
+   "todos": [],
+   "literatur": []
+  },
+  {
+   "id": "cs",
+   "titel": "Cultural Studies",
+   "kurz": "Cultural Studies",
+   "art": "pflicht",
+   "lehrende": [
+    "Prof. Dr. Gerhard M. Buurman"
+   ],
+   "ects": 3,
+   "sws": 2,
+   "format": "Präsenz",
+   "rhythmus": "Do 10:00–12:00, dazu Mi 21.10. (13–15) und Mi 4.11. (9–11)",
+   "bewertung": "benotet (1–5): 40 % Beiträge zur gemeinsamen Arbeit, 20 % Gruppenpräsentation, 40 % Einzelgespräch",
+   "kursbeschreibung": "https://docs.google.com/document/d/1pwTuJRmeTi7ugfyNZeGBh9Qv2rr_IXif/edit",
+   "zusammenfassung": [
+    "Wie werden Bedeutungen, Identitäten und Machtverhältnisse in Kultur, Medien und Alltag hergestellt (Klasse, Geschlecht, Ethnizität, Populärkultur)?",
+    "Kulturanalyse für Gestalter*innen: Artefakte (iPhone, politische Kampagne, Ausstellung) oder Organisationen (Kleingartenverein, Hochschule) untersuchen und Ausgelassenes sichtbar machen – z. B. was „benutzerzentrierte“ Normen nicht erfassen.",
+    "Arbeitshypothese: Wer Kultur anders liest (Macht, Identität), gestaltet sie anders. Beispielfall: unsere Hochschule.",
+    "In kleinen Forschungsgruppen werden eigene Fragen entwickelt, untersucht, dokumentiert und präsentiert. „Wir bilden keine Sozialwissenschaftler:innen aus.“"
+   ],
+   "leistungsnachweis": [
+    "Kleine Studien in Forschungsgruppen (Fragen entwickeln, untersuchen, dokumentieren)",
+    "10-minütige Gruppenpräsentation am Semesterende",
+    "10-minütiges Einzelgespräch (mündliche Prüfung)"
+   ],
+   "abgaben": [
+    {
+     "titel": "Gruppenpräsentation (10 min) + Einzelgespräch (10 min)",
+     "datum": "2027-02-01",
+     "geschaetzt": true,
+     "typ": "praes",
+     "hinweis": "Prüfungswoche 1.–5.2.2027, genauer Tag folgt"
+    }
+   ],
+   "todos": [],
+   "literatur": [
+    "Johnson (1986): What Is Cultural Studies Anyway? Social Text 16, S. 38–80",
+    "DIN ISO 9241-210 (menschzentrierte Gestaltung) – Beispiel im Kurs"
+   ],
+   "hinweise": [
+    "Literatur wird im Semester gemeinsam erarbeitet."
+   ]
+  },
+  {
+   "id": "wpf-participation",
+   "titel": "WPF Participation Design",
+   "kurz": "Participation Design",
+   "art": "wpf",
+   "gewaehlt": true,
+   "lehrende": [
+    "Fabian Jensen (Stadt Stuttgart, Leiter Kommunikation Rosenstein)"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "Präsenz, Block",
+   "rhythmus": "Block 28.–30.10., 9:00–18:00",
+   "bewertung": "unbenotet (bestanden / nicht bestanden)",
+   "kursbeschreibung": "https://docs.google.com/document/d/1wPYS0YebN64RbRdo4Me6N1bMaWEpa_YjlWCC7OVAduk/edit",
+   "zusammenfassung": [
+    "Bürgerbeteiligung in der Stadtentwicklung: Gestalter*innen als Forschende, Vermittelnde und Moderierende zwischen Bürger*innen, Politik und Stakeholdern.",
+    "Echte Fälle: „Unbreak my Hardt“ in Schwäbisch Gmünd (IBA'27), Stuttgart Rosenstein, IBA'27 „Neue Mitte“ im Leonhardsviertel.",
+    "Methoden ausprobieren, z. B. Planning for Real und World Café; Moderation schwieriger Bühnen- und Workshopsituationen.",
+    "Zum Schluss im Team ein Beteiligungskonzept mit Methodenauswahl und Rückkopplung an die politische Entscheidung."
+   ],
+   "leistungsnachweis": [
+    "Regelmäßige Teilnahme"
+   ],
+   "abgaben": [],
+   "praesentationen": [
+    "2026-10-30"
+   ],
+   "todos": [],
+   "literatur": [
+    "Methodensammlung: buergergesellschaft.de – Methoden und Verfahren der Bürgerbeteiligung von A bis Z",
+    "Benighaus et al. (2016): Bürgerbeteiligung – Konzepte und Lösungswege für die Praxis",
+    "Arnstein (1969): A Ladder of Citizen Participation",
+    "Remer-Bollow & Vetter (2016): Bürger und Beteiligung in der Demokratie",
+    "Selle et al. (1996): Informieren, Beteiligen, Kooperieren",
+    "Rittel (1972): Zur Planungskrise. In: Reuter & Jonas (2013): Thinking Design"
+   ]
+  },
+  {
+   "id": "wpf-zukunftsbilder",
+   "titel": "WPF Zukunftsbilder (de)konstruieren",
+   "kurz": "Zukunftsbilder",
+   "art": "wpf",
+   "gewaehlt": false,
+   "lehrende": [
+    "Markus Kreutzer"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "online (Teams)",
+   "rhythmus": "Block 28.–30.10., 9:00–18:00",
+   "bewertung": "unbenotet (bestanden / nicht bestanden)",
+   "kursbeschreibung": "https://docs.google.com/document/d/1IYwq8Knhj52Eej5ab67szyPXjQ1jw0PIQws8SK1QwYA/edit",
+   "zusammenfassung": [
+    "Sozialwissenschaftlicher Blick darauf, woher unsere Zukunftsvorstellungen kommen und warum Design oft bestehende Annahmen reproduziert.",
+    "Ansätze, die Grenzen der eigenen Vorstellungskraft zu reflektieren, angewendet in Fallstudien."
+   ],
+   "leistungsnachweis": [
+    "Präsentation der Fallstudien (Prozess und Erkenntnisse)"
+   ],
+   "abgaben": [],
+   "todos": [],
+   "literatur": []
+  },
+  {
+   "id": "wpf-ki",
+   "titel": "WPF Organisation, Prozesse, Führung in Zeiten von KI",
+   "kurz": "Organisation & KI",
+   "art": "wpf",
+   "gewaehlt": false,
+   "lehrende": [
+    "Prof. Dr. Julia Duwe",
+    "Timon Frey"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "Präsenz",
+   "rhythmus": "10., 11. und 14.12., 9:00–18:00",
+   "bewertung": "unbenotet (bestanden / nicht bestanden)",
+   "kursbeschreibung": "https://docs.google.com/document/d/1jzrMYwRsAljrAV2_dYV1yDBoKfYdNb7-S4G6X2XDsWg/edit",
+   "zusammenfassung": [
+    "Wie KI Prozesse, Strukturen, Führung und Zusammenarbeit in Unternehmen verändert, anhand von Case Studies.",
+    "Für ein fiktives Unternehmen Ist-Zustand rekonstruieren, Zukunftsbild entwerfen, visualisieren und pitchen."
+   ],
+   "leistungsnachweis": [
+    "Aktive Teilnahme, Konzeptentwicklung, Präsentation"
+   ],
+   "abgaben": [],
+   "todos": [],
+   "literatur": []
+  },
+  {
+   "id": "wpm-leadership",
+   "titel": "WPM Creative Leadership",
+   "kurz": "Creative Leadership",
+   "art": "wpm",
+   "gewaehlt": true,
+   "lehrende": [
+    "Romas Stukenberg",
+    "Steffen Vogt"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "Präsenz, Block",
+   "rhythmus": "Block 16.–18.12., 9:00–18:00",
+   "bewertung": "unbenotet",
+   "kursbeschreibung": "https://docs.google.com/document/d/1WS9IZu3IPDbjLoKpN4QdWgBY_AH87wOl/edit",
+   "zusammenfassung": [
+    "Struktur und Werkzeuge kreativer Führung an einem Praxisfall, der im Team bearbeitet wird.",
+    "Transformatives Denken: Vorstellungskraft, kritisches Hinterfragen, Wandlungsfähigkeit.",
+    "Strategisches Entscheiden: große kreative Fragen über strategische Narrative organisieren.",
+    "Kreative Teams: lernende, selbstreflektierte Zusammenarbeit fördern."
+   ],
+   "leistungsnachweis": [
+    "Vollständige Anwesenheit im Block",
+    "Teilnahme an der Abschlusspräsentation"
+   ],
+   "abgaben": [],
+   "praesentationen": [
+    "2026-12-18"
+   ],
+   "todos": [],
+   "literatur": [
+    "Benammar (2012): Reframing – The Art of Thinking Differently",
+    "Senge (1990): The Fifth Discipline",
+    "Madsbjerg (2023): Look – How to Pay Attention in a Distracted World",
+    "Miltenburg (2016): Brand the Change",
+    "McGilchrist (2009): The Master and His Emissary"
+   ]
+  },
+  {
+   "id": "wpm-circular",
+   "titel": "WPM Circular Design",
+   "kurz": "Circular Design",
+   "art": "wpm",
+   "gewaehlt": false,
+   "lehrende": [
+    "Miriam Brüne"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "Präsenz, Block",
+   "rhythmus": "Block 16.–18.12., 9:00–18:00",
+   "bewertung": "unbenotet (bestanden / nicht bestanden)",
+   "kursbeschreibung": "https://docs.google.com/document/d/1TJBw-U6dyNER4hLW2wvCSk-yYRYNlVhD/edit",
+   "zusammenfassung": [
+    "Grundlagen der Circular Economy; Produkte, Services und Geschäftsmodelle so gestalten, dass Kreisläufe geschlossen werden.",
+    "Learning by Doing in Teams von 3–4 Personen."
+   ],
+   "leistungsnachweis": [
+    "Aktive Teilnahme",
+    "Abschlusspräsentation (Abgabe als PDF)"
+   ],
+   "abgaben": [],
+   "todos": [
+    "Vorab: im Alltag umweltschädliche Produkte oder Prozesse sammeln, die man bearbeiten könnte"
+   ],
+   "literatur": []
+  },
+  {
+   "id": "wpm-transformation",
+   "titel": "WPM Transformation Design",
+   "kurz": "Transformation Design",
+   "art": "wpm",
+   "gewaehlt": false,
+   "lehrende": [
+    "Jonas Voigt"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "Präsenz, Block, Englisch",
+   "rhythmus": "Block 9.–11.11., 9:00–18:00",
+   "bewertung": "unbenotet",
+   "kursbeschreibung": "https://docs.google.com/document/d/1kcmzBNmRelPIrPkxvRXa5nuoDc1ANi31/edit",
+   "zusammenfassung": [
+    "Gesellschaftlicher Wandel und Systemdenken: System Mapping, Wheel of Reasoning, Theory of Change, Design Futuring.",
+    "Eigenes komplexes Thema mitbringen; durchgehender Fall ist die Infrastruktur generativer KI."
+   ],
+   "leistungsnachweis": [
+    "Volle Anwesenheit",
+    "Research Journal mit Methodenportfolio (Miro)",
+    "Zwei Reflexionssätze"
+   ],
+   "abgaben": [],
+   "todos": [],
+   "literatur": []
+  },
+  {
+   "id": "wpg-video",
+   "titel": "WPG Video",
+   "kurz": "Video",
+   "art": "wpg",
+   "gewaehlt": true,
+   "lehrende": [
+    "Rasih Bayölken",
+    "Christian Paulo"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "Präsenz, Block (Bau B)",
+   "rhythmus": "Block 9.–11.11., 9:00–18:00",
+   "bewertung": "unbenotet (bestanden / nicht bestanden)",
+   "kursbeschreibung": "https://docs.google.com/document/d/1Sbsp4OBpqe_mJh8eQup5Hx9xgV_T_qau/edit",
+   "zusammenfassung": [
+    "Technik: Belichtungszeit, Blende, ISO, PAL/NTSC; Einstellungsgrößen als Verständigungsmittel.",
+    "Storytelling: Idee → Exposé → Treatment → Storyboard.",
+    "Ablauf und Organisation einer Videoproduktion (wer macht was?).",
+    "Schnitt in Premiere Pro; je nach Bedarf Einzel- und Gruppentermine.",
+    "Ziel: kleine Produktionen selbst stemmen und mit Filmdienstleistern kompetent verhandeln."
+   ],
+   "leistungsnachweis": [
+    "Abschlussvideo, am besten als Ergänzung zum eigenen Studienprojekt"
+   ],
+   "abgaben": [
+    {
+     "titel": "Abschlussvideo",
+     "datum": null,
+     "hinweis": "Termin im Kurs erfragen"
+    }
+   ],
+   "todos": [
+    "Idee fürs Abschlussvideo überlegen (passend zum Gestaltungsprojekt?)",
+    "Premiere Pro installiert / Lizenz prüfen"
+   ],
+   "literatur": []
+  },
+  {
+   "id": "wpg-designsprint",
+   "titel": "WPG Designsprint",
+   "kurz": "Designsprint",
+   "art": "wpg",
+   "gewaehlt": false,
+   "lehrende": [
+    "Prof. Dr. Susanne Schade",
+    "Andreas Belthle"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "Präsenz, nur SG1",
+   "rhythmus": "6.–9.10. (vorbei)",
+   "bewertung": "keine",
+   "kursbeschreibung": "https://docs.google.com/document/d/1xI6xsOoAWitSoI479dFN9xsDAak9Wzhc/edit",
+   "zusammenfassung": [
+    "Einstieg ins Semesterthema und Kennenlernen der Gruppe.",
+    "Hypothesenbasiertes Arbeiten, Stakeholder Mapping / PUMA, Nutzerinterviews, Prototyping, Team-Vision."
+   ],
+   "leistungsnachweis": [],
+   "abgaben": [],
+   "todos": [],
+   "literatur": []
+  },
+  {
+   "id": "wpg-ai",
+   "titel": "WPG Designing Responsible AI Futures (AI+D Lab)",
+   "kurz": "AI Futures",
+   "art": "wpg",
+   "gewaehlt": false,
+   "lehrende": [
+    "Prof. Benedikt Groß",
+    "Prof. Mark Meyer"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "Präsenz, Block",
+   "rhythmus": "Block 16.–18.12., 9:00–18:00",
+   "bewertung": "unbenotet (bestanden / nicht bestanden)",
+   "kursbeschreibung": "https://docs.google.com/document/d/1S5J4CoKdDmeGK4VlfJsQMDaVAp7qRy6M/edit",
+   "zusammenfassung": [
+    "Wie ML-Systeme funktionieren, wo Bias und Intransparenz entstehen; Design Fiction für KI-Zukünfte."
+   ],
+   "leistungsnachweis": [
+    "Kurzpräsentation",
+    "Prozessdoku",
+    "Poster und Postkarte für die Semesterausstellung"
+   ],
+   "abgaben": [],
+   "todos": [],
+   "literatur": []
+  },
+  {
+   "id": "wpg-hcd",
+   "titel": "WPG Human-Centered Design",
+   "kurz": "Human-Centered Design",
+   "art": "wpg",
+   "gewaehlt": false,
+   "lehrende": [
+    "Dr.-Ing. Matthias Peissner"
+   ],
+   "ects": 2,
+   "sws": 2,
+   "format": "Präsenz",
+   "rhythmus": "7., 8. und 11.1., 9:00–18:00",
+   "bewertung": "unbenotet (bestanden / nicht bestanden)",
+   "kursbeschreibung": "https://docs.google.com/document/d/1EyB9GNXlQiHdHhrKZq8DmoQA-9xqnU2U/edit",
+   "zusammenfassung": [
+    "Menschzentrierte Gestaltungsprozesse und Methoden, User Research und User Testing in der Praxis, KI im HCD."
+   ],
+   "leistungsnachweis": [
+    "Dokumentation eines zentralen Kursteils"
+   ],
+   "abgaben": [],
+   "todos": [],
+   "literatur": []
+  }
+ ]
+}

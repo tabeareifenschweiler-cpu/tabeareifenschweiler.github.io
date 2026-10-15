@@ -1,0 +1,255 @@
+/* =============================================================
+   /studium – Kurse, Termine, Abgaben, To-dos
+   Gleiche Sprache wie /todos: Systemschriften, Rot als Akzent, viel Luft.
+   Kursfarben kommen als --k aus studium.js.
+   ============================================================= */
+
+:root {
+  --rot:    #d92b2b;
+  --text:   #111111;
+  --grau:   #6b7280;
+  --linie:  #d8d8d8;
+  --flaeche:#f4f4f4;
+  --weiss:  #ffffff;
+  --gruen:  #1a7f4b;
+
+  --ff: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --max: 1100px;
+  --rand: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--ff);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--weiss);
+  -webkit-text-size-adjust: 100%;
+}
+
+h1 { font-size: 22px; margin: 0; }
+h2 { font-size: 18px; margin: 0 0 12px; }
+h3 { font-size: 13px; margin: 0 0 8px; text-transform: uppercase; letter-spacing: .04em; color: var(--grau); }
+
+a { color: var(--text); }
+a:hover { color: var(--rot); }
+
+button, input, textarea, select { font: inherit; color: inherit; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--rand); }
+.dim  { color: var(--grau); }
+.klein { font-size: 13px; }
+.rot  { color: var(--rot); }
+
+/* --- Kopf & Reiter ------------------------------------------- */
+.kopf { border-bottom: 1px solid var(--linie); padding: 18px 0; }
+.kopf__zeile { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; justify-content: space-between; }
+.kopf h1 .dim { font-weight: 400; }
+
+.reiter { display: flex; gap: 4px; border-bottom: 1px solid var(--linie); overflow-x: auto; }
+.reiter button {
+  background: none; border: 0; border-bottom: 2px solid transparent;
+  padding: 12px 14px; cursor: pointer; white-space: nowrap;
+  color: var(--grau); font-weight: 600;
+}
+.reiter button:hover { color: var(--text); }
+.reiter button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--rot); }
+
+.seite { display: none; padding: 24px 0 64px; }
+.seite.aktiv { display: block; }
+
+/* --- Knöpfe -------------------------------------------------- */
+.leiste { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 20px; }
+.leiste__titel { font-size: 13px; color: var(--grau); margin-right: 4px; }
+
+.knopf {
+  display: inline-block;
+  background: var(--weiss); border: 1px solid var(--linie);
+  padding: 6px 12px; cursor: pointer; font-size: 13px; border-radius: 3px;
+}
+.knopf:hover { border-color: var(--text); }
+.knopf[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: var(--weiss); }
+.knopf--voll { background: var(--text); border-color: var(--text); color: var(--weiss); }
+.knopf--voll:hover { background: var(--rot); border-color: var(--rot); }
+.knopf--weg { color: var(--rot); }
+.knopf--weg:hover { border-color: var(--rot); }
+
+.schalter { display: flex; align-items: center; gap: 7px; cursor: pointer; color: var(--grau); }
+.schalter:hover { color: var(--text); }
+
+/* --- Vorschau oben ------------------------------------------- */
+.vorschau { display: grid; gap: 24px; margin-bottom: 36px; }
+.zeile {
+  display: flex; gap: 4px 14px; flex-wrap: wrap; align-items: baseline;
+  padding: 8px 0; border-bottom: 1px solid var(--flaeche); font-size: 14px;
+}
+.zeile__datum { min-width: 128px; font-variant-numeric: tabular-nums; }
+.zeile__was { flex: 1 1 200px; }
+.zeile__wo { color: var(--grau); font-size: 13px; }
+.zeile--vorbei { opacity: .5; }
+.zeile--eilig .zeile__datum { color: var(--rot); font-weight: 600; }
+.zeile--klick { cursor: pointer; }
+.zeile--klick:hover { background: var(--flaeche); }
+.zeile--klick:focus-visible { outline: 2px solid var(--rot); outline-offset: -2px; }
+.zeile__notiz {
+  flex-basis: 100%; font-size: 13px; color: var(--grau); white-space: pre-line;
+  border-left: 2px solid var(--linie); padding-left: 8px; margin: 2px 0 2px 16px;
+}
+
+.punkt {
+  display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--k, var(--text)); margin-right: 7px; vertical-align: 1px; flex: none;
+}
+
+/* --- Kurskarten ---------------------------------------------- */
+.gruppe { margin-bottom: 30px; }
+.karte { border: 1px solid var(--linie); border-left: 4px solid var(--k, var(--text)); border-radius: 3px; margin-bottom: 10px; }
+.karte__kopf {
+  display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center;
+  padding: 14px 16px; cursor: pointer; width: 100%;
+  background: none; border: 0; text-align: left;
+}
+.karte__kopf:hover { background: var(--flaeche); }
+.karte__name { font-weight: 600; flex: 1 1 280px; }
+.karte__unter { display: block; font-weight: 400; font-size: 13px; color: var(--grau); }
+.karte__info { font-size: 13px; text-align: right; }
+.karte__marken { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.marke {
+  font-size: 12px; padding: 2px 8px; border-radius: 10px;
+  background: var(--flaeche); color: var(--grau); white-space: nowrap;
+}
+.marke--rot { background: var(--rot); color: var(--weiss); }
+.marke--gut { background: var(--gruen); color: var(--weiss); }
+.marke--dunkel { background: var(--text); color: var(--weiss); }
+
+.karte__inhalt { display: none; padding: 4px 16px 22px; border-top: 1px solid var(--linie); }
+.karte.offen .karte__inhalt { display: block; }
+
+.block { margin-top: 22px; }
+.block ul { margin: 0; padding-left: 18px; }
+.block li { margin-bottom: 4px; }
+.block__kopf { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+
+.tabelle { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabelle th, .tabelle td { text-align: left; vertical-align: top; padding: 7px 12px 7px 0; border-bottom: 1px solid var(--flaeche); }
+.tabelle th { width: 170px; font-weight: 600; color: var(--grau); }
+
+.hinweis { border-left: 3px solid var(--rot); padding: 6px 0 6px 12px; font-size: 14px; color: var(--grau); }
+
+.innen2 { display: grid; gap: 0 32px; }
+
+/* Termine im Kurs: zusammenklappbar, weil Pflichtkurse viele haben */
+.terminliste { max-height: 260px; overflow-y: auto; border-top: 1px solid var(--flaeche); }
+
+/* --- Checklisten --------------------------------------------- */
+.pruefliste { list-style: none; margin: 0; padding: 0; }
+.pruefliste li { display: flex; align-items: flex-start; gap: 6px; border-bottom: 1px solid var(--flaeche); }
+.pruefliste label { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; cursor: pointer; flex: 1; }
+.pruefliste input { margin-top: 4px; }
+.pruefliste input:checked + span { color: var(--grau); text-decoration: line-through; }
+.pruefliste .datum { font-variant-numeric: tabular-nums; color: var(--grau); font-size: 13px; white-space: nowrap; }
+.pruefliste .datum--eilig { color: var(--rot); font-weight: 600; }
+
+.weg { border: 0; background: none; cursor: pointer; color: var(--grau); padding: 8px 4px; font-size: 16px; line-height: 1; }
+.weg:hover { color: var(--rot); }
+
+/* --- Formulare ----------------------------------------------- */
+.feld { display: block; margin-bottom: 12px; }
+.feld > span { display: block; font-size: 13px; color: var(--grau); margin-bottom: 3px; }
+.feld input, .feld textarea, .feld select, .eingabe {
+  width: 100%; border: 1px solid var(--linie); border-radius: 3px;
+  padding: 7px 9px; background: var(--weiss);
+}
+.feld input:focus, .feld textarea:focus, .feld select:focus, .eingabe:focus, .notiz:focus {
+  outline: 2px solid var(--rot); outline-offset: -2px; border-color: var(--rot);
+}
+.reihe { display: flex; gap: 8px; margin-top: 8px; }
+.reihe .eingabe { flex: 1; min-width: 0; }
+
+.notiz { width: 100%; min-height: 140px; border: 1px solid var(--linie); border-radius: 3px; padding: 9px; resize: vertical; line-height: 1.5; }
+
+/* --- Woche --------------------------------------------------- */
+.kal__kopf { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.kal__monat { font-weight: 600; min-width: 170px; }
+
+.woche { display: grid; gap: 10px; }
+.tag { border: 1px solid var(--linie); border-radius: 3px; padding: 10px 12px; min-height: 90px; }
+.tag--heute { border-color: var(--rot); box-shadow: inset 0 0 0 1px var(--rot); }
+.tag--we { background: var(--flaeche); }
+.tag__kopf { font-size: 13px; color: var(--grau); margin-bottom: 8px; }
+.tag--heute .tag__kopf { color: var(--rot); font-weight: 700; }
+
+.eintrag {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  border: 0; border-left: 3px solid var(--k, var(--text)); background: var(--flaeche);
+  padding: 6px 8px; margin-bottom: 6px; border-radius: 2px; font-size: 13px; line-height: 1.35;
+}
+.eintrag:hover { background: #ebebeb; }
+.eintrag b { display: block; font-weight: 600; }
+.eintrag--abgabe { border-left-color: var(--rot); background: #fdecec; }
+.eintrag--allgemein { border-left-style: dashed; }
+.eintrag__notiz {
+  display: block; margin-top: 4px; color: var(--grau); font-size: 12px;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+
+/* --- Monat --------------------------------------------------- */
+.kal__gitter { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-left: 1px solid var(--linie); border-top: 1px solid var(--linie); }
+.kal__wt { padding: 6px; font-size: 12px; color: var(--grau); text-align: center; border-right: 1px solid var(--linie); border-bottom: 1px solid var(--linie); background: var(--flaeche); }
+.kal__tag { min-height: 92px; padding: 4px 5px; border-right: 1px solid var(--linie); border-bottom: 1px solid var(--linie); font-size: 12px; min-width: 0; }
+.kal__tag--leer { background: var(--flaeche); }
+.kal__tag--heute { outline: 2px solid var(--rot); outline-offset: -2px; }
+.kal__zahl { color: var(--grau); }
+.kal__tag--heute .kal__zahl { color: var(--rot); font-weight: 700; }
+.kal__termin {
+  display: block; width: 100%; text-align: left; margin-top: 3px; cursor: pointer;
+  background: var(--k, var(--text)); color: var(--weiss); border: 0;
+  padding: 2px 5px; border-radius: 2px; font-size: 11px; line-height: 1.25;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.kal__termin--abgabe { background: var(--rot); font-weight: 700; }
+.kal__termin--wichtig { box-shadow: inset 0 0 0 2px var(--rot); font-weight: 700; }
+.kal__termin--allgemein { background: var(--weiss); color: var(--text); outline: 1px dashed var(--grau); outline-offset: -1px; }
+
+.legende { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 16px; font-size: 13px; color: var(--grau); }
+
+.leer { color: var(--grau); padding: 12px 0; font-size: 14px; }
+
+/* --- Abgaben & Präsentationen ------------------------------- */
+.pruefliste li.zeile--klick { padding: 8px 0; gap: 10px; }
+.frist__text { flex: 1; }
+.frist__text .marke { margin-right: 2px; }
+
+/* --- Termin-Dialog ------------------------------------------- */
+.dialog {
+  width: min(560px, calc(100vw - 32px)); border: 1px solid var(--linie); border-radius: 4px;
+  padding: 20px; color: var(--text); background: var(--weiss);
+}
+.dialog::backdrop { background: rgba(17, 17, 17, .35); }
+.dialog__kopf { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.dialog .notiz { min-height: 180px; }
+.dialog .schalter { color: var(--text); }
+
+/* --- ab Tablet ----------------------------------------------- */
+@media (min-width: 700px) {
+  :root { --rand: 24px; }
+  .vorschau { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .innen2 { grid-template-columns: 1fr 1fr; }
+  .spalten2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+@media (min-width: 960px) {
+  .woche { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .woche .tag--we { display: none; }
+}
+@media (max-width: 699px) {
+  .karte__info { text-align: left; flex-basis: 100%; }
+  .kal__tag { min-height: 64px; padding: 3px; }
+  .kal__termin { font-size: 0; height: 6px; padding: 0; margin-top: 2px; }
+  .tabelle th { width: auto; display: block; padding-bottom: 0; border: 0; }
+  .tabelle td { display: block; padding-top: 2px; }
+}

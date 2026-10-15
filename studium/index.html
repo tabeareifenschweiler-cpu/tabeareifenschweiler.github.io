@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Studium WiSe 26/27</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="studium.css">
+</head>
+<body>
+
+<header class="kopf">
+  <div class="wrap kopf__zeile">
+    <h1>Studium <span class="dim" id="semester"></span></h1>
+    <span class="klein dim" id="kopfinfo"></span>
+  </div>
+</header>
+
+<nav class="wrap" style="padding:0">
+  <div class="wrap reiter" role="tablist" id="reiter">
+    <button role="tab" data-seite="kurse"    aria-selected="true">Kurse</button>
+    <button role="tab" data-seite="woche"    aria-selected="false">Woche</button>
+    <button role="tab" data-seite="kalender" aria-selected="false">Kalender</button>
+    <button role="tab" data-seite="abgaben"  aria-selected="false">Abgaben &amp; Präsentationen</button>
+    <button role="tab" data-seite="todos"    aria-selected="false">To-dos</button>
+    <button role="tab" data-seite="daten"    aria-selected="false">Daten</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- KURSE ----------------------------------------------------- -->
+  <section class="seite aktiv" id="seite-kurse">
+    <div class="vorschau">
+      <div>
+        <h3>Als Nächstes</h3>
+        <div id="naechste-termine"></div>
+      </div>
+      <div>
+        <h3>Nächste Abgaben &amp; Präsentationen</h3>
+        <div id="naechste-abgaben"></div>
+      </div>
+    </div>
+    <div id="kursliste"></div>
+  </section>
+
+  <!-- WOCHE ----------------------------------------------------- -->
+  <section class="seite" id="seite-woche">
+    <div class="kal__kopf">
+      <button class="knopf" id="wo-zurueck" aria-label="Vorherige Woche">←</button>
+      <span class="kal__monat" id="wo-titel"></span>
+      <button class="knopf" id="wo-vor" aria-label="Nächste Woche">→</button>
+      <button class="knopf" id="wo-heute">Heute</button>
+    </div>
+    <div class="leiste">
+      <span class="leiste__titel">Zeigen</span>
+      <button class="knopf" data-wfilter="alle"    aria-pressed="true">Alle Termine</button>
+      <button class="knopf" data-wfilter="wichtig" aria-pressed="false">Nur Abgaben &amp; Präsentationen</button>
+      <span class="klein dim">Termin anklicken für Notizen und Markierung.</span>
+    </div>
+    <div class="woche" id="woche"></div>
+  </section>
+
+  <!-- KALENDER -------------------------------------------------- -->
+  <section class="seite" id="seite-kalender">
+    <div class="kal__kopf">
+      <button class="knopf" id="kal-zurueck" aria-label="Vorheriger Monat">←</button>
+      <span class="kal__monat" id="kal-monat"></span>
+      <button class="knopf" id="kal-vor" aria-label="Nächster Monat">→</button>
+      <button class="knopf" id="kal-heute">Heute</button>
+    </div>
+    <div class="leiste">
+      <span class="leiste__titel">Zeigen</span>
+      <button class="knopf" data-wfilter="alle"    aria-pressed="true">Alle Termine</button>
+      <button class="knopf" data-wfilter="wichtig" aria-pressed="false">Nur Abgaben &amp; Präsentationen</button>
+      <span class="klein dim">Termin anklicken für Notizen und Markierung.</span>
+    </div>
+    <div class="kal__gitter" id="kal"></div>
+    <div class="legende" id="legende"></div>
+  </section>
+
+  <!-- ABGABEN --------------------------------------------------- -->
+  <section class="seite" id="seite-abgaben">
+    <div class="leiste">
+      <span class="leiste__titel">Zeigen</span>
+      <button class="knopf" data-afilter="offen" aria-pressed="true">Offen</button>
+      <button class="knopf" data-afilter="alle"  aria-pressed="false">Auch erledigte</button>
+    </div>
+    <div class="leiste">
+      <span class="leiste__titel">Art</span>
+      <button class="knopf" data-typ="alle"   aria-pressed="true">Alles</button>
+      <button class="knopf" data-typ="abgabe" aria-pressed="false">Abgaben</button>
+      <button class="knopf" data-typ="praes"  aria-pressed="false">Präsentationen</button>
+    </div>
+    <p class="klein dim" style="margin:-8px 0 18px">Termine aus dem Stundenplan erscheinen hier, sobald du sie (Woche, Kalender oder im Kurs anklicken) als Abgabe oder Präsentation markierst.</p>
+    <div id="abgabenliste"></div>
+
+    <div style="margin-top:40px;max-width:560px">
+      <h2>Abgabe oder Präsentation hinzufügen</h2>
+      <form id="neu-abgabe" style="margin-top:12px">
+        <label class="feld"><span>Kurs</span><select name="kurs" class="kurswahl"></select></label>
+        <label class="feld"><span>Art</span>
+          <select name="typ"><option value="abgabe">Abgabe</option><option value="praes">Präsentation</option></select>
+        </label>
+        <label class="feld"><span>Was</span><input name="titel" required placeholder="z. B. Moodboard, Exposé, Zwischenstand"></label>
+        <label class="feld"><span>Datum (leer lassen, wenn noch unklar)</span><input name="datum" type="date"></label>
+        <button class="knopf knopf--voll" type="submit">Hinzufügen</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- TO-DOS ---------------------------------------------------- -->
+  <section class="seite" id="seite-todos">
+    <form id="neu-todo" class="reihe" style="max-width:640px;margin-bottom:8px">
+      <input class="eingabe" name="text" placeholder="Neues To-do" required>
+      <select class="eingabe kurswahl" name="kurs" style="max-width:220px"></select>
+      <button class="knopf knopf--voll" type="submit">+</button>
+    </form>
+    <label class="schalter klein" style="margin-bottom:22px">
+      <input type="checkbox" id="erledigte-zeigen">
+      <span>Erledigte zeigen</span>
+    </label>
+    <div id="todoliste"></div>
+  </section>
+
+  <!-- DATEN ----------------------------------------------------- -->
+  <section class="seite" id="seite-daten">
+    <div class="spalten2">
+      <div>
+        <h2>Belegte Wahlpflichtkurse</h2>
+        <p class="klein dim">Nur angehakte Kurse erscheinen in Kursliste, Woche und Kalender. Nach der Zuteilung hier anpassen.</p>
+        <div id="wp-wahl" style="margin-top:14px"></div>
+      </div>
+      <div>
+        <h2>Speichern</h2>
+        <p class="klein dim">
+          Grundlage sind <code>kurse.json</code> und <code>termine.json</code>. Notizen, To-dos,
+          erledigte Abgaben und eigene Literatur liegen im localStorage dieses Browsers.
+          Regelmäßig exportieren – mit „Importieren“ holst du den Stand auf ein anderes Gerät.
+        </p>
+        <div class="leiste" style="margin-top:16px">
+          <button class="knopf knopf--voll" id="export">Als JSON exportieren</button>
+          <label class="knopf" for="import">Importieren</label>
+          <input type="file" id="import" accept="application/json,.json" hidden>
+          <button class="knopf knopf--weg" id="zuruecksetzen">Eigene Angaben löschen</button>
+        </div>
+        <p class="klein dim" id="speicherinfo"></p>
+        <p class="klein dim" id="standtext" style="margin-top:20px"></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<dialog id="termin-dialog" class="dialog" aria-labelledby="td-titel">
+  <form method="dialog">
+    <div class="dialog__kopf">
+      <div>
+        <h2 style="margin:0"><span class="punkt" id="td-punkt"></span><span id="td-titel"></span></h2>
+        <div class="klein dim" id="td-wann"></div>
+      </div>
+      <button class="weg" value="zu" aria-label="Schließen">×</button>
+    </div>
+    <div class="leiste" style="margin:18px 0 14px">
+      <span class="leiste__titel">Diese Sitzung ist</span>
+      <label class="schalter"><input type="checkbox" id="td-praes"> <span>Präsentation</span></label>
+      <label class="schalter"><input type="checkbox" id="td-abgabe"> <span>Abgabe</span></label>
+    </div>
+    <label class="feld"><span>Notizen zu dieser Sitzung</span>
+      <textarea class="notiz" id="td-notiz" placeholder="Was besprochen wurde, Aufgaben bis zum nächsten Mal, Literaturtipps … (speichert automatisch)"></textarea>
+    </label>
+    <div class="leiste" style="margin:14px 0 0;justify-content:space-between">
+      <button class="knopf" type="button" id="td-kurs">Zum Kurs</button>
+      <button class="knopf knopf--voll" value="ok">Fertig</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="studium.js"></script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /todos/
+Disallow: /studium/
 Disallow: /Beobachtet/
 
 Sitemap: https://tabeareifenschweiler.de/sitemap.xml
