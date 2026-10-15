@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": 2,
-    "recherche_stand": "2026-09-08",
+    "recherche_stand": "2026-10-14",
     "hinweis": "Deadlines mit \"geschaetzt\": true sind aus dem Vorjahresrhythmus abgeleitet und noch nicht offiziell bestaetigt. Vor der Einreichung immer auf der Award-Seite nachpruefen.",
     "kategorien": {
       "arbeit": "Awards, bei denen die Bachelorarbeit eingereicht wird",
@@ -130,6 +130,26 @@
       {
         "id": "m-betreuer",
         "text": "Betreuungsbestätigung bzw. Immatrikulationsnachweis",
+        "vorhanden": false
+      },
+      {
+        "id": "m-1920",
+        "text": "Bildset im Format 1920x1080, JPEG RGB 72 dpi (CommAwards-Pflichtformat, auch für andere Awards brauchbar)",
+        "vorhanden": false
+      },
+      {
+        "id": "m-zeugnis",
+        "text": "Bachelorzeugnis bzw. Exmatrikulationsbescheinigung als PDF (Nachweis für Studi-Kategorien)",
+        "vorhanden": false
+      },
+      {
+        "id": "m-audio192",
+        "text": "Telefon-Audios in mind. 192 kbit/s aus dem Originalprojekt (Anhang hat nur 32-40 kbit/s)",
+        "vorhanden": false
+      },
+      {
+        "id": "m-insight",
+        "text": "Einreichtext-Baukasten: Titel, Insight, Kurzbeschreibung EN und DE",
         "vorhanden": false
       }
     ]
@@ -1301,6 +1321,123 @@
       "todos": [
         {
           "text": "Ausschreibungstermin auf kieler-woche.de nachsehen",
+          "zustand": "offen"
+        }
+      ]
+    },
+    {
+      "id": "commawards-talent-2026",
+      "bereich": "arbeit",
+      "raum": "dach",
+      "name": "CommAwards TalentComm 2026",
+      "veranstalter": "CommClubs Bayern e. V.",
+      "url": "https://commawards.com/wettbewerb/",
+      "kategorie": "Talent (Studierende)",
+      "einreichkategorie": "Space / Exhibition + Spatial & Experience (+ Audio optional)",
+      "region": "deutschsprachiger Raum",
+      "zeitfenster_von": "2025-07-01",
+      "zeitfenster_bis": "2026-10-31",
+      "zeitfenster_bezug": "veroeffentlichung",
+      "deadlines": [
+        {
+          "typ": "regular",
+          "datum": "2026-10-31",
+          "geschaetzt": false
+        }
+      ],
+      "kosten": "30 EUR für die erste Arbeit, 10 EUR für jede weitere, jeweils zzgl. MwSt. Drei Kategorien = 50 EUR netto.",
+      "kosten_bei_gewinn": "keine",
+      "hochschule_muss_angemeldet_sein": false,
+      "auftrag_vorausgesetzt": false,
+      "brief_vorausgesetzt": false,
+      "umsetzung_gefordert": "egal",
+      "passende_disziplinen": [
+        "Ausstellungsdesign",
+        "Szenografie",
+        "Interaction Design",
+        "Social Design",
+        "Experience Design"
+      ],
+      "status": "in Vorbereitung",
+      "notizen": "EMPFEHLUNG: drei Einreichungen für 50 EUR netto.\n1. Space / Exhibition – Hauptkategorie, gebaute begehbare Ausstellung.\n2. Spatial & Experience – physisch-digitale Erlebnisse, Telefon, Augen-Screens, LED-Stadtplan.\n3. Audio – Telefon-Monolog, ABER nur wenn die Originale mit mind. 192 kbit/s auftauchen. Im digitalen Anhang liegen sie nur mit 32 bis 40 kbit/s und sind damit unter dem Limit.\n\nBEWUSST NICHT EINREICHEN:\nPublic Space – die Kategorie meint Arbeiten, die im öffentlichen Raum stattfinden. Deine Ausstellung handelt davon, stand aber im Innenraum auf der MediaNight. Die Jury merkt den Unterschied.\nDigital / Digital Products – die Website ist ein OnePager, verliert gegen echte Produkteinreichungen.\nDesign / Editorial – Flyer und Thesis sind Begleitmedien, tragen keine eigene Einreichung.\n\nMehrfacheinreichung ist dort normal: IM LICHT lief 2025 in zwei, friendly.fire in drei Kategorien.\nAufmacherbild-Vorschlag: 04_Station1_Besucher_am_Telefon.jpg – echte Person, echte Interaktion, Reflexionsfrage lesbar.",
+      "quelle": "commawards.com/wettbewerb und commawards.com/gewinner, Stand 14.10.2026. Einreichzeitraum 01.08. bis 31.10.2026. Studierendengebühr 30 EUR erste Arbeit, 10 EUR jede weitere, zzgl. MwSt. Formate: JPEG RGB 72 dpi 1920x1080, mp3 mind. 192 kbit/s, mp4 1920x1080, Case-Film max. 90 s, PDF 1920x1080. Anonymitätspflicht. Immatrikulations- bzw. Examensnachweis bei jeder Einreichung. TalentComm-Felder: Design, Film, Digital, Audio, Space, Health, Experimental, Advertising. Zweitebene aus der Gewinnerliste 2025 abgeleitet, Namen für 2026 im Portal gegenprüfen.",
+      "preis": "Auszeichnungen in fünf Stufen: GrandPrix, Gold, Silber, Bronze, Finalist. Sichtbarkeit in der Branche, Jury aus Hochschule und Praxis unter Vorsitz von Jan Wölfel. Kein Preisgeld, aber auch keine Kosten im Gewinnfall.",
+      "teilnahmebedingungen": [
+        "Studierende oder Absolvent:innen einer Hochschule, Berufsakademie oder Privatschule mit kreativem Schwerpunkt.",
+        "Semester- und Abschlussarbeiten sind ausdrücklich zugelassen – kein Auftraggeber nötig.",
+        "Immatrikulationsbescheinigung oder Examensnachweis muss bei JEDER einzelnen Einreichung beiliegen.",
+        "Alle an der Arbeit beteiligten Personen einzeln auflisten – bei dir nur du selbst.",
+        "Anonymität: kein Agentur- bzw. Einreichername darf im Material sichtbar sein, freie Flächen schwärzen.",
+        "Einreichung wird erst nach Zahlungseingang aktiv.",
+        "Einreichzeitraum 01.08.2026 bis 31.10.2026."
+      ],
+      "einreichung": [
+        "Bilder: JPEG, RGB, 72 dpi, 1920x1080 px – deine Dateien sind 2000x1333 bzw. 2000x3000 und müssen neu exportiert werden",
+        "Video: mp4, 1920x1080, Case-Film max. 90 s – 002_Ausstellung_Video.mp4 ist 52 s und passt",
+        "Audio: mp3, mind. 192 kbit/s",
+        "PDF: 1920x1080 px",
+        "Immatrikulations- bzw. Examensnachweis",
+        "Einreichtext: Titel, Insight, Kurzbeschreibung"
+      ],
+      "todos": [
+        {
+          "text": "Kategorienamen im Portal gegenprüfen – heißen sie 2026 noch Space/Exhibition und Spatial & Experience?",
+          "zustand": "offen"
+        },
+        {
+          "text": "Account auf commawards26.alpha-awards.com anlegen",
+          "zustand": "offen"
+        },
+        {
+          "text": "Bachelorzeugnis oder Exmatrikulationsbescheinigung als PDF bereitlegen (wird bei jeder Einreichung verlangt)",
+          "zustand": "offen"
+        },
+        {
+          "text": "Bildset auf 1920x1080 exportieren: JPEG, RGB, 72 dpi",
+          "zustand": "offen"
+        },
+        {
+          "text": "Hochformate neu schneiden: Telefon-Detail, Besucher am Telefon, Bank Manspreading (alle 2000x3000)",
+          "zustand": "offen"
+        },
+        {
+          "text": "Aufmacherbild festlegen – Vorschlag 04_Station1_Besucher_am_Telefon.jpg",
+          "zustand": "offen"
+        },
+        {
+          "text": "Anonymität prüfen: HdM-Logo oder eigener Name auf Flyer-Mockups und Website-Screenshots?",
+          "zustand": "offen"
+        },
+        {
+          "text": "Video auf 1920x1080 mp4 prüfen (Dauer 52 s passt bereits)",
+          "zustand": "offen"
+        },
+        {
+          "text": "Einreichtext schreiben: Titel, Insight, Kurzbeschreibung",
+          "zustand": "offen"
+        },
+        {
+          "text": "Einreichung 1 abschicken: Space / Exhibition (30 EUR)",
+          "zustand": "offen"
+        },
+        {
+          "text": "Einreichung 2 abschicken: Spatial & Experience (10 EUR)",
+          "zustand": "offen"
+        },
+        {
+          "text": "Telefon-Audios im Originalprojekt suchen – Anhang hat nur 32 bis 40 kbit/s, gefordert sind 192",
+          "zustand": "offen"
+        },
+        {
+          "text": "Nur falls Originale da: Einreichung 3 abschicken, Audio (10 EUR)",
+          "zustand": "offen"
+        },
+        {
+          "text": "Rechnung bezahlen – ohne Zahlungseingang geht die Einreichung nicht live",
+          "zustand": "offen"
+        },
+        {
+          "text": "Alles abgeschickt bis 31.10.2026",
           "zustand": "offen"
         }
       ]
