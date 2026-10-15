@@ -204,10 +204,10 @@
    ],
    "abgaben": [
     {
-     "titel": "Gruppenreferat zu einer Forschungsmethode",
-     "datum": null,
-     "typ": "praes",
-     "hinweis": "Termin im Kurs klären"
+     "titel": "Gruppenreferat: Interviewmethoden",
+     "datum": "2026-10-27",
+     "zeit": "14:00",
+     "typ": "praes"
     },
     {
      "titel": "Kleines Gutachten (schriftlich)",
@@ -216,7 +216,7 @@
     }
    ],
    "todos": [
-    "Gruppe und Methode fürs Referat finden"
+    "Referat Interviewmethoden vorbereiten (27.10.)"
    ],
    "literatur": [
     "Atteslander (2010): Methoden der empirischen Sozialforschung, 13. Aufl.",
@@ -287,8 +287,17 @@
    "kursbeschreibung": "https://docs.google.com/document/d/1dDoqXKJSqYsl9sZWjCow2sw26naW8NaZ/edit",
    "zusammenfassung": [],
    "leistungsnachweis": [],
-   "abgaben": [],
-   "todos": [],
+   "abgaben": [
+    {
+     "titel": "Forschungsskizze",
+     "datum": "2026-12-03",
+     "zeit": "09:00",
+     "hinweis": "wird im Treffen in der Runde besprochen"
+    }
+   ],
+   "todos": [
+    "Forschungsskizze schreiben (bis 3.12.)"
+   ],
    "literatur": []
   },
   {
