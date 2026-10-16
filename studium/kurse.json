@@ -14,8 +14,7 @@
    "art": "pflicht",
    "lehrende": [
     "Prof. Gabriele N. Reichert",
-    "Prof. Dr. Susanne Schade",
-    "laut Kalender Gruppe B: Vertr. Prof. Mark Meyer"
+    "Prof. Dr. Susanne Schade"
    ],
    "ects": 8,
    "sws": 5,
@@ -61,7 +60,6 @@
     }
    ],
    "todos": [
-    "Klären, ob ich in Gruppe A oder B bin",
     "Teaserfilm mit dem Video-Kurs (9.–11.11.) verbinden?"
    ],
    "literatur": [],
@@ -207,7 +205,8 @@
      "titel": "Gruppenreferat: Interviewmethoden",
      "datum": "2026-10-27",
      "zeit": "14:00",
-     "typ": "praes"
+     "typ": "praes",
+     "hinweis": "mit Svenja"
     },
     {
      "titel": "Kleines Gutachten (schriftlich)",
@@ -222,7 +221,8 @@
     "Atteslander (2010): Methoden der empirischen Sozialforschung, 13. Aufl.",
     "Bortz & Döring (2006): Forschungsmethoden und Evaluation, 4. Aufl.",
     "Diekmann (2012): Empirische Sozialforschung, 23. Aufl."
-   ]
+   ],
+   "team": "mit Svenja"
   },
   {
    "id": "vt",
@@ -292,13 +292,14 @@
      "titel": "Forschungsskizze",
      "datum": "2026-12-03",
      "zeit": "09:00",
-     "hinweis": "wird im Treffen in der Runde besprochen"
+     "hinweis": "mit Svenja · wird im Treffen in der Runde besprochen"
     }
    ],
    "todos": [
     "Forschungsskizze schreiben (bis 3.12.)"
    ],
-   "literatur": []
+   "literatur": [],
+   "team": "mit Svenja"
   },
   {
    "id": "cs",

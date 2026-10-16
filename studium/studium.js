@@ -269,7 +269,7 @@
     return `<article class="karte${offen.has(k.id) ? ' offen' : ''}" id="kurs-${k.id}" style="--k:${k.farbe}">
       <button class="karte__kopf" data-oeffne="${k.id}" aria-expanded="${offen.has(k.id)}">
         <span class="karte__name">${esc(k.titel)}
-          <span class="karte__unter">${esc((k.lehrende || []).join(', '))}</span></span>
+          <span class="karte__unter">${esc((k.lehrende || []).join(', '))}${k.team ? ' · Team ' + esc(k.team) : ''}</span></span>
         <span class="karte__info">${esc(k.rhythmus || '')}<br>
           <span class="dim">${n ? 'nächster Termin ' + fmt(n.datum) + ', ' + n.von : 'keine Termine mehr'}</span></span>
         <span class="karte__marken">${marken.join('')}</span>
@@ -283,6 +283,7 @@
     const zus = k.zusammenfassung || [];
     const zeilen = [
       ['Lehrende', (k.lehrende || []).join('<br>')],
+      ['Team', esc(k.team)],
       ['Art', ART[k.art]],
       ['Umfang', [k.ects && k.ects + ' ECTS', k.sws && k.sws + ' SWS'].filter(Boolean).join(', ')],
       ['Format', esc(k.format)],
