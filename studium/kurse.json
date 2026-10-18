@@ -55,8 +55,8 @@
     },
     {
      "titel": "Ausstellung + Webauftritt",
-     "datum": null,
-     "hinweis": "Termin folgt"
+     "datum": "2027-02-12",
+     "hinweis": "Ausstellungswoche: Aufbau 10.2., Ausstellung 12.–13.2. (laut Design-Studies-Plan)"
     }
    ],
    "todos": [
@@ -202,27 +202,41 @@
    ],
    "abgaben": [
     {
-     "titel": "Gruppenreferat: Interviewmethoden",
+     "titel": "Referat Interviewformen: leitfadengestützt, narrativ, Experteninterview",
      "datum": "2026-10-27",
      "zeit": "14:00",
      "typ": "praes",
      "hinweis": "mit Svenja"
     },
     {
-     "titel": "Kleines Gutachten (schriftlich)",
-     "datum": null,
-     "hinweis": "Termin im Kurs klären"
+     "titel": "Gutachten zur Forschungsskizze eines anderen Teams",
+     "datum": "2026-12-03",
+     "hinweis": "Semesterleistung · Gutachterteams werden am 20.11. eingeteilt, Vorstellung in der Feedback-Session am 3.12. – Abgabeform im Kurs klären"
     }
    ],
    "todos": [
-    "Referat Interviewmethoden vorbereiten (27.10.)"
+    "Referat Interviewformen vorbereiten (27.10.): leitfadengestützt, narrativ, Experteninterview",
+    "Am 20.10. gut aufpassen: Textform One-Pager – vermutlich die Form der Forschungsskizze in Design Studies"
    ],
    "literatur": [
     "Atteslander (2010): Methoden der empirischen Sozialforschung, 13. Aufl.",
     "Bortz & Döring (2006): Forschungsmethoden und Evaluation, 4. Aufl.",
     "Diekmann (2012): Empirische Sozialforschung, 23. Aufl."
    ],
-   "team": "mit Svenja"
+   "team": "mit Svenja",
+   "sitzungen": {
+    "2026-10-13": "Einführung · Gütekriterien, wissenschaftliche Standards · Überblick Methoden der empirischen Sozialforschung",
+    "2026-10-20": "Wissenschaftliches Arbeiten im Designstudium, Plagiat, graue Quellen · Grundlagen wiss. Schreiben, Textform One-Pager",
+    "2026-10-27": "Referate: Interviewformen (Tabea & Svenja) · Auswertung von Interviews, Codierung nach Mayring (Zoe & Pia)",
+    "2026-11-03": "Wissenschaftliches Arbeiten mit KI – Input von Prof. Mark Meyer",
+    "2026-11-24": "Referate: Online-Umfragen, Fragebögen (Carlo & Gabriel) · Semantisches Differential und AttrakDiff (Sophia & Julia)",
+    "2026-12-08": "Referate: Teilnehmende / nicht-teilnehmende Beobachtung, Shadowing · Trend- und Megatrendanalysen (Lennard & Titus)",
+    "2026-12-15": "Referat: Qualitative und quantitative Inhaltsanalyse (Johanna & Luisa)"
+   },
+   "hinweise": [
+    "Laut Semesterplan können sich Termine und Inhalte noch verschieben.",
+    "Do 3.12. (9–13 Uhr, im Design-Studies-Termin): gemeinsame Feedback-Session – Gutachter*innen stellen ihre Einschätzung der Forschungsskizzen vor, Prof. Dr. Rinker und Prof. Hartmann-Menzel geben Feedback."
+   ]
   },
   {
    "id": "vt",
@@ -282,24 +296,91 @@
    "ects": 3,
    "sws": 2,
    "format": "teilremote",
-   "rhythmus": "Do 13:00–15:00",
+   "rhythmus": "Do 13:00–15:00, nicht jede Woche",
    "bewertung": "",
-   "kursbeschreibung": "https://docs.google.com/document/d/1dDoqXKJSqYsl9sZWjCow2sw26naW8NaZ/edit",
-   "zusammenfassung": [],
-   "leistungsnachweis": [],
+   "kursbeschreibung": "https://drive.google.com/drive/folders/1DOLa5QO5wN4B1Z_UU5H4vuXN2HCyPjAh",
+   "zusammenfassung": [
+    "Semesteraufgabe: im Zweierteam eine Forschungsskizze entwickeln – Dreh- und Angelpunkt ist eine präzise Forschungsfrage.",
+    "Eng verzahnt mit Wissenschaftliche Methoden: Andere Teams begutachten eure Skizze (das Gutachten ist dort die Semesterleistung), am 3.12. wird gemeinsam besprochen.",
+    "Aufbau nach Kruse: grundlegendes Thema benennen → Problem und Kontext beschreiben → konkrete Fragestellung → Mehrwert und Ziel der Arbeit."
+   ],
+   "leistungsnachweis": [
+    "Forschungsskizze im Zweierteam (Version 1 + final)",
+    "Teilnahme an der Feedback-Session am 3.12."
+   ],
    "abgaben": [
     {
-     "titel": "Forschungsskizze",
-     "datum": "2026-12-03",
-     "zeit": "09:00",
-     "hinweis": "mit Svenja · wird im Treffen in der Runde besprochen"
+     "titel": "Forschungsskizze – Version 1",
+     "datum": "2026-11-12",
+     "hinweis": "Team 1 mit Svenja · Drive-Ordner 01_Abgabe_Forschungsskizzen"
+    },
+    {
+     "titel": "Forschungsskizze – finale Fassung",
+     "datum": "2026-11-26",
+     "hinweis": "Team 1 mit Svenja · Drive-Ordner 02_Abgabe_Forschungsskizzen_final"
     }
    ],
    "todos": [
-    "Forschungsskizze schreiben (bis 3.12.)"
+    "Forschungsfrage nach dem Leitfaden formulieren (Thema → Problem → Frage → Mehrwert)",
+    "Version 1 der Forschungsskizze hochladen (bis Do 12.11.)",
+    "Feedback einarbeiten und finale Skizze hochladen (bis Do 26.11.)"
    ],
-   "literatur": [],
-   "team": "mit Svenja"
+   "literatur": [
+    "Literaturliste Design Studies (gut 45 Titel, u. a. Papanek, Thackara, Cross, Rittel, Norman): https://docs.google.com/spreadsheets/d/1ijF_6uwForilODHOOJUlf5xBgY9GW5YGURniYWq0-OI/edit",
+    "Buchvorschläge der Studierenden: https://docs.google.com/spreadsheets/d/1NWuEJDUfaMWZTKXVvwL0aixx1SUy4fbbTu9WJY9dOvE/edit",
+    "Leitfaden Formulierung einer Forschungsfrage (PDF): https://drive.google.com/file/d/1pWOon07HTnm9g42mBUhSuho5Rz4CGpqE/view",
+    "Kruse (2010): Lesen und Schreiben – Der richtige Umgang mit Texten im Studium",
+    "Kruse (2007): Keine Angst vor dem leeren Blatt",
+    "Esselborn-Krumbiegel (2002): Von der Idee zum Text",
+    "Franck & Stary (2009): Die Technik des wissenschaftlichen Arbeitens"
+   ],
+   "team": "mit Svenja",
+   "praesentationen": [
+    "2026-12-03"
+   ],
+   "sitzungen": {
+    "2026-11-19": "Feedback 1 zur Forschungsskizze",
+    "2026-11-20": "Zusatztermin (remote): Feedback 1 zur Forschungsskizze, Einteilung der Gutachterteams",
+    "2026-12-03": "Gemeinsame Feedback-Session Forschungsskizzen mit Wiss. Methoden – Gutachter*innen stellen vor, Rinker & Hartmann-Menzel geben Feedback"
+   },
+   "abschnitte": [
+    {
+     "titel": "Ablauf Forschungsskizze",
+     "punkte": [
+      "Do 12.11. – Version 1 abgeben (Laborwoche, kein Unterricht)",
+      "Do 19.11. + Fr 20.11. (Zusatztermin remote) – Feedback 1, Einteilung der Gutachterteams",
+      "Do 26.11. – finale Abgabe (kein Unterricht)",
+      "Do 3.12., 9–13 Uhr – gemeinsame Feedback-Session mit Wiss. Methoden: Gutachter*innen stellen ihre Einschätzung vor, Prof. Dr. Rinker und Prof. Hartmann-Menzel ergänzen",
+      "Abgabe jeweils im Drive-Ordner „01_Abgabe_Forschungsskizzen“ bzw. „02_Abgabe_Forschungsskizzen_final“"
+     ]
+    },
+    {
+     "titel": "Leitfaden: Forschungsfrage",
+     "punkte": [
+      "Bestimmt das Ziel: Was willst du erreichen, und wie? Welche Antwort soll am Ende stehen?",
+      "Jede wissenschaftliche Arbeit ist selektiv – nie alles zu einem Thema",
+      "Klar abgegrenzt von bestehenden Arbeiten, keine Wiederholung",
+      "Oft sinnvoll als W-Frage (Was? Wie?)",
+      "Eng genug fassen und sehr präzise formulieren",
+      "Das Problem zeigt die Relevanz; bearbeitet wird nur ein Teilaspekt davon",
+      "Titel ≠ Forschungsfrage"
+     ]
+    },
+    {
+     "titel": "Typische Fehler einer Forschungsfrage",
+     "punkte": [
+      "beruht auf einer falschen Annahme oder ist in sich widersprüchlich",
+      "Scheinfrage (verkleidete Behauptung) oder tendenziös",
+      "so unklar, dass es keine Antwort geben kann; unpassende Begriffe",
+      "nicht relevant für die Praxis bzw. nicht aus dem eigenen Berufsfeld",
+      "mit den verfügbaren Methoden nicht beantwortbar",
+      "zu allgemein, zu hoher Anspruch, nicht eingegrenzt"
+     ]
+    }
+   ],
+   "hinweise": [
+    "Kein Unterricht am 29.10., 12.11. (Laborwoche), 26.11., 17.12. und 7.1."
+   ]
   },
   {
    "id": "cs",

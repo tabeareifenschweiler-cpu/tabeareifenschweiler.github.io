@@ -95,6 +95,9 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .zeile--klick { cursor: pointer; }
 .zeile--klick:hover { background: var(--flaeche); }
 .zeile--klick:focus-visible { outline: 2px solid var(--rot); outline-offset: -2px; }
+.zeile__thema { flex-basis: 100%; font-size: 13px; margin: 0 0 0 16px; }
+.eintrag__thema { display: block; margin-top: 4px; font-size: 12px; color: var(--text); }
+.dialog__thema { margin-top: 8px; font-size: 14px; }
 .zeile__notiz {
   flex-basis: 100%; font-size: 13px; color: var(--grau); white-space: pre-line;
   border-left: 2px solid var(--linie); padding-left: 8px; margin: 2px 0 2px 16px;

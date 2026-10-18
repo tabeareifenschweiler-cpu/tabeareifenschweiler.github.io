@@ -142,6 +142,8 @@
     return termine.filter(t => !t.kurs || (kurs(t.kurs) && belegt(kurs(t.kurs))));
   }
   function terminName(t) { return t.kurs ? kurs(t.kurs).kurz : t.titel; }
+  // Sitzungsthema aus kurse.json ("sitzungen": { "2026-10-20": "…" }).
+  function thema(t) { const k = t.kurs ? kurs(t.kurs) : null; return (k && k.sitzungen && k.sitzungen[t.datum]) || ''; }
   function terminKey(t)  { return [t.kurs || t.titel, t.datum, t.von].join('|'); }
   /* Präsentation ist vorbelegt, wenn der Kalender sie so nennt oder der Kurs
      das Datum in kurse.json unter "praesentationen" führt. */
@@ -238,6 +240,7 @@
       ${mitDatum ? `<span class="zeile__datum">${fmt(t.datum)}, ${t.von}</span>` : `<span class="zeile__datum">${fmt(t.datum)}</span>`}
       <span class="zeile__was"><span class="punkt" style="--k:${k ? k.farbe : 'transparent'}"></span>${esc(terminName(t))}${terminMarken(info)}</span>
       <span class="zeile__wo">${mitDatum ? '' : t.von + '–' + t.bis + ' · '}${esc(t.raum || '')}${t.online ? ' · online' : ''}</span>
+      ${thema(t) ? `<span class="zeile__thema">${esc(thema(t))}</span>` : ''}
       ${!mitDatum && info.notiz ? `<span class="zeile__notiz">${esc(info.notiz)}</span>` : ''}
     </div>`;
   }
@@ -374,7 +377,7 @@
       .map(t => ({
         typ: t.kurs ? 'termin' : 'allgemein', kurs: t.kurs, t: termine.indexOf(t), name: terminName(t),
         zeit: t.von + '–' + t.bis, wo: [t.raum, t.online ? 'online' : ''].filter(Boolean).join(' · '),
-        farbe: t.kurs ? kurs(t.kurs).farbe : null, info: terminInfo(t)
+        farbe: t.kurs ? kurs(t.kurs).farbe : null, info: terminInfo(t), thema: thema(t)
       }));
     const ab = alleAbgaben().filter(a => a.datum === s).map(a => ({
       typ: a.typ === 'praes' ? 'praes' : 'abgabe', kurs: a.kurs.id,
@@ -403,6 +406,7 @@
         ${liste.map(x => `<button class="eintrag${x.typ === 'abgabe' || x.typ === 'praes' || (x.info && (x.info.praes || x.info.abgabe)) ? ' eintrag--abgabe' : ''}${x.typ === 'allgemein' ? ' eintrag--allgemein' : ''}"
             ${ziel(x)} style="--k:${x.farbe || 'var(--grau)'}">
             <b>${esc(kennung(x) + x.name)}</b>${esc(x.zeit)}${x.wo ? `<br><span class="dim">${esc(x.wo)}</span>` : ''}
+            ${x.thema ? `<span class="eintrag__thema">${esc(x.thema)}</span>` : ''}
             ${x.info && x.info.notiz ? `<span class="eintrag__notiz">${esc(x.info.notiz)}</span>` : ''}
           </button>`).join('') || `<span class="dim klein">${nurWichtig ? '–' : 'frei'}</span>`}
       </div>`;
@@ -423,7 +427,7 @@
       html += `<div class="kal__tag${s === iso(HEUTE) ? ' kal__tag--heute' : ''}">
         <span class="kal__zahl">${t}</span>
         ${eintraegeAm(s).map(x => `<button class="kal__termin${x.typ === 'abgabe' || x.typ === 'praes' ? ' kal__termin--abgabe' : ''}${x.typ === 'allgemein' ? ' kal__termin--allgemein' : ''}${x.info && (x.info.praes || x.info.abgabe) ? ' kal__termin--wichtig' : ''}"
-          ${ziel(x)} style="--k:${x.farbe || 'var(--grau)'}" title="${esc(x.name + ' ' + x.zeit + (x.info && x.info.notiz ? '\n' + x.info.notiz : ''))}">${esc(kennung(x) + x.name)}</button>`).join('')}
+          ${ziel(x)} style="--k:${x.farbe || 'var(--grau)'}" title="${esc(x.name + ' ' + x.zeit + (x.thema ? '\n' + x.thema : '') + (x.info && x.info.notiz ? '\n' + x.info.notiz : ''))}">${esc(kennung(x) + x.name)}</button>`).join('')}
       </div>`;
     }
     const rest = (7 - (vorlauf + anzahl) % 7) % 7;
@@ -529,6 +533,8 @@
     const info = terminInfo(t), k = t.kurs ? kurs(t.kurs) : null;
     el('td-punkt').style.setProperty('--k', k ? k.farbe : 'transparent');
     el('td-titel').textContent = k ? k.titel : t.titel;
+    el('td-thema').textContent = thema(t);
+    el('td-thema').hidden = !thema(t);
     el('td-wann').textContent = `${fmt(t.datum)} ${zuDatum(t.datum).getFullYear()}, ${t.von}–${t.bis}`
       + (t.raum ? ' · ' + t.raum : '') + (t.online ? ' · online' : '');
     el('td-praes').checked = info.praes;
