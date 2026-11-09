@@ -3,7 +3,7 @@
   "semester": "WiSe 2026/27",
   "studiengang": "Strategische Gestaltung, SG1",
   "hochschule": "HfG Schwäbisch Gmünd",
-  "stand": "2026-10-15",
+  "stand": "2026-11-09",
   "hinweis": "Abgaben mit \"geschaetzt\": true sind abgeleitet, nicht offiziell bestätigt. Termine kommen aus termine.json (tools/studium_termine.py, Quelle: Outlook-Webansicht). \"praesentationen\": Datumsangaben, an denen die Kurssitzung als Präsentation vormarkiert wird (Abschlusspräsentationen aus dem Kalender sind es automatisch). Abgaben können \"typ\": \"praes\" haben."
  },
  "kurse": [
@@ -60,7 +60,7 @@
     }
    ],
    "todos": [
-    "Teaserfilm mit dem Video-Kurs (9.–11.11.) verbinden?"
+    "Teaserfilm mit dem Video-Kurs verbinden? (9.11., Folgetermine 21.12. + 11.1.)"
    ],
    "literatur": [],
    "abschnitte": [
@@ -624,8 +624,8 @@
    ],
    "ects": 2,
    "sws": 2,
-   "format": "Präsenz, Block (Bau B)",
-   "rhythmus": "Block 9.–11.11., 9:00–18:00",
+   "format": "Präsenz, Block + zwei Folgetermine (Bau B)",
+   "rhythmus": "Mo 9.11. ganztägig (9–18 Uhr), dann Mo 21.12. und Mo 11.1. je 9–12 Uhr",
    "bewertung": "unbenotet (bestanden / nicht bestanden)",
    "kursbeschreibung": "https://docs.google.com/document/d/1Sbsp4OBpqe_mJh8eQup5Hx9xgV_T_qau/edit",
    "zusammenfassung": [
@@ -649,7 +649,10 @@
     "Idee fürs Abschlussvideo überlegen (passend zum Gestaltungsprojekt?)",
     "Premiere Pro installiert / Lizenz prüfen"
    ],
-   "literatur": []
+   "literatur": [],
+   "hinweise": [
+    "Stundenplan geändert (Stand 9.11.): Statt Block 9.–11.11. jetzt nur noch Mo 9.11. ganztägig, dafür zwei Folgetermine am 21.12. und 11.1., jeweils 9–12 Uhr in B1.02 (Foto)."
+   ]
   },
   {
    "id": "wpg-designsprint",
@@ -728,6 +731,82 @@
    "abgaben": [],
    "todos": [],
    "literatur": []
+  },
+  {
+   "id": "rimowa",
+   "titel": "RIMOWA Design Prize 2026/27",
+   "kurz": "RIMOWA Prize",
+   "art": "wettbewerb",
+   "gewaehlt": true,
+   "lehrende": [
+    "Von der HfG benannte Professor*innen (noch herausfinden, wer)",
+    "Fragen an RIMOWA: designprize@rimowa.com"
+   ],
+   "format": "Wettbewerb, allein oder zu zweit, Einreichung online",
+   "rhythmus": "Einreichung bis Mo 7.12., 23:59 Uhr",
+   "bewertung": "7 Finalist*innen: 1. Platz 20.000 €, 2. Platz 10.000 €, Plätze 3–7 je 5.000 €",
+   "kursbeschreibung": "https://www.rimowadesignprize.com",
+   "linktext": "rimowadesignprize.com öffnen ↗",
+   "zusammenfassung": [
+    "5. Ausgabe, Thema „Mobility“: Was bedeutet Mobilität für alle, nicht nur für die, die ohnehin mobil sein können? Mobilität als Werkzeug für Freiheit und Zugänglichkeit.",
+    "Offen für das ganze Spektrum an Mobilitätslösungen: physisches Produkt, System oder Service. Pflicht ist eine klare Rücksicht auf Gesellschaft, Ressourcen und/oder Umwelt.",
+    "Jury-Kriterien (gleichrangig): Creativity, Globality, Ingenuity, Timelessness.",
+    "Ab dem Halbfinale (21 Leute, ab Januar 2027) gibt es eine Mentorin oder einen Mentor aus der Jury, dazu Netzwerk, Arbeitsplatz und infrastrukturelle Unterstützung.",
+    "Teilnahme: Designstudierende ab dem 2. Semester an einer teilnehmenden Hochschule. Die HfG Schwäbisch Gmünd ist dabei. Pro Person nur eine Arbeit."
+   ],
+   "abschnitte": [
+    {
+     "titel": "Ablauf",
+     "punkte": [
+      "Oktober 2026: Briefing für Hochschulen und Jury, Q&As am 29.10. und 4.11. (vorbei)",
+      "bis 7.12.2026, 23:59 Uhr: Vor-Einreichung über rimowadesignprize.com",
+      "Dezember: Freigabe durch die Hochschule (HfG-Ansprechperson)",
+      "Anfang Januar 2027: Benachrichtigung, wer im Halbfinale ist",
+      "Januar–Februar: Halbfinale mit Jury-Mentoring; das interne RIMOWA-Designteam wählt aus",
+      "März–April: Finalrunde; die Jury wählt gemeinsam 7 Finalist*innen",
+      "Mai 2027: Preisverleihung"
+     ]
+    },
+    {
+     "titel": "Was nicht geht",
+     "punkte": [
+      "Kein Bezug auf RIMOWA, ihre Produkte, die Produktkategorie (Koffer, Rucksäcke usw.) oder die Markengestaltung. Das führt zur Disqualifikation.",
+      "Das Projekt darf bei keinem anderen Preis oder Wettbewerb eingereicht worden sein (auch nicht danach parallel).",
+      "Die Arbeit muss euch gehören. RIMOWA bekommt ein exklusives, unbefristetes Nutzungsrecht an Bildern und Beschreibungen für Werbung; Name und Bild dürfen sie ebenfalls verwenden. Vor dem Einreichen die Teilnahmebedingungen lesen."
+     ]
+    }
+   ],
+   "leistungsnachweis": [
+    "Drei Seiten A4 als PDF, hochgeladen auf rimowadesignprize.com",
+    "A: vollständiger Name, Kontaktdaten, Hochschule, Projekttitel, ggf. Unterzeile",
+    "B: Executive Summary, höchstens 300 Wörter: Warum, Wie, Was",
+    "C: Überblick über erste Skizzen, Fotos, Erkenntnisse, Renderings und/oder technische Zeichnungen"
+   ],
+   "abgaben": [
+    {
+     "titel": "Einreichung (3 Seiten A4, PDF) bis 23:59 Uhr",
+     "datum": "2026-12-07",
+     "hinweis": "über rimowadesignprize.com · allein oder zu zweit"
+    }
+   ],
+   "todos": [
+    "HfG-Ansprechperson für den RIMOWA Prize herausfinden (Freigabe im Dezember)",
+    "Klären: Zählt das 1. Master-Semester als „ab 2. Semester“? Sonst designprize@rimowa.com fragen",
+    "Entscheiden: allein oder zu zweit?",
+    "Teilnahmebedingungen lesen (Nutzungsrechte, keine Doppeleinreichung)",
+    "Projektidee zum Thema Mobility finden, ohne Bezug auf Koffer, Gepäck oder die Marke",
+    "Executive Summary schreiben (max. 300 Wörter)",
+    "Skizzen, Renderings oder Fotos für Seite 3 zusammenstellen",
+    "Auf rimowadesignprize.com registrieren und PDF hochladen"
+   ],
+   "literatur": [
+    "Brief 2026/27 (PDF, Downloads): RIMOWA Design Prize_Student_Brief_2026-2027.pdf",
+    "Beispiel-Einreichungen im Brief: Janne Kreimer (2024/25), Fengfan Yang (2023/24)",
+    "https://www.rimowadesignprize.com/en/terms-and-conditions"
+   ],
+   "hinweise": [
+    "Gleichzeitig laufen: finale Forschungsskizze (26.11.) und Gutachten WM (3.12.). Bis 7.12. bleiben ab jetzt knapp vier Wochen."
+   ]
   }
  ]
 }

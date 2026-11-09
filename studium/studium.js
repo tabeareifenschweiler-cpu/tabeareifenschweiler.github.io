@@ -26,7 +26,8 @@
     pflicht: 'Pflicht',
     wpf: 'Wahlpflicht Forschung',
     wpm: 'Wahlpflicht Management',
-    wpg: 'Wahlpflicht Gestaltung'
+    wpg: 'Wahlpflicht Gestaltung',
+    wettbewerb: 'Wettbewerb'
   };
   const ALLGEMEIN = { id:'allgemein', titel:'Allgemein', kurz:'Allgemein', art:'allgemein', farbe:'#111111',
                       todos:[], abgaben:[], literatur:[] };
@@ -226,7 +227,8 @@
 
     const gruppen = [
       ['Pflicht', belegte().filter(k => k.art === 'pflicht')],
-      ['Wahlpflicht', belegte().filter(k => k.art !== 'pflicht')]
+      ['Wahlpflicht', belegte().filter(k => k.art !== 'pflicht' && k.art !== 'wettbewerb')],
+      ['Wettbewerbe', belegte().filter(k => k.art === 'wettbewerb')]
     ];
     el('kursliste').innerHTML = gruppen.map(([titel, liste]) => liste.length ? `
       <div class="gruppe"><h3>${titel}</h3>${liste.map(karte).join('')}</div>` : '').join('');
@@ -272,9 +274,9 @@
     return `<article class="karte${offen.has(k.id) ? ' offen' : ''}" id="kurs-${k.id}" style="--k:${k.farbe}">
       <button class="karte__kopf" data-oeffne="${k.id}" aria-expanded="${offen.has(k.id)}">
         <span class="karte__name">${esc(k.titel)}
-          <span class="karte__unter">${esc((k.lehrende || []).join(', '))}${k.team ? ' · Team ' + esc(k.team) : ''}</span></span>
+          <span class="karte__unter">${esc(k.art === 'wettbewerb' ? k.format : (k.lehrende || []).join(', '))}${k.team ? ' · Team ' + esc(k.team) : ''}</span></span>
         <span class="karte__info">${esc(k.rhythmus || '')}<br>
-          <span class="dim">${n ? 'nächster Termin ' + fmt(n.datum) + ', ' + n.von : 'keine Termine mehr'}</span></span>
+          <span class="dim">${n ? 'nächster Termin ' + fmt(n.datum) + ', ' + n.von : (k.art === 'wettbewerb' ? '' : 'keine Termine mehr')}</span></span>
         <span class="karte__marken">${marken.join('')}</span>
       </button>
       <div class="karte__inhalt">${offen.has(k.id) ? inhalt(k) : ''}</div>
@@ -284,15 +286,16 @@
   function inhalt(k) {
     const e = eintrag(k.id);
     const zus = k.zusammenfassung || [];
+    const wb = k.art === 'wettbewerb';
     const zeilen = [
-      ['Lehrende', (k.lehrende || []).join('<br>')],
+      [wb ? 'Betreuung' : 'Lehrende', (k.lehrende || []).map(esc).join('<br>')],
       ['Team', esc(k.team)],
       ['Art', ART[k.art]],
       ['Umfang', [k.ects && k.ects + ' ECTS', k.sws && k.sws + ' SWS'].filter(Boolean).join(', ')],
       ['Format', esc(k.format)],
-      ['Wann', esc(k.rhythmus)],
-      ['Bewertung', esc(k.bewertung)],
-      ['Beschreibung', k.kursbeschreibung ? `<a href="${esc(k.kursbeschreibung)}" target="_blank" rel="noopener">Kursbeschreibung öffnen ↗</a>` : '']
+      [wb ? 'Frist' : 'Wann', esc(k.rhythmus)],
+      [wb ? 'Preise' : 'Bewertung', esc(k.bewertung)],
+      ['Beschreibung', k.kursbeschreibung ? `<a href="${esc(k.kursbeschreibung)}" target="_blank" rel="noopener">${esc(k.linktext || 'Kursbeschreibung öffnen ↗')}</a>` : '']
     ].filter(z => z[1]);
 
     const todos = todosVon(k), lit = literaturVon(k), ab = abgabenVon(k), te = termineVon(k);
@@ -311,7 +314,7 @@
         ${(k.abschnitte || []).map(ab => `<div class="block"><h3>${esc(ab.titel)}</h3>
           <ul>${(ab.punkte || []).map(z => `<li>${esc(z)}</li>`).join('')}</ul></div>`).join('')}
 
-        ${(k.leistungsnachweis || []).length ? `<div class="block"><h3>Leistungsnachweis</h3>
+        ${(k.leistungsnachweis || []).length ? `<div class="block"><h3>${wb ? 'Einreichung' : 'Leistungsnachweis'}</h3>
           <ul>${k.leistungsnachweis.map(z => `<li>${esc(z)}</li>`).join('')}</ul></div>` : ''}
 
         <div class="block"><h3>Literatur</h3>
@@ -352,9 +355,9 @@
           <textarea class="notiz" data-notiz="${k.id}" placeholder="Mitschriften, Fragen, Ideen … (speichert automatisch)">${esc(e.notizen)}</textarea>
         </div>
 
-        <div class="block"><h3>Termine (${te.length})</h3>
+        ${wb && !te.length ? '' : `<div class="block"><h3>Termine (${te.length})</h3>
           <div class="terminliste">${te.map(t => terminZeile(t, false)).join('') || '<p class="leer">Keine im Kalender.</p>'}</div>
-        </div>
+        </div>`}
       </div>
     </div>`;
   }
@@ -490,7 +493,7 @@
 
   /* --- Daten ------------------------------------------------ */
   function zeichneDaten() {
-    el('wp-wahl').innerHTML = ['wpf', 'wpm', 'wpg'].map(art => `
+    el('wp-wahl').innerHTML = ['wpf', 'wpm', 'wpg', 'wettbewerb'].map(art => `
       <div class="block"><h3>${ART[art].replace('Wahlpflicht ', '')}</h3>
         <ul class="pruefliste">${kurse.filter(k => k.art === art).map(k => `<li>
           <label><input type="checkbox" data-wp="${k.id}" ${belegt(k) ? 'checked' : ''}>
